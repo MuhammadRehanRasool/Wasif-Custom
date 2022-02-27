@@ -9,7 +9,6 @@ import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import PersonSearchIcon from "@mui/icons-material/PersonSearch";
 import CoPresentIcon from "@mui/icons-material/CoPresent";
 
-const axios = require("axios");
 
 import {
   CONSTANT,
@@ -18,6 +17,7 @@ import {
   resetMessage,
   isMessage,
 } from "./../CONSTANT";
+const axios = require("axios");
 
 function Staff(props) {
   const { data, setData } = React.useContext(UserData);
