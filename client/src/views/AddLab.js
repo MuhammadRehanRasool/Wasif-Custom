@@ -21,7 +21,9 @@ export default function AddLab() {
   let navigate = useNavigate();
 
   useEffect(() => {
-    checkLoginFromCommittee() ? navigate("/dashboard") : null;
+    if (checkLoginFromCommittee()) {
+      navigate("/dashboard");
+    }
     fetchStaff();
   }, []);
 

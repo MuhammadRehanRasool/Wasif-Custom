@@ -21,7 +21,9 @@ export default function AddUser() {
   let navigate = useNavigate();
 
   useEffect(() => {
-    checkLoginFromAdmin() ? navigate("/dashboard") : null;
+    if (checkLoginFromAdmin()) {
+      navigate("/dashboard");
+    }
   }, []);
 
   const __init = {

@@ -28,7 +28,9 @@ export default function ViewTimetable() {
   let navigate = useNavigate();
 
   useEffect(() => {
-    checkLoginFromStaff() ? navigate("/dashboard") : null;
+    if (checkLoginFromStaff()) {
+      navigate("/dashboard");
+    }
   }, []);
   useEffect(() => {
     if (data.personal._id !== "") {
@@ -108,9 +110,7 @@ export default function ViewTimetable() {
           <select
             class="form-select form-control"
             name="labId"
-            onChange={(e) => {
-              changeSend(e);
-            }}
+            onChange={(e) => {}}
             value={send.labId}
             aria-label="Select Lab"
           >

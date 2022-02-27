@@ -28,7 +28,9 @@ export default function AddTimetable() {
   let navigate = useNavigate();
 
   useEffect(() => {
-    checkLoginFromStaff() ? navigate("/dashboard") : null;
+    if (checkLoginFromStaff()) {
+      navigate("/dashboard");
+    }
   }, []);
   useEffect(() => {
     if (data.personal._id !== "") {

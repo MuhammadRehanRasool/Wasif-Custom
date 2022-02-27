@@ -25,7 +25,9 @@ function Staff(props) {
   // User Data
   let navigate = useNavigate();
   useEffect(() => {
-    checkLoginFromStaff() ? navigate("/dashboard") : null;
+    if (checkLoginFromStaff()) {
+      navigate("/dashboard");
+    }
   }, []);
 
   const [isMarked, setIsMarked] = useState(false);

@@ -10,7 +10,9 @@ function Login(props) {
   let navigate = useNavigate();
 
   useEffect(() => {
-    checkLoginFromLogin() ? navigate("/dashboard") : null;
+    if (checkLoginFromLogin()) {
+      navigate("/dashboard");
+    }
   }, []);
 
   const __init = {

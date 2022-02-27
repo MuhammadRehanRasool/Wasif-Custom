@@ -38,7 +38,9 @@ export default function ViewLabs() {
   let navigate = useNavigate();
 
   useEffect(() => {
-    checkLoginFromCommittee() ? navigate("/dashboard") : null;
+    if (checkLoginFromCommittee()) {
+      navigate("/dashboard");
+    }
   }, []);
 
   const [labs, setLabs] = useState([]);

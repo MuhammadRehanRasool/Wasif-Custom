@@ -11,9 +11,9 @@ import Avatar from "@mui/material/Avatar";
 import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
 import MenuIcon from "@material-ui/icons/Menu";
 import GridViewIcon from "@mui/icons-material/GridView";
-import DateRangeIcon from '@mui/icons-material/DateRange';
+import DateRangeIcon from "@mui/icons-material/DateRange";
 import AddIcon from "@mui/icons-material/Add";
-import BookmarkAddedIcon from '@mui/icons-material/BookmarkAdded';
+import BookmarkAddedIcon from "@mui/icons-material/BookmarkAdded";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
@@ -30,12 +30,12 @@ import Collapse from "@mui/material/Collapse";
 import ExpandLess from "@mui/icons-material/ExpandLess";
 import ComputerIcon from "@mui/icons-material/Computer";
 import ExpandMore from "@mui/icons-material/ExpandMore";
-const axios = require("axios");
+
 import Admin from "./Admin";
 import Committee from "./Committee";
 import Staff from "./Staff";
 import Teacher from "./Teacher";
-
+const axios = require("axios");
 const drawerWidth = 240;
 
 const useStyles = makeStyles((theme) => ({
@@ -75,7 +75,9 @@ function Layout(props) {
   let navigate = useNavigate();
 
   useEffect(() => {
-    checkLoginFromNonLogin() ? navigate("/login") : null;
+    if (checkLoginFromNonLogin()) {
+      navigate("/dashboard");
+    }
   }, []);
 
   // set the defaults
@@ -134,7 +136,8 @@ function Layout(props) {
     setOpenTimetableUser(!openTimetableUser);
   };
 
-  const [openStaffAttendanceUser, setOpenStaffAttendanceUser] = React.useState(true);
+  const [openStaffAttendanceUser, setOpenStaffAttendanceUser] =
+    React.useState(true);
 
   const handleClickOfStaffAttendanceUser = () => {
     setOpenStaffAttendanceUser(!openStaffAttendanceUser);
