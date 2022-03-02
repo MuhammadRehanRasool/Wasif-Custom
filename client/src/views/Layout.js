@@ -76,7 +76,7 @@ function Layout(props) {
 
   useEffect(() => {
     if (checkLoginFromNonLogin()) {
-      navigate("/dashboard");
+      navigate("/login");
     }
   }, []);
 

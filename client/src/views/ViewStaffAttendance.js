@@ -9,7 +9,6 @@ import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import PersonSearchIcon from "@mui/icons-material/PersonSearch";
 import CoPresentIcon from "@mui/icons-material/CoPresent";
 
-
 import {
   CONSTANT,
   checkLoginFromStaff,
@@ -59,13 +58,12 @@ function Staff(props) {
     var dd = String(today.getDate()).padStart(2, "0");
     var mm = String(today.getMonth() + 1).padStart(2, "0"); //January is 0!
     var yyyy = today.getFullYear();
-    today = dd + "/" + mm + "/" + yyyy;
+    today = mm + "/" + dd + "/" + yyyy;
     return today;
   };
 
   useEffect(() => {
     if (data.personal._id !== "") {
-      
       fetchDates();
     }
   }, [data]);
@@ -101,6 +99,7 @@ function Staff(props) {
                 <tr>
                   <th scope="col">Date</th>
                   <th scope="col">Status</th>
+                  <th scope="col">Marked On</th>
                 </tr>
               </thead>
               <tbody>
@@ -123,6 +122,7 @@ function Staff(props) {
                             >
                               {capitalizeFirstLetter(date.status)}
                             </td>
+                            <td>{new Date(date.createdAt).toLocaleString()}</td>
                           </tr>
                         );
                       })

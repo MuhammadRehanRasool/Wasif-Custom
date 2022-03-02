@@ -33,6 +33,7 @@ export default function ViewTimetable() {
     }
   }, []);
   useEffect(() => {
+    deFormatDate("11:30AM-01:00PM");
     if (data.personal._id !== "") {
       fetchLab();
     }
@@ -66,25 +67,23 @@ export default function ViewTimetable() {
 
   const __init = {
     labId: "",
-    slots: [
-      {
-        day: "",
-        startTime: "",
-        endTime: "",
-        subjectName: "",
-        teacherId: "",
-      },
-    ],
+    slots: [],
   };
 
   const [send, setSend] = useState(__init);
+
+  const [range, setRange] = useState([[], []]);
 
   const fetchTimetable = async (labId) => {
     await axios
       .get(CONSTANT.server + `timetable/lab/${labId}`)
       .then((responce) => {
         if (responce.status === 200) {
-          setSend(responce.data);
+          setSend({
+            labId: labId,
+            slots: responce.data.slots,
+          });
+          setRange(responce.data.addOn);
         }
       })
       .catch((error) => {
@@ -92,11 +91,38 @@ export default function ViewTimetable() {
       });
   };
 
-  useEffect(() => {
-    if (send.labId !== "") {
-      fetchTimetable(send.labId);
+  const fetchSpecificClass = (day, time) => {
+    let data = send.slots.filter((slot, i) => {
+      return (
+        slot.day === day &&
+        slot.startTime + "-" + slot.endTime === deFormatDate(time)
+      );
+    })[0];
+    if (data) {
+      return <td>{data.subjectName}</td>
+    } else {
+      return <td></td>
     }
-  }, [send]);
+  };
+
+  const deFormatDate = (time) => {
+    let temp = time.split("-");
+    let str = "";
+    temp.map((one, i) => {
+      let type = one.slice(one.length - 2);
+      if (type === "AM") {
+        str += one.slice(0, one.length - 2);
+      } else {
+        str +=
+          parseInt(parseInt(one.slice(0, 2)) + 12) +
+          one.slice(2, one.length - 2);
+      }
+      if (i === 0) {
+        str += "-";
+      }
+    });
+    return str;
+  };
 
   return (
     <div className="__AddUser row d-flex justify-content-center align-items-center">
@@ -110,7 +136,9 @@ export default function ViewTimetable() {
           <select
             class="form-select form-control"
             name="labId"
-            onChange={(e) => {}}
+            onChange={(e) => {
+              fetchTimetable(e.target.value);
+            }}
             value={send.labId}
             aria-label="Select Lab"
           >
@@ -136,6 +164,43 @@ export default function ViewTimetable() {
                 })
               : ""}
           </select>
+        </div>
+
+        <div className="timetable">
+          {send.slots.length > 0 &&
+          range[0].length > 0 &&
+          range[1].length > 0 ? (
+            <div className="table-responsive">
+              <table className="table">
+                <thead>
+                  <tr>
+                    <th scope="col"></th>
+                    {range[0].map((day, i) => {
+                      return (
+                        <th key={i} scope="col">
+                          {day.slice(0, 1).toUpperCase() + "" + day.slice(1)}
+                        </th>
+                      );
+                    })}
+                  </tr>
+                </thead>
+                <tbody>
+                  {range[1].map((time, i) => {
+                    return (
+                      <tr>
+                        <td scope="col">{time}</td>
+                        {range[0].map((day, i) => {
+                          return fetchSpecificClass(day, time);
+                        })}
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+          ) : (
+            "No Lab Selected"
+          )}
         </div>
       </div>
     </div>

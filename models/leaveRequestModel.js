@@ -18,6 +18,7 @@ const leaveRequestModel = new mongoose.Schema({
     type: Boolean,
     required: true,
   },
+  createdAt: { type: Date, default: Date.now },
 });
 
 module.exports = mongoose.model("leaveRequests", leaveRequestModel);
