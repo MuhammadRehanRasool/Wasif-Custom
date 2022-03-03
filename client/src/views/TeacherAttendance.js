@@ -1,0 +1,249 @@
+import React, { useState, useEffect } from "react";
+import "./../css/Committee.css";
+import UserData from "../components/UserData";
+import { useNavigate } from "react-router-dom";
+import Button from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
+import KeyboardAltIcon from "@mui/icons-material/KeyboardAlt";
+import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
+import PersonSearchIcon from "@mui/icons-material/PersonSearch";
+import CoPresentIcon from "@mui/icons-material/CoPresent";
+
+import {
+  CONSTANT,
+  checkLoginFromTeacher,
+  setMessage,
+  resetMessage,
+  isMessage,
+} from "./../CONSTANT";
+const axios = require("axios");
+
+function TeacherAttendance(props) {
+  const { data, setData } = React.useContext(UserData);
+
+  // User Data
+  let navigate = useNavigate();
+  useEffect(() => {
+    if (checkLoginFromTeacher()) {
+      navigate("/dashboard");
+    }
+  }, []);
+
+  const [day, setDay] = useState("");
+  const fetchTodayDate = () => {
+    var today = new Date();
+    var dd = String(today.getDate()).padStart(2, "0");
+    var mm = String(today.getMonth() + 1).padStart(2, "0"); //January is 0!
+    var yyyy = today.getFullYear();
+    return mm + "/" + dd + "/" + yyyy;
+  };
+
+  const __init = {
+    date: fetchTodayDate(),
+    slotId: "",
+    status: "",
+  };
+
+  useEffect(() => {
+    if (data.personal._id !== "") {
+      let days = [
+        "sunday",
+        "monday",
+        "tuesday",
+        "wednesday",
+        "thursday",
+        "friday",
+        "Saturday",
+      ];
+      setDay(days[new Date().getDay()]);
+      fetchSlots(days[new Date().getDay()]);
+    }
+  }, [data]);
+  const [send, setSend] = useState(__init);
+  const changeSend = (e) => {
+    setSend({
+      ...send,
+      [e.target.name]: e.target.value,
+    });
+  };
+  const markAttendance = async (e) => {
+    e.target.style.pointerEvents = "none";
+    e.target.innerHTML =
+      '<div className="spinner-border custom-spin" role="status"><span className="visually-hidden">Loading...</span></div>';
+    e.preventDefault();
+    resetMessage();
+    if (send.date !== "" && send.status !== "" && send.slotId !== "") {
+      await axios
+        .post(CONSTANT.server + "teacherAttendance/insert", {
+          ...send,
+          teacherId: data.personal._id,
+        })
+        .then((responce) => {
+          if (responce.status === 200) {
+            let res = responce.data;
+            if (res.message) {
+              setMessage(res.message, "danger");
+            } else {
+              setMessage("Attendance Marked Successfully!", "success");
+              setSend(__init);
+              fetchSlots();
+            }
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    } else {
+      setMessage("Fill All Fields!", "danger");
+    }
+
+    e.target.style.pointerEvents = "unset";
+    e.target.innerHTML = "Mark Attendance";
+  };
+
+  const [slots, setSlots] = useState([]);
+
+  const fetchSlots = async (dday) => {
+    await axios
+      .get(
+        CONSTANT.server +
+          `timetable/view/teacher/${data.personal._id}/${day || dday}`
+      )
+      .then((responce) => {
+        if (responce.status === 200) {
+          axios
+            .post(CONSTANT.server + `teacherAttendance/checkSlotAttendance`, {
+              slots: responce.data,
+              date: send.date,
+              teacherId: data.personal._id,
+            })
+            .then((responce2) => {
+              if (responce2.status === 200) {
+                if (responce2.data) {
+                  setSlots([...responce2.data]);
+                }
+              }
+            })
+            .catch((error) => {
+              console.log(error);
+            });
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  return (
+    <div className="__Committee">
+      <div className="row d-flex flex-column justify-content-center align-items-center">
+        <div className="mb-5 row d-flex flex-row justify-content-center align-items-center">
+          <span className="text-center text-muted display-6">Today's Date</span>
+          <span className="text-center display-6">
+            {send.date} ({day && day[0].toUpperCase() + day.slice(1)})
+          </span>
+        </div>
+        <div className="row d-flex flex-row justify-content-center align-items-center w-50">
+          <h1 className="mb-4 text-center">Mark Attendance</h1>
+          <div className="custom-input input-group mb-3">
+            <span className="input-group-text">
+              <CalendarTodayIcon />
+            </span>
+            <input
+              type="text"
+              className="form-control"
+              placeholder="Date"
+              name="date"
+              disabled
+              value={send.date}
+            />
+          </div>
+
+          <div className="custom-input input-group mb-3">
+            <span className="input-group-text">
+              <CoPresentIcon />
+            </span>
+            <select
+              class="form-select form-control"
+              name="slotId"
+              onChange={changeSend}
+              value={send.slotId}
+              aria-label="Select Slot"
+            >
+              <option
+                value=""
+                disabled
+                selected={send.slotId === "" ? true : false}
+              >
+                Select Slot
+              </option>
+              {slots.length > 0 &&
+                slots.map((one, i) => {
+                  return (
+                    <option
+                      value={one._id}
+                      selected={send.slotId === one._id ? true : false}
+                      key={one._id}
+                      disabled={one.status}
+                    >
+                      {one.subjectName} - {one.name} ({one.range}){" "}
+                      {one.status && "(Already Marked)"}
+                    </option>
+                  );
+                })}
+            </select>
+          </div>
+          <div className="custom-input input-group mb-3">
+            <span className="input-group-text">
+              <CoPresentIcon />
+            </span>
+            <select
+              class="form-select form-control"
+              name="status"
+              onChange={changeSend}
+              value={send.status}
+              aria-label="Select Status"
+            >
+              <option
+                value=""
+                disabled
+                selected={send.status === "" ? true : false}
+              >
+                Select Status
+              </option>
+              <option
+                value="present"
+                selected={send.status === "present" ? true : false}
+              >
+                Present
+              </option>
+              <option
+                value="absent"
+                selected={send.status === "absent" ? true : false}
+              >
+                Absent
+              </option>
+            </select>
+          </div>
+          <p className=" p-0 m-0 mb-2" id="error" style={{ display: "none" }}>
+            Error
+          </p>
+          <div className="w-100 mt-1 custom-button">
+            <button
+              type="button"
+              className="btn btn-primary"
+              style={{
+                padding: "12px 15px",
+              }}
+              onClick={markAttendance}
+            >
+              {false ? "Already Marked" : "Mark Attendance"}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default TeacherAttendance;

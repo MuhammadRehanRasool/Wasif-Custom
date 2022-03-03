@@ -11,6 +11,10 @@ import StaffAttendance from "./views/StaffAttendance";
 import ViewStaffAttendance from "./views/ViewStaffAttendance";
 import AddTimetable from "./views/AddTimetable";
 import ViewTimetable from "./views/ViewTimetable";
+import AddLeaveRequest from "./views/AddLeaveRequest";
+import TeacherAttendance from "./views/TeacherAttendance";
+import ViewTeacherAttendance from "./views/ViewTeacherAttendance";
+
 function App(props) {
   return (
     <>
@@ -83,6 +87,33 @@ function App(props) {
             element={
               <Layout>
                 <ViewTimetable />
+              </Layout>
+            }
+          />
+
+          <Route
+            path="/addLeaveRequest"
+            element={
+              <Layout>
+                <AddLeaveRequest />
+              </Layout>
+            }
+          />
+
+          <Route
+            path="/teacherAttendance"
+            element={
+              <Layout>
+                <TeacherAttendance />
+              </Layout>
+            }
+          />
+
+          <Route
+            path="/viewTeacherAttendance"
+            element={
+              <Layout>
+                <ViewTeacherAttendance />
               </Layout>
             }
           />

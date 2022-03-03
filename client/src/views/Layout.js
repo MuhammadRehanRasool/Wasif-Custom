@@ -136,11 +136,23 @@ function Layout(props) {
     setOpenTimetableUser(!openTimetableUser);
   };
 
+  const [openLeaveRequestUser, setOpenLeaveRequestUser] = React.useState(true);
+
+  const handleClickOfLeaveRequestUser = () => {
+    setOpenLeaveRequestUser(!openLeaveRequestUser);
+  };
+
   const [openStaffAttendanceUser, setOpenStaffAttendanceUser] =
     React.useState(true);
 
   const handleClickOfStaffAttendanceUser = () => {
     setOpenStaffAttendanceUser(!openStaffAttendanceUser);
+  };
+
+  const [openTeacherUser, setOpenTeacherUser] = React.useState(true);
+
+  const handleClickOfTeacherUser = () => {
+    setOpenTeacherUser(!openTeacherUser);
   };
 
   const drawer = (
@@ -251,7 +263,7 @@ function Layout(props) {
               <ListItemIcon>
                 <DateRangeIcon />
               </ListItemIcon>
-              <ListItemText primary="Labs" />
+              <ListItemText primary="Timetable" />
               {openTimetableUser ? <ExpandLess /> : <ExpandMore />}
             </ListItem>
             <Collapse in={openTimetableUser} timeout="auto" unmountOnExit>
@@ -270,6 +282,63 @@ function Layout(props) {
                       <GridViewIcon />
                     </ListItemIcon>
                     <ListItemText primary="View Timetables" />
+                  </ListItem>
+                </Link>
+              </List>
+            </Collapse>
+            <ListItem onClick={handleClickOfLeaveRequestUser}>
+              <ListItemIcon>
+                <DateRangeIcon />
+              </ListItemIcon>
+              <ListItemText primary="Leave Requests" />
+              {openLeaveRequestUser ? <ExpandLess /> : <ExpandMore />}
+            </ListItem>
+            <Collapse in={openLeaveRequestUser} timeout="auto" unmountOnExit>
+              <List component="div" disablePadding>
+                <Link className="text-dark" to="/addLeaveRequest">
+                  <ListItem sx={{ pl: 4 }}>
+                    <ListItemIcon>
+                      <AddIcon />
+                    </ListItemIcon>
+                    <ListItemText primary="Add Leave Request" />
+                  </ListItem>
+                </Link>
+                <Link className="text-dark" to="/viewLeaveRequests">
+                  <ListItem sx={{ pl: 4 }}>
+                    <ListItemIcon>
+                      <GridViewIcon />
+                    </ListItemIcon>
+                    <ListItemText primary="View Leave Requests" />
+                  </ListItem>
+                </Link>
+              </List>
+            </Collapse>
+          </>
+        ) : data.personal.role === "teacher" ? (
+          <>
+            <ListItem onClick={handleClickOfTeacherUser}>
+              <ListItemIcon>
+                <BookmarkAddedIcon />
+              </ListItemIcon>
+              <ListItemText primary="Attendance" />
+              {openTeacherUser ? <ExpandLess /> : <ExpandMore />}
+            </ListItem>
+            <Collapse in={openTeacherUser} timeout="auto" unmountOnExit>
+              <List component="div" disablePadding>
+                <Link className="text-dark" to="/teacherAttendance">
+                  <ListItem sx={{ pl: 4 }}>
+                    <ListItemIcon>
+                      <AddIcon />
+                    </ListItemIcon>
+                    <ListItemText primary="Mark Attendance" />
+                  </ListItem>
+                </Link>
+                <Link className="text-dark" to="/viewTeacherAttendance">
+                  <ListItem sx={{ pl: 4 }}>
+                    <ListItemIcon>
+                      <GridViewIcon />
+                    </ListItemIcon>
+                    <ListItemText primary="View Attendance" />
                   </ListItem>
                 </Link>
               </List>

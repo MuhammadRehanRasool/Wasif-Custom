@@ -6,17 +6,21 @@ const leaveRequestModel = new mongoose.Schema({
     ref: "users",
     required: true,
   },
+  subject: {
+    type: String,
+    required: true,
+  },
   content: {
     type: String,
     required: true,
   },
   confirmation1: {
     type: Boolean,
-    required: true,
+    default: false,
   },
   confirmation2: {
     type: Boolean,
-    required: true,
+    default: false,
   },
   createdAt: { type: Date, default: Date.now },
 });

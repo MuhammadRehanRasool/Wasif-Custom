@@ -99,9 +99,15 @@ export default function ViewTimetable() {
       );
     })[0];
     if (data) {
-      return <td>{data.subjectName}</td>
+      return (
+        <td>
+          <span className="text-primary h4">{data.subjectName}</span>
+          <br />
+          <span className="text-muted h5">{data.teacherId.username}</span>
+        </td>
+      );
     } else {
-      return <td></td>
+      return <td></td>;
     }
   };
 

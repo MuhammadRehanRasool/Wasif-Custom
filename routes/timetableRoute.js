@@ -208,6 +208,41 @@ router.get("/view/:id", (request, responce) => {
   });
 });
 
+router.get("/view/teacher/:id/:day", (request, responce) => {
+  timetableModel
+    .find({ teacherId: request.params.id, day: request.params.day })
+    .populate({
+      path: "labId",
+    })
+    .exec((error, data) => {
+      if (error) {
+        console.log(error);
+      } else {
+        let temp = [];
+        data.map((one, i) => {
+          let tt = [one.startTime, one.endTime];
+          tt.map((two, j) => {
+            if (parseInt(tt[j].slice(0, 2)) <= 12) {
+              tt[j] += "AM";
+            } else {
+              tt[j] =
+                pad(parseInt(parseInt(tt[j].slice(0, 2)) - 12)) +
+                tt[j].slice(2) +
+                "PM";
+            }
+          });
+          temp.push({
+            _id: one._id,
+            subjectName: one.subjectName,
+            name: one.labId.name,
+            range: tt[0] + "-" + tt[1],
+          });
+        });
+        responce.json(temp);
+      }
+    });
+});
+
 router.post("/delete/:id", (request, responce) => {
   timetableModel.findByIdAndDelete(request.params.id, (error, data) => {
     if (error) {

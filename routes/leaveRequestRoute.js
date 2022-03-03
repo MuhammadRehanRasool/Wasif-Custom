@@ -6,8 +6,6 @@ router.post("/insert", (request, responce) => {
   let leaveRequestModelObject = new leaveRequestModel({
     staffId: request.body.staffId,
     content: request.body.content,
-    confirmation1: request.body.confirmation1,
-    confirmation2: request.body.confirmation2,
   });
   leaveRequestModelObject
     .save()
