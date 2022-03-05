@@ -53,7 +53,7 @@ function TeacherAttendance(props) {
         "wednesday",
         "thursday",
         "friday",
-        "Saturday",
+        "saturday",
       ];
       setDay(days[new Date().getDay()]);
       fetchSlots(days[new Date().getDay()]);
