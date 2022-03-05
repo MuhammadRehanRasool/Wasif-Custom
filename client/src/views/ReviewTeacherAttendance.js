@@ -11,12 +11,22 @@ import CoPresentIcon from "@mui/icons-material/CoPresent";
 
 import {
   CONSTANT,
-  checkLoginFromTeacher,
+  checkLoginFromStaff,
   setMessage,
   resetMessage,
   isMessage,
 } from "./../CONSTANT";
 const axios = require("axios");
+
+const days = [
+  "Sunday",
+  "Monday",
+  "Tuesday",
+  "Wednesday",
+  "Thursday",
+  "Friday",
+  "Saturday",
+];
 
 function Teacher(props) {
   const { data, setData } = React.useContext(UserData);
@@ -29,7 +39,7 @@ function Teacher(props) {
   // User Data
   let navigate = useNavigate();
   useEffect(() => {
-    if (checkLoginFromTeacher()) {
+    if (checkLoginFromStaff()) {
       navigate("/dashboard");
     }
   }, []);
@@ -37,7 +47,9 @@ function Teacher(props) {
   const [dates, setDates] = useState([]);
   const fetchDates = async () => {
     await axios
-      .get(CONSTANT.server + `teacherAttendance/view/${data.personal._id}`)
+      .get(
+        CONSTANT.server + `teacherAttendance/view/staff/${data.personal._id}`
+      )
       .then((responce) => {
         if (responce.status === 200) {
           let res = responce.data;
@@ -62,6 +74,24 @@ function Teacher(props) {
     return today;
   };
 
+  const confirmAttendance = async (id) => {
+    await axios
+      .put(CONSTANT.server + `teacherAttendance/update/confirm/${id}`)
+      .then((responce) => {
+        if (responce.status === 200) {
+          let res = responce.data;
+          if (res.message) {
+            setMessage(res.message, "danger");
+          } else {
+            fetchDates();
+          }
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
   useEffect(() => {
     if (data.personal._id !== "") {
       fetchDates();
@@ -76,7 +106,7 @@ function Teacher(props) {
           <span className="text-center display-6">{fetchTodayDate()}</span>
         </div>
         <div className="row d-flex flex-row justify-content-center align-items-center">
-          <h1 className="mb-4 text-center">View Attendance</h1>
+          <h1 className="mb-4 text-center">Review Attendance</h1>
           <div className="custom-input input-group mb-3">
             <span className="input-group-text">
               <PersonSearchIcon />
@@ -115,15 +145,17 @@ function Teacher(props) {
                           date.status.includes(search) ||
                           date.name.includes(search) ||
                           date.subjectName.includes(search) ||
-                          date.confirmation.includes(search) ||
-                          date.createdAt.includes(search) || 
-                          date.range.includes(search)
+                          date.createdAt.includes(search) ||
+                          date.range.includes(search) ||
+                          days[new Date(date.date).getDay()].includes(search)
                         );
                       })
                       .map((date, i) => {
                         return (
                           <tr>
-                            <td>{date.date}</td>
+                            <td>
+                              {date.date} ({days[new Date(date.date).getDay()]})
+                            </td>
                             <td>{date.name}</td>
                             <td>{date.subjectName}</td>
                             <td>{date.range}</td>
@@ -134,12 +166,15 @@ function Teacher(props) {
                             >
                               {capitalizeFirstLetter(date.status)}
                             </td>
-                            <td
-                              className={`text-${
-                                date.confirmation ? "success" : "danger"
-                              }`}
-                            >
-                              {date.confirmation ? "" : "Not "}Confirmed
+                            <td className="text-primary">
+                              <u
+                                role="button"
+                                onClick={(e) => {
+                                  confirmAttendance(date._id);
+                                }}
+                              >
+                                Confirm
+                              </u>
                             </td>
                             <td>{new Date(date.createdAt).toLocaleString()}</td>
                           </tr>

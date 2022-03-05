@@ -25,6 +25,8 @@ import { checkLoginFromNonLogin } from "./../CONSTANT";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
+import PreviewIcon from '@mui/icons-material/Preview';
+import DoneAllIcon from '@mui/icons-material/DoneAll';
 import ListItemText from "@mui/material/ListItemText";
 import Collapse from "@mui/material/Collapse";
 import ExpandLess from "@mui/icons-material/ExpandLess";
@@ -118,41 +120,48 @@ function Layout(props) {
     setMobileOpen(!mobileOpen);
   };
 
-  const [openAdminUser, setOpenAdminUser] = React.useState(true);
+  const [openAdminUser, setOpenAdminUser] = React.useState(false);
 
   const handleClickOfAdminUser = () => {
     setOpenAdminUser(!openAdminUser);
   };
 
-  const [openCommitteeUser, setOpenCommitteeUser] = React.useState(true);
+  const [openCommitteeUser, setOpenCommitteeUser] = React.useState(false);
 
   const handleClickOfCommitteeUser = () => {
     setOpenCommitteeUser(!openCommitteeUser);
   };
 
-  const [openTimetableUser, setOpenTimetableUser] = React.useState(true);
+  const [openTimetableUser, setOpenTimetableUser] = React.useState(false);
 
   const handleClickOfTimetableUser = () => {
     setOpenTimetableUser(!openTimetableUser);
   };
 
-  const [openLeaveRequestUser, setOpenLeaveRequestUser] = React.useState(true);
+  const [openLeaveRequestUser, setOpenLeaveRequestUser] = React.useState(false);
 
   const handleClickOfLeaveRequestUser = () => {
     setOpenLeaveRequestUser(!openLeaveRequestUser);
   };
 
   const [openStaffAttendanceUser, setOpenStaffAttendanceUser] =
-    React.useState(true);
+    React.useState(false);
 
   const handleClickOfStaffAttendanceUser = () => {
     setOpenStaffAttendanceUser(!openStaffAttendanceUser);
   };
 
-  const [openTeacherUser, setOpenTeacherUser] = React.useState(true);
+  const [openTeacherUser, setOpenTeacherUser] = React.useState(false);
 
   const handleClickOfTeacherUser = () => {
     setOpenTeacherUser(!openTeacherUser);
+  };
+
+  const [openTeacherAttendanceUser, setOpenTeacherAttendanceUser] =
+    React.useState(false);
+
+  const handleClickOfTeacherAttendanceUser = () => {
+    setOpenTeacherAttendanceUser(!openTeacherAttendanceUser);
   };
 
   const drawer = (
@@ -224,14 +233,6 @@ function Layout(props) {
           </>
         ) : data.personal.role === "staff" ? (
           <>
-            {/* <Link className="text-dark" to="/staffAttendance">
-              <ListItem sx={{ pl: 4 }}>
-                <ListItemIcon>
-                  <BookmarkAddedIcon />
-                </ListItemIcon>
-                <ListItemText primary="Attendance" />
-              </ListItem>
-            </Link> */}
             <ListItem onClick={handleClickOfStaffAttendanceUser}>
               <ListItemIcon>
                 <BookmarkAddedIcon />
@@ -286,6 +287,25 @@ function Layout(props) {
                 </Link>
               </List>
             </Collapse>
+            <ListItem onClick={handleClickOfTeacherAttendanceUser}>
+              <ListItemIcon>
+                <PreviewIcon />
+              </ListItemIcon>
+              <ListItemText primary="Teacher Attendance" />
+              {openTeacherAttendanceUser ? <ExpandLess /> : <ExpandMore />}
+            </ListItem>
+            <Collapse in={openTeacherAttendanceUser} timeout="auto" unmountOnExit>
+              <List component="div" disablePadding>
+                <Link className="text-dark" to="/reviewTeacherAttendance">
+                  <ListItem sx={{ pl: 4 }}>
+                    <ListItemIcon>
+                      <DoneAllIcon />
+                    </ListItemIcon>
+                    <ListItemText primary="Review" />
+                  </ListItem>
+                </Link>
+              </List>
+            </Collapse>
             <ListItem onClick={handleClickOfLeaveRequestUser}>
               <ListItemIcon>
                 <DateRangeIcon />
@@ -300,7 +320,7 @@ function Layout(props) {
                     <ListItemIcon>
                       <AddIcon />
                     </ListItemIcon>
-                    <ListItemText primary="Add Leave Request" />
+                    <ListItemText primary="Add" />
                   </ListItem>
                 </Link>
                 <Link className="text-dark" to="/viewLeaveRequests">
@@ -308,7 +328,7 @@ function Layout(props) {
                     <ListItemIcon>
                       <GridViewIcon />
                     </ListItemIcon>
-                    <ListItemText primary="View Leave Requests" />
+                    <ListItemText primary="View" />
                   </ListItem>
                 </Link>
               </List>

@@ -111,6 +111,10 @@ export default function ViewTimetable() {
     }
   };
 
+  const editTimetable = () => {
+    navigate(`/editTimetable/${send.labId}`);
+  };
+
   const deFormatDate = (time) => {
     let temp = time.split("-");
     let str = "";
@@ -176,34 +180,42 @@ export default function ViewTimetable() {
           {send.slots.length > 0 &&
           range[0].length > 0 &&
           range[1].length > 0 ? (
-            <div className="table-responsive">
-              <table className="table">
-                <thead>
-                  <tr>
-                    <th scope="col"></th>
-                    {range[0].map((day, i) => {
+            <>
+              {" "}
+              <div className="table-responsive">
+                <table className="table">
+                  <thead>
+                    <tr>
+                      <th scope="col"></th>
+                      {range[0].map((day, i) => {
+                        return (
+                          <th key={i} scope="col">
+                            {day.slice(0, 1).toUpperCase() + "" + day.slice(1)}
+                          </th>
+                        );
+                      })}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {range[1].map((time, i) => {
                       return (
-                        <th key={i} scope="col">
-                          {day.slice(0, 1).toUpperCase() + "" + day.slice(1)}
-                        </th>
+                        <tr>
+                          <td scope="col">{time}</td>
+                          {range[0].map((day, i) => {
+                            return fetchSpecificClass(day, time);
+                          })}
+                        </tr>
                       );
                     })}
-                  </tr>
-                </thead>
-                <tbody>
-                  {range[1].map((time, i) => {
-                    return (
-                      <tr>
-                        <td scope="col">{time}</td>
-                        {range[0].map((day, i) => {
-                          return fetchSpecificClass(day, time);
-                        })}
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
-            </div>
+                  </tbody>
+                </table>
+              </div>
+              <div>
+                <button className="btn btn-primary" onClick={editTimetable}>
+                  Edit
+                </button>
+              </div>
+            </>
           ) : (
             "No Lab Selected"
           )}

@@ -14,6 +14,8 @@ import ViewTimetable from "./views/ViewTimetable";
 import AddLeaveRequest from "./views/AddLeaveRequest";
 import TeacherAttendance from "./views/TeacherAttendance";
 import ViewTeacherAttendance from "./views/ViewTeacherAttendance";
+import ReviewTeacherAttendance from "./views/ReviewTeacherAttendance";
+
 
 function App(props) {
   return (
@@ -81,6 +83,15 @@ function App(props) {
               </Layout>
             }
           />
+          
+          <Route
+            path="/editTimetable/*"
+            element={
+              <Layout>
+                <AddTimetable />
+              </Layout>
+            }
+          />
 
           <Route
             path="/viewTimetables"
@@ -114,6 +125,15 @@ function App(props) {
             element={
               <Layout>
                 <ViewTeacherAttendance />
+              </Layout>
+            }
+          />
+
+          <Route
+            path="/reviewTeacherAttendance"
+            element={
+              <Layout>
+                <ReviewTeacherAttendance />
               </Layout>
             }
           />

@@ -31,7 +31,8 @@ router.post("/insert", (request, responce) => {
 });
 
 router.get("/view", (request, responce) => {
-  staffAttendanceModel.find((error, data) => {
+  staffAttendanceModel.find({},null,
+    { sort: { date: -1 } },(error, data) => {
     if (error) {
       console.log(error);
     } else {

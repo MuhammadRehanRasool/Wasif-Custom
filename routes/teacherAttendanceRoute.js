@@ -37,7 +37,8 @@ router.post("/insert", (request, responce) => {
 });
 
 router.get("/view", (request, responce) => {
-  teacherAttendanceModel.find((error, data) => {
+  teacherAttendanceModel.find({},null,
+    { sort: { date: -1 } },(error, data) => {
     if (error) {
       console.log(error);
     } else {
@@ -46,9 +47,13 @@ router.get("/view", (request, responce) => {
   });
 });
 
+function pad(d) {
+  return d < 10 ? "0" + d.toString() : d.toString();
+}
+
 router.get("/view/:id", (request, responce) => {
   teacherAttendanceModel
-    .find({ teacherId: request.params.id })
+    .find({ teacherId: request.params.id }, null, { sort: { date: -1 } })
     .populate({
       path: "slotId",
       populate: {
@@ -62,6 +67,17 @@ router.get("/view/:id", (request, responce) => {
       } else {
         responce.json(
           data.map((one, i) => {
+            let tt = [one.slotId.startTime, one.slotId.endTime];
+            tt.map((two, j) => {
+              if (parseInt(tt[j].slice(0, 2)) <= 12) {
+                tt[j] += "AM";
+              } else {
+                tt[j] =
+                  pad(parseInt(parseInt(tt[j].slice(0, 2)) - 12)) +
+                  tt[j].slice(2) +
+                  "PM";
+              }
+            });
             return {
               date: one.date,
               name: one.slotId.labId.name,
@@ -69,11 +85,78 @@ router.get("/view/:id", (request, responce) => {
               status: one.status,
               confirmation: one.confirmation,
               createdAt: one.createdAt,
+              range: tt[0] + "-" + tt[1],
             };
           })
         );
       }
     });
+});
+
+router.get("/view/staff/:id", (request, responce) => {
+  teacherAttendanceModel
+    .find({ confirmation: false }, null, { sort: { date: -1 } })
+    .populate({
+      path: "slotId",
+      populate: {
+        path: "labId",
+        model: "labs",
+      },
+    })
+    .exec((error, data) => {
+      if (error) {
+        console.log(error);
+      } else {
+        responce.json(
+          data
+            .filter((one, i) => {
+              return (
+                one.slotId.labId.controller.toString() === request.params.id
+              );
+            })
+            .map((one, i) => {
+              let tt = [one.slotId.startTime, one.slotId.endTime];
+              tt.map((two, j) => {
+                if (parseInt(tt[j].slice(0, 2)) <= 12) {
+                  tt[j] += "AM";
+                } else {
+                  tt[j] =
+                    pad(parseInt(parseInt(tt[j].slice(0, 2)) - 12)) +
+                    tt[j].slice(2) +
+                    "PM";
+                }
+              });
+              return {
+                _id: one._id,
+                date: one.date,
+                name: one.slotId.labId.name,
+                subjectName: one.slotId.subjectName,
+                status: one.status,
+                confirmation: one.confirmation,
+                createdAt: one.createdAt,
+                range: tt[0] + "-" + tt[1],
+              };
+            })
+        );
+      }
+    });
+});
+
+router.put("/update/confirm/:id", (request, responce) => {
+  teacherAttendanceModel.findByIdAndUpdate(
+    request.params.id,
+    {
+      confirmation: true,
+    },
+    { new: true },
+    (error, data) => {
+      if (error) {
+        console.log(error);
+      } else {
+        responce.json(data);
+      }
+    }
+  );
 });
 
 router.post("/checkSlotAttendance", (request, responce) => {
