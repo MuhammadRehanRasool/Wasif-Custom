@@ -53,7 +53,7 @@ function pad(d) {
 
 router.get("/view/:id", (request, responce) => {
   teacherAttendanceModel
-    .find({ teacherId: request.params.id }, null, { sort: { date: -1 } })
+    .find({ teacherId: request.params.id }, null, { sort: { createdAt: -1 } })
     .populate({
       path: "slotId",
       populate: {
