@@ -79,7 +79,7 @@ function App(props) {
             path="/addTimetable"
             element={
               <Layout>
-                <AddTimetable />
+                <AddTimetable type="add" />
               </Layout>
             }
           />
@@ -88,7 +88,7 @@ function App(props) {
             path="/editTimetable/*"
             element={
               <Layout>
-                <AddTimetable />
+                <AddTimetable type="edit"/>
               </Layout>
             }
           />

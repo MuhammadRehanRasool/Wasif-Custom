@@ -134,6 +134,8 @@ function TeacherAttendance(props) {
       });
   };
 
+  const [featureLab, setFeatureLab] = useState("");
+
   return (
     <div className="__Committee">
       <div className="row d-flex flex-column justify-content-center align-items-center">
@@ -157,6 +159,46 @@ function TeacherAttendance(props) {
               disabled
               value={send.date}
             />
+          </div>
+
+          <div className="custom-input input-group mb-3">
+            <span className="input-group-text">
+              <CoPresentIcon />
+            </span>
+            <select
+              class="form-select form-control"
+              name="featureLab"
+              onChange={(e) => {
+                setFeatureLab(e.target.value);
+              }}
+              value={featureLab}
+              aria-label="Select Lab"
+            >
+              <option
+                value=""
+                disabled
+                selected={featureLab === "" ? true : false}
+              >
+                Select Lab
+              </option>
+              {slots.length > 0 &&
+                slots
+                  .filter((value, index, self) => {
+                    return self.indexOf(value) === index;
+                  })
+                  .map((one, i) => {
+                    return (
+                      <option
+                        value={one._id}
+                        selected={featureLab === one._id ? true : false}
+                        key={one._id}
+                        disabled={one.status}
+                      >
+                        {one.name}
+                      </option>
+                    );
+                  })}
+            </select>
           </div>
 
           <div className="custom-input input-group mb-3">

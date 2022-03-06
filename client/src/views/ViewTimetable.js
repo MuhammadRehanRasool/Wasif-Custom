@@ -112,7 +112,7 @@ export default function ViewTimetable() {
   };
 
   const editTimetable = () => {
-    navigate(`/editTimetable/${send.labId}`);
+    navigate(`/editTimetable?id=${send.labId}`);
   };
 
   const deFormatDate = (time) => {

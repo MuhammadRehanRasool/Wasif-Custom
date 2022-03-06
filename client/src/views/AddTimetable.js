@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./../css/Mixed.css";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 
 import {
@@ -23,9 +23,45 @@ import EmailIcon from "@mui/icons-material/Email";
 import LocalPhoneIcon from "@mui/icons-material/LocalPhone";
 import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
 import NumbersIcon from "@mui/icons-material/Numbers";
-export default function AddTimetable() {
+
+function useQuery() {
+  const { search } = useLocation();
+
+  return React.useMemo(() => new URLSearchParams(search), [search]);
+}
+
+export default function AddTimetable(props) {
   const { data, setData } = React.useContext(UserData);
+  const [isEdit, setIsEdit] = useState(props.type === "edit" ? true : false);
   let navigate = useNavigate();
+
+  let query = useQuery();
+  useEffect(() => {
+    if (isEdit) {
+      let id = query.get("id");
+      if (!id) {
+        navigate("/viewTimetables");
+      } else {
+        fetchExisting(id);
+      }
+    }
+  }, [isEdit]);
+
+  const fetchExisting = async (labId) => {
+    await axios
+      .get(CONSTANT.server + `timetable/editLab/${labId}`)
+      .then((responce) => {
+        if (responce.status === 200) {
+          if (responce.data.message) {
+            navigate("/viewTimetables");
+          }
+          setSend(responce.data);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
   useEffect(() => {
     if (checkLoginFromStaff()) {
@@ -102,18 +138,19 @@ export default function AddTimetable() {
 
   const actions = (type, index, e) => {
     if (type === "addSlot") {
+      let tt = {
+        day: "",
+        startTime: "",
+        endTime: "",
+        subjectName: "",
+        teacherId: "",
+      };
+      if (isEdit) {
+        tt.labId = send.labId;
+      }
       setSend({
         ...send,
-        slots: [
-          ...send.slots,
-          {
-            day: "",
-            startTime: "",
-            endTime: "",
-            subjectName: "",
-            teacherId: "",
-          },
-        ],
+        slots: [...send.slots, tt],
       });
     } else if (type === "removeSlot") {
       let temp = send.slots.filter((one, i) => {
@@ -152,7 +189,11 @@ export default function AddTimetable() {
       }
     });
     if (!isMessage()) {
-      createTimetable(e);
+      if (isEdit) {
+        updateTimetable(e);
+      } else {
+        createTimetable(e);
+      }
     }
   };
 
@@ -187,47 +228,107 @@ export default function AddTimetable() {
     e.target.innerHTML = "Create";
   };
 
+  const labName = () => {
+    try {
+      return labs.filter((a, b) => {
+        return send.labId === a._id;
+      })[0].name;
+    } catch (e) {
+      return "";
+    }
+  };
+
+  const updateTimetable = async (e) => {
+    e.target.style.pointerEvents = "none";
+    e.target.innerHTML =
+      '<div className="spinner-border custom-spin" role="status"><span className="visually-hidden">Loading...</span></div>';
+    e.preventDefault();
+    resetMessage();
+    if (send.labId !== "" && send.slots.length > 0) {
+      await axios
+        .put(CONSTANT.server + "timetable/evaluate", send)
+        .then((responce) => {
+          if (responce.status === 200) {
+            let res = responce.data;
+            if (res.message) {
+              setMessage(res.message, "danger");
+            } else if (!res) {
+              setMessage(res.message, "danger");
+            } else {
+              setMessage("Timetable Updated Successfully!", "success");
+            }
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    } else {
+      setMessage("Fill atleast one slot or select lab!", "danger");
+    }
+
+    e.target.style.pointerEvents = "unset";
+    e.target.innerHTML = "Update";
+  };
+
   return (
     <div className="__AddUser row d-flex justify-content-center align-items-center">
       <div className="form row">
-        <h1 className="mb-5 text-center">Add Timetable</h1>
+        <h1 className="mb-5 text-center">
+          {isEdit ? "Edit" : "Add"} Timetable
+        </h1>
 
-        <div className="custom-input input-group mb-3">
-          <span className="input-group-text">
-            <ComputerIcon />
-          </span>
-          <select
-            class="form-select form-control"
-            name="labId"
-            onChange={(e) => {
-              changeSend(e);
-            }}
-            value={send.labId}
-            aria-label="Select Lab"
-          >
-            <option
-              value=""
-              disabled
-              selected={send.labId === "" ? true : false}
+        {isEdit ? (
+          <div className="custom-input input-group mb-3">
+            <span className="input-group-text">
+              <ComputerIcon />
+            </span>
+            <input
+              type="text"
+              className="form-control"
+              placeholder="Lab"
+              name="labId"
+              value={labName()}
+              disabled={true}
+            />
+          </div>
+        ) : (
+          <div className="custom-input input-group mb-3">
+            <span className="input-group-text">
+              <ComputerIcon />
+            </span>
+            <select
+              class="form-select form-control"
+              name="labId"
+              onChange={(e) => {
+                changeSend(e);
+              }}
+              value={send.labId}
+              aria-label="Select Lab"
             >
-              Select Lab
-            </option>
-            {labs.length > 0
-              ? labs.map((one, i) => {
-                  return (
-                    <option
-                      key={one._id}
-                      value={one._id}
-                      selected={send.labId === one._id ? true : false}
-                      disabled={one.status}
-                    >
-                      {one.name} {one.status ? "(Already Created)" : ""}
-                    </option>
-                  );
-                })
-              : ""}
-          </select>
-        </div>
+              <option
+                value=""
+                disabled
+                selected={send.labId === "" ? true : false}
+              >
+                Select Lab
+              </option>
+              {labs.length > 0
+                ? labs.map((one, i) => {
+                    return (
+                      <option
+                        key={one._id}
+                        value={one._id}
+                        selected={send.labId === one._id ? true : false}
+                        disabled={one.status}
+                      >
+                        {one.name} {one.status ? "(Already Created)" : ""}
+                      </option>
+                    );
+                  })
+                : ""}
+            </select>
+          </div>
+        )}
 
         {send.slots.map((item, i) => {
           return (
@@ -419,7 +520,7 @@ export default function AddTimetable() {
               }}
               onClick={checkSlots}
             >
-              Create
+              {isEdit ? "Update" : "Create"}
             </button>
           </div>
         </div>
