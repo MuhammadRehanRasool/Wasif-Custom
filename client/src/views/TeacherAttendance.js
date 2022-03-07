@@ -182,22 +182,23 @@ function TeacherAttendance(props) {
                 Select Lab
               </option>
               {slots.length > 0 &&
-                slots
-                  .filter((value, index, self) => {
-                    return self.indexOf(value) === index;
-                  })
-                  .map((one, i) => {
-                    return (
-                      <option
-                        value={one._id}
-                        selected={featureLab === one._id ? true : false}
-                        key={one._id}
-                        disabled={one.status}
-                      >
-                        {one.name}
-                      </option>
-                    );
-                  })}
+                [
+                  ...new Set(
+                    slots.map((a) => {
+                      return a.name;
+                    })
+                  ),
+                ].map((one, i) => {
+                  return (
+                    <option
+                      value={one}
+                      selected={featureLab === one ? true : false}
+                      key={one}
+                    >
+                      {one}
+                    </option>
+                  );
+                })}
             </select>
           </div>
 
@@ -220,19 +221,41 @@ function TeacherAttendance(props) {
                 Select Slot
               </option>
               {slots.length > 0 &&
-                slots.map((one, i) => {
-                  return (
-                    <option
-                      value={one._id}
-                      selected={send.slotId === one._id ? true : false}
-                      key={one._id}
-                      disabled={one.status}
-                    >
-                      {one.subjectName} - {one.name} ({one.range}){" "}
-                      {one.status && "(Already Marked)"}
-                    </option>
-                  );
-                })}
+                slots
+                  .filter((a, b) => {
+                    return featureLab === a.name;
+                  })
+                  .map((one, i) => {
+                    return (
+                      <option
+                        value={one._id}
+                        selected={send.slotId === one._id ? true : false}
+                        key={one._id}
+                        disabled={
+                          one.status ||
+                          !(
+                            String(new Date().getHours()).padStart(2, "0") +
+                              ":" +
+                              String(new Date().getMinutes()).padStart(
+                                2,
+                                "0"
+                              ) >=
+                              one.startTime &&
+                            String(new Date().getHours()).padStart(2, "0") +
+                              ":" +
+                              String(new Date().getMinutes()).padStart(
+                                2,
+                                "0"
+                              ) <=
+                              one.endTime
+                          )
+                        }
+                      >
+                        {one.subjectName} - {one.name} ({one.range}){" "}
+                        {one.status && "(Already Marked)"}
+                      </option>
+                    );
+                  })}
             </select>
           </div>
           <div className="custom-input input-group mb-3">
