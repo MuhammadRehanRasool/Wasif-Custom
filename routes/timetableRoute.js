@@ -266,6 +266,8 @@ router.get("/view/teacher/:id/:day", (request, responce) => {
             subjectName: one.subjectName,
             name: one.labId.name,
             range: tt[0] + "-" + tt[1],
+            startTime: one.startTime,
+            endTime: one.endTime,
           });
         });
         responce.json(temp);
@@ -594,3 +596,15 @@ module.exports = router;
 //       }
 //   ]
 // }
+
+// !(
+//   parseInt(new Date().getHours()) >=
+//     parseInt(one.startTime.slice(0, 2)) &&
+//   parseInt(new Date().getMinutes()) >=
+//     parseInt(one.startTime.slice(3)) &&
+//   parseInt(new Date().getHours()) <=
+//     parseInt(one.endTime.slice(0, 2)) &&
+//   parseInt(new Date().getMinutes()) <=
+//     parseInt(one.startTime.slice(3))
+// )
+
