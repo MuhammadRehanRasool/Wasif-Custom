@@ -1,9 +1,9 @@
-export const CONSTANT = {
-  server: "https://test0073.herokuapp.com/",
-};
 // export const CONSTANT = {
-//   server: "http://localhost:4000/",
+//   server: "https://test0073.herokuapp.com/",
 // };
+export const CONSTANT = {
+  server: "http://localhost:4000/",
+};
 
 export const checkLoginFromLogin = () => {
   return sessionStorage.getItem("loggedin") &&

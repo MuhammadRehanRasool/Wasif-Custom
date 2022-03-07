@@ -115,7 +115,6 @@ function Teacher(props) {
                           date.status.includes(search) ||
                           date.name.includes(search) ||
                           date.subjectName.includes(search) ||
-                          date.confirmation.includes(search) ||
                           date.createdAt.includes(search) || 
                           date.range.includes(search)
                         );

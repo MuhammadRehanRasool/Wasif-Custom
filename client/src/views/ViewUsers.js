@@ -197,7 +197,6 @@ export default function AddUser() {
                 <th scope="col">#</th>
                 <th scope="col">Username</th>
                 <th scope="col">Email</th>
-                <th scope="col">Password</th>
                 <th scope="col">Phone</th>
                 <th scope="col">Role</th>
                 <th scope="col">Identity Number</th>
@@ -211,7 +210,6 @@ export default function AddUser() {
                       return (
                         user.username.includes(search) ||
                         user.email.includes(search) ||
-                        user.password.includes(search) ||
                         user.phone.includes(search) ||
                         user.role.includes(search) ||
                         user.identity.includes(search)
@@ -223,7 +221,6 @@ export default function AddUser() {
                           <th scope="row">{i + 1}</th>
                           <td>{user.username}</td>
                           <td>{user.email}</td>
-                          <td>{user.password}</td>
                           <td>{user.phone}</td>
                           <td>{user.role}</td>
                           <td>{user.identity}</td>
