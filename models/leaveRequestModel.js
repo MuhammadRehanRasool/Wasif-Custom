@@ -6,11 +6,15 @@ const leaveRequestModel = new mongoose.Schema({
     ref: "users",
     required: true,
   },
-  subject: {
+  content: {
     type: String,
     required: true,
   },
-  content: {
+  from: {
+    type: String,
+    required: true,
+  },
+  to: {
     type: String,
     required: true,
   },

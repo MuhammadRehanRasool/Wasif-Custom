@@ -96,6 +96,23 @@ router.get("/view/:id", (request, responce) => {
   });
 });
 
+router.get("/view/lab/fetch", (request, responce) => {
+  labsModel.find({}).exec((error, data) => {
+    if (error) {
+      console.log(error);
+    } else {
+      responce.json(
+        data.map((one) => {
+          return {
+            name: one.name,
+            controller: one.controller,
+          };
+        })
+      );
+    }
+  });
+});
+
 router.post("/delete/:id", (request, responce) => {
   labsModel.findByIdAndDelete(request.params.id, (error, data) => {
     if (error) {

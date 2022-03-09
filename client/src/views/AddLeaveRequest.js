@@ -14,12 +14,14 @@ import {
 
 import AlternateEmailIcon from "@material-ui/icons/AlternateEmail";
 import VpnKeyIcon from "@material-ui/icons/VpnKey";
+import NotesIcon from "@mui/icons-material/Notes";
+import HourglassEmptyIcon from "@mui/icons-material/HourglassEmpty";
 import EmailIcon from "@mui/icons-material/Email";
 import LocalPhoneIcon from "@mui/icons-material/LocalPhone";
 import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
 import NumbersIcon from "@mui/icons-material/Numbers";
 export default function AddLeaveRequest() {
-  const { dataP, setDataP } = React.useContext(UserData);
+  const { data, setData } = React.useContext(UserData);
   let navigate = useNavigate();
 
   useEffect(() => {
@@ -30,89 +32,123 @@ export default function AddLeaveRequest() {
 
   const __init = {
     staffId: "",
-    subject: "",
     content: "",
+    from: "",
+    to: "",
   };
-  const [data, setData] = useState(__init);
+  const [send, setSend] = useState(__init);
   const changeData = (e) => {
-    setData({
-      ...data,
+    setSend({
+      ...send,
       [e.target.name]: e.target.value,
     });
   };
 
-    const addData = async (e) => {
-      e.target.style.pointerEvents = "none";
-      e.target.innerHTML =
-        '<div className="spinner-border custom-spin" role="status"><span className="visually-hidden">Loading...</span></div>';
-      e.preventDefault();
-      resetMessage();
-      if (
-        data.email !== "" &&
-        /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(data.email)
-      ) {
-        if (
-          data.password !== "" &&
-          data.username !== "" &&
-          data.phone !== "" &&
-          data.role !== "" &&
-          data.identity !== ""
-        ) {
-          await axios
-            .post(CONSTANT.server + "leaveRequest/insert", data)
-            .then((responce) => {
-              if (responce.status === 200) {
-                let res = responce.data;
-                if (res.message) {
-                  setMessage(res.message, "danger");
-                } else {
-                  setMessage("User Added Successfully!", "success");
-                  setData(__init);
-                }
-              }
-            })
-            .catch((error) => {
-              console.log(error);
-            });
-        } else {
-          setMessage("Fill All Fields", "danger");
-        }
-      } else {
-        setMessage("Please Enter Valid Email", "danger");
-      }
-      e.target.style.pointerEvents = "unset";
-      e.target.innerHTML = "Add";
-    };
+  const addData = async (e) => {
+    e.target.style.pointerEvents = "none";
+    e.target.innerHTML =
+      '<div className="spinner-border custom-spin" role="status"><span className="visually-hidden">Loading...</span></div>';
+    e.preventDefault();
+    resetMessage();
+    if (send.content !== "" && send.from !== "" && send.to !== "") {
+      await axios
+        .post(CONSTANT.server + "leaveRequest/insert", {
+          ...send,
+          staffId: data.personal._id,
+        })
+        .then((responce) => {
+          if (responce.status === 200) {
+            let res = responce.data;
+            if (res.message) {
+              setMessage(res.message, "danger");
+            } else {
+              setMessage(
+                "Application Sent to Committee Successfully!",
+                "success"
+              );
+              setSend(__init);
+            }
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    } else {
+      setMessage("Fill All Fields", "danger");
+    }
+    e.target.style.pointerEvents = "unset";
+    e.target.innerHTML = "Add";
+  };
   return (
     <div className="__AddUser row d-flex justify-content-center align-items-center">
       <div className="form col-lg-6 col-sm-12">
         <h1 className="mb-5 text-center">Add Leave Request</h1>
         <div className="custom-input input-group mb-3">
           <span className="input-group-text">
-            <AlternateEmailIcon />
-          </span>
-          <input
-            type="text"
-            className="form-control"
-            placeholder="Subject"
-            name="subject"
-            onChange={changeData}
-            value={data.subject}
-          />
-        </div>
-        <div className="custom-input input-group mb-3">
-          <span className="input-group-text">
-            <EmailIcon />
+            <NotesIcon />
           </span>
           <textarea
             type="text"
             className="form-control"
             rows={10}
-            placeholder="Content"
+            placeholder="Write here..."
             name="content"
             onChange={changeData}
-            value={data.content}
+            value={send.content}
           ></textarea>
+        </div>
+
+        <div className="col-12">
+          <label
+            className={`text-${
+              send.to ? (send.from > send.to ? "danger" : "dark") : "dark"
+            }`}
+          >
+            {send.to
+              ? send.from > send.to
+                ? "Can't be greater than 'to' date."
+                : "From"
+              : "From"}
+          </label>
+          <div className="custom-input input-group mb-3">
+            <span className="input-group-text">
+              <HourglassEmptyIcon />
+            </span>
+            <input
+              type="date"
+              className="form-control"
+              placeholder="From"
+              name="from"
+              onChange={changeData}
+              value={send.from}
+            />
+          </div>
+        </div>
+        <div className="col-12">
+          <label
+            className={`text-${
+              send.to ? (send.to < send.from ? "danger" : "dark") : "dark"
+            }`}
+          >
+            {send.to
+              ? send.to < send.from
+                ? "Can't be less than 'from' date."
+                : "To"
+              : "To"}
+          </label>
+          <div className="custom-input input-group mb-3">
+            <span className="input-group-text">
+              <HourglassEmptyIcon />
+            </span>
+            <input
+              type="date"
+              className="form-control"
+              placeholder="To"
+              name="to"
+              onChange={changeData}
+              value={send.to}
+            />
+          </div>
         </div>
         <p
           className="text-danger p-0 m-0 mb-2"

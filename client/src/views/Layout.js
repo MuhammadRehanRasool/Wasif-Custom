@@ -25,8 +25,8 @@ import { checkLoginFromNonLogin } from "./../CONSTANT";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
-import PreviewIcon from '@mui/icons-material/Preview';
-import DoneAllIcon from '@mui/icons-material/DoneAll';
+import PreviewIcon from "@mui/icons-material/Preview";
+import DoneAllIcon from "@mui/icons-material/DoneAll";
 import ListItemText from "@mui/material/ListItemText";
 import Collapse from "@mui/material/Collapse";
 import ExpandLess from "@mui/icons-material/ExpandLess";
@@ -230,6 +230,32 @@ function Layout(props) {
                 </Link>
               </List>
             </Collapse>
+            <ListItem onClick={handleClickOfTeacherAttendanceUser}>
+              <ListItemIcon>
+                <PreviewIcon />
+              </ListItemIcon>
+              <ListItemText primary="Staff Leave Requests" />
+              {openTeacherAttendanceUser ? <ExpandLess /> : <ExpandMore />}
+            </ListItem>
+            <Collapse
+              in={openTeacherAttendanceUser}
+              timeout="auto"
+              unmountOnExit
+            >
+              <List component="div" disablePadding>
+                <Link
+                  className="text-dark"
+                  to="/reviewLeaveRequests?type=committee"
+                >
+                  <ListItem sx={{ pl: 4 }}>
+                    <ListItemIcon>
+                      <DoneAllIcon />
+                    </ListItemIcon>
+                    <ListItemText primary="Review" />
+                  </ListItem>
+                </Link>
+              </List>
+            </Collapse>
           </>
         ) : data.personal.role === "staff" ? (
           <>
@@ -294,7 +320,11 @@ function Layout(props) {
               <ListItemText primary="Teacher Attendance" />
               {openTeacherAttendanceUser ? <ExpandLess /> : <ExpandMore />}
             </ListItem>
-            <Collapse in={openTeacherAttendanceUser} timeout="auto" unmountOnExit>
+            <Collapse
+              in={openTeacherAttendanceUser}
+              timeout="auto"
+              unmountOnExit
+            >
               <List component="div" disablePadding>
                 <Link className="text-dark" to="/reviewTeacherAttendance">
                   <ListItem sx={{ pl: 4 }}>
@@ -359,6 +389,32 @@ function Layout(props) {
                       <GridViewIcon />
                     </ListItemIcon>
                     <ListItemText primary="View Attendance" />
+                  </ListItem>
+                </Link>
+              </List>
+            </Collapse>
+          </>
+        ) : data.personal.role === "hod" ? (
+          <>
+            <ListItem onClick={handleClickOfTeacherAttendanceUser}>
+              <ListItemIcon>
+                <PreviewIcon />
+              </ListItemIcon>
+              <ListItemText primary="Staff Leave Requests" />
+              {openTeacherAttendanceUser ? <ExpandLess /> : <ExpandMore />}
+            </ListItem>
+            <Collapse
+              in={openTeacherAttendanceUser}
+              timeout="auto"
+              unmountOnExit
+            >
+              <List component="div" disablePadding>
+                <Link className="text-dark" to="/reviewLeaveRequests?type=hod">
+                  <ListItem sx={{ pl: 4 }}>
+                    <ListItemIcon>
+                      <DoneAllIcon />
+                    </ListItemIcon>
+                    <ListItemText primary="Review" />
                   </ListItem>
                 </Link>
               </List>

@@ -33,6 +33,13 @@ export const checkLoginFromCommittee = () => {
     : true;
 };
 
+export const checkLoginFromHOD = () => {
+  return sessionStorage.getItem("loggedin") &&
+    JSON.parse(sessionStorage.getItem("loggedin")).data.role === "hod"
+    ? false
+    : true;
+};
+
 export const checkLoginFromStaff = () => {
   return sessionStorage.getItem("loggedin") &&
     JSON.parse(sessionStorage.getItem("loggedin")).data.role === "staff"
