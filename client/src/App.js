@@ -17,6 +17,8 @@ import ViewTeacherAttendance from "./views/ViewTeacherAttendance";
 import ReviewTeacherAttendance from "./views/ReviewTeacherAttendance";
 import ViewLeaveRequests from "./views/ViewLeaveRequests";
 import ReviewLeaveRequests from "./views/ReviewLeaveRequests";
+import DailyEquipmentReport from "./views/DailyEquipmentReport";
+import ViewDailyEquipmentReport from "./views/ViewDailyEquipmentReport";
 
 function App(props) {
   return (
@@ -125,6 +127,24 @@ function App(props) {
             element={
               <Layout>
                 <ReviewLeaveRequests />
+              </Layout>
+            }
+          />
+
+          <Route
+            path="/addEquipmentReport"
+            element={
+              <Layout>
+                <DailyEquipmentReport />
+              </Layout>
+            }
+          />
+
+          <Route
+            path="/viewEquipmentReport"
+            element={
+              <Layout>
+                <ViewDailyEquipmentReport />
               </Layout>
             }
           />

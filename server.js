@@ -10,6 +10,7 @@ const leaveRequestRoute = require("./routes/leaveRequestRoute");
 const staffAttendanceRoute = require("./routes/staffAttendanceRoute");
 const teacherAttendanceRoute = require("./routes/teacherAttendanceRoute");
 const timetableRoute = require("./routes/timetableRoute");
+const dailyEquipmentReportRoute = require("./routes/dailyEquipmentReportRoute");
 
 const cors = require("cors");
 const port = process.env.PORT || 4000;
@@ -32,6 +33,7 @@ app.use("/leaveRequest", leaveRequestRoute);
 app.use("/staffAttendance", staffAttendanceRoute);
 app.use("/teacherAttendance", teacherAttendanceRoute);
 app.use("/timetable", timetableRoute);
+app.use("/dailyEquipmentReport", dailyEquipmentReportRoute);
 
 app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "client", "build", "index.html"));

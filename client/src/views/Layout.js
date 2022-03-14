@@ -164,6 +164,13 @@ function Layout(props) {
     setOpenTeacherAttendanceUser(!openTeacherAttendanceUser);
   };
 
+  const [openDailyEquipmentReport, setOpenDailyEquipmentReport] =
+    React.useState(false);
+
+  const handleClickOfDailyEquipmentReport = () => {
+    setOpenDailyEquipmentReport(!openDailyEquipmentReport);
+  };
+
   const drawer = (
     <div>
       <div className={classes.toolbar} id="navbar__emailDisplay">
@@ -354,6 +361,37 @@ function Layout(props) {
                   </ListItem>
                 </Link>
                 <Link className="text-dark" to="/viewLeaveRequests">
+                  <ListItem sx={{ pl: 4 }}>
+                    <ListItemIcon>
+                      <GridViewIcon />
+                    </ListItemIcon>
+                    <ListItemText primary="View" />
+                  </ListItem>
+                </Link>
+              </List>
+            </Collapse>
+            <ListItem onClick={handleClickOfDailyEquipmentReport}>
+              <ListItemIcon>
+                <DateRangeIcon />
+              </ListItemIcon>
+              <ListItemText primary="Equipment Report" />
+              {openDailyEquipmentReport ? <ExpandLess /> : <ExpandMore />}
+            </ListItem>
+            <Collapse
+              in={openDailyEquipmentReport}
+              timeout="auto"
+              unmountOnExit
+            >
+              <List component="div" disablePadding>
+                <Link className="text-dark" to="/addEquipmentReport">
+                  <ListItem sx={{ pl: 4 }}>
+                    <ListItemIcon>
+                      <AddIcon />
+                    </ListItemIcon>
+                    <ListItemText primary="Add" />
+                  </ListItem>
+                </Link>
+                <Link className="text-dark" to="/viewEquipmentReport">
                   <ListItem sx={{ pl: 4 }}>
                     <ListItemIcon>
                       <GridViewIcon />
