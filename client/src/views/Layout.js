@@ -171,6 +171,12 @@ function Layout(props) {
     setOpenDailyEquipmentReport(!openDailyEquipmentReport);
   };
 
+  const [openBookLab, setOpenBookLab] = React.useState(false);
+
+  const handleClickOfBookLab = () => {
+    setOpenBookLab(!openBookLab);
+  };
+
   const drawer = (
     <div>
       <div className={classes.toolbar} id="navbar__emailDisplay">
@@ -259,6 +265,25 @@ function Layout(props) {
                       <DoneAllIcon />
                     </ListItemIcon>
                     <ListItemText primary="Review" />
+                  </ListItem>
+                </Link>
+              </List>
+            </Collapse>
+            <ListItem onClick={handleClickOfBookLab}>
+              <ListItemIcon>
+                <DateRangeIcon />
+              </ListItemIcon>
+              <ListItemText primary="Review Lab Booking" />
+              {openBookLab ? <ExpandLess /> : <ExpandMore />}
+            </ListItem>
+            <Collapse in={openBookLab} timeout="auto" unmountOnExit>
+              <List component="div" disablePadding>
+                <Link className="text-dark" to="/reviewBookLab">
+                  <ListItem sx={{ pl: 4 }}>
+                    <ListItemIcon>
+                      <GridViewIcon />
+                    </ListItemIcon>
+                    <ListItemText primary="View" />
                   </ListItem>
                 </Link>
               </List>
@@ -392,6 +417,33 @@ function Layout(props) {
                   </ListItem>
                 </Link>
                 <Link className="text-dark" to="/viewEquipmentReport">
+                  <ListItem sx={{ pl: 4 }}>
+                    <ListItemIcon>
+                      <GridViewIcon />
+                    </ListItemIcon>
+                    <ListItemText primary="View" />
+                  </ListItem>
+                </Link>
+              </List>
+            </Collapse>
+            <ListItem onClick={handleClickOfBookLab}>
+              <ListItemIcon>
+                <DateRangeIcon />
+              </ListItemIcon>
+              <ListItemText primary="Book Lab" />
+              {openBookLab ? <ExpandLess /> : <ExpandMore />}
+            </ListItem>
+            <Collapse in={openBookLab} timeout="auto" unmountOnExit>
+              <List component="div" disablePadding>
+                <Link className="text-dark" to="/bookLab">
+                  <ListItem sx={{ pl: 4 }}>
+                    <ListItemIcon>
+                      <AddIcon />
+                    </ListItemIcon>
+                    <ListItemText primary="Add" />
+                  </ListItem>
+                </Link>
+                <Link className="text-dark" to="/viewBookLab">
                   <ListItem sx={{ pl: 4 }}>
                     <ListItemIcon>
                       <GridViewIcon />

@@ -189,10 +189,50 @@ router.get("/lab/:labId", (request, responce) => {
               updatedAt: one.updatedAt,
             });
           });
-          responce.json({
-            slots: formatSlots(slots),
-            addOn: fetchRanges(slots),
+          try {
+            responce.json({
+              slots: formatSlots(slots),
+              addOn: fetchRanges(slots),
+            });
+          } catch (e) {
+            responce.json(slots);
+          }
+        }
+      }
+    });
+});
+
+router.get("/lab/book/:labId/:day", (request, responce) => {
+  timetableModel
+    .find({ labId: request.params.labId, day: request.params.day })
+    .populate({
+      path: "teacherId",
+    })
+    .exec((error, data) => {
+      if (error) {
+        console.log(error);
+      } else {
+        if (data) {
+          let slots = [];
+          data.map((one, i) => {
+            slots.push({
+              day: one.day,
+              startTime: one.startTime,
+              endTime: one.endTime,
+              subjectName: one.subjectName,
+              teacherId: {
+                username: one.teacherId.username,
+                email: one.teacherId.email,
+              },
+              _id: one._id,
+              updatedAt: one.updatedAt,
+            });
           });
+          try {
+            responce.json(fetchRanges(slots)[1]);
+          } catch (e) {
+            responce.json([]);
+          }
         }
       }
     });
@@ -607,4 +647,3 @@ module.exports = router;
 //   parseInt(new Date().getMinutes()) <=
 //     parseInt(one.startTime.slice(3))
 // )
-

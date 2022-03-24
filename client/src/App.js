@@ -19,6 +19,9 @@ import ViewLeaveRequests from "./views/ViewLeaveRequests";
 import ReviewLeaveRequests from "./views/ReviewLeaveRequests";
 import DailyEquipmentReport from "./views/DailyEquipmentReport";
 import ViewDailyEquipmentReport from "./views/ViewDailyEquipmentReport";
+import BookLab from "./views/BookLab";
+import ViewBookLab from "./views/ViewBookLab";
+import ReviewBookLab from "./views/ReviewBookLab";
 
 function App(props) {
   return (
@@ -145,6 +148,32 @@ function App(props) {
             element={
               <Layout>
                 <ViewDailyEquipmentReport />
+              </Layout>
+            }
+          />
+
+          <Route
+            path="/bookLab"
+            element={
+              <Layout>
+                <BookLab />
+              </Layout>
+            }
+          />
+
+          <Route
+            path="/viewBookLab"
+            element={
+              <Layout>
+                <ViewBookLab />
+              </Layout>
+            }
+          />
+          <Route
+            path="/reviewBookLab"
+            element={
+              <Layout>
+                <ReviewBookLab />
               </Layout>
             }
           />

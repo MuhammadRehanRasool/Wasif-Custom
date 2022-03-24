@@ -33,7 +33,6 @@ export default function ViewTimetable() {
     }
   }, []);
   useEffect(() => {
-    deFormatDate("11:30AM-01:00PM");
     if (data.personal._id !== "") {
       fetchLab();
     }

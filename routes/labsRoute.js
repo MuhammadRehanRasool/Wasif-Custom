@@ -106,6 +106,7 @@ router.get("/view/lab/fetch", (request, responce) => {
           return {
             name: one.name,
             controller: one.controller,
+            _id: one._id,
           };
         })
       );
