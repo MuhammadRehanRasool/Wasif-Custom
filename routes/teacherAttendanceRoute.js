@@ -37,14 +37,18 @@ router.post("/insert", (request, responce) => {
 });
 
 router.get("/view", (request, responce) => {
-  teacherAttendanceModel.find({},null,
-    { sort: { date: -1 } },(error, data) => {
-    if (error) {
-      console.log(error);
-    } else {
-      responce.json(data);
+  teacherAttendanceModel.find(
+    {},
+    null,
+    { sort: { date: -1 } },
+    (error, data) => {
+      if (error) {
+        console.log(error);
+      } else {
+        responce.json(data);
+      }
     }
-  });
+  );
 });
 
 function pad(d) {
@@ -91,6 +95,29 @@ router.get("/view/:id", (request, responce) => {
         );
       }
     });
+});
+
+router.get("/view/dated/:month/:day/:year", (request, responce) => {
+  teacherAttendanceModel.find(
+    {
+      date: `${request.params.month}/${request.params.day}/${request.params.year}`,
+      status: "present",
+      confirmation: true,
+    },
+    null,
+    { sort: { date: -1 } },
+    (error, data) => {
+      if (error) {
+        console.log(error);
+      } else {
+        responce.json(
+          data.map((a, b) => {
+            return a.slotId;
+          })
+        );
+      }
+    }
+  );
 });
 
 router.get("/view/staff/:id", (request, responce) => {

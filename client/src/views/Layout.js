@@ -9,6 +9,9 @@ import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
 import Avatar from "@mui/material/Avatar";
 import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
+import PersonIcon from "@mui/icons-material/Person";
+import AppShortcutIcon from "@mui/icons-material/AppShortcut";
+import HardwareIcon from "@mui/icons-material/Hardware";
 import MenuIcon from "@material-ui/icons/Menu";
 import GridViewIcon from "@mui/icons-material/GridView";
 import DateRangeIcon from "@mui/icons-material/DateRange";
@@ -26,6 +29,8 @@ import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import PreviewIcon from "@mui/icons-material/Preview";
+import AssessmentIcon from "@mui/icons-material/Assessment";
+import TodayIcon from "@mui/icons-material/Today";
 import DoneAllIcon from "@mui/icons-material/DoneAll";
 import ListItemText from "@mui/material/ListItemText";
 import Collapse from "@mui/material/Collapse";
@@ -177,6 +182,49 @@ function Layout(props) {
     setOpenBookLab(!openBookLab);
   };
 
+  const [openMainReport, setOpenMainReport] = React.useState(false);
+
+  const handleClickOfMainReport = () => {
+    setOpenMainReport(!openMainReport);
+  };
+
+  const [openDaily, setOpenDaily] = React.useState(false);
+
+  const handleClickOfDaily = () => {
+    setOpenDaily(!openDaily);
+  };
+
+  const [openMonthly, setOpenMonthly] = React.useState(false);
+
+  const handleClickOfMonthly = () => {
+    setOpenMonthly(!openMonthly);
+  };
+
+  const [openAttendanceReport1, setOpenAttendanceReport1] =
+    React.useState(false);
+
+  const handleClickOfAttendanceReport1 = () => {
+    setOpenAttendanceReport1(!openAttendanceReport1);
+  };
+
+  const [openAttendanceReport2, setOpenAttendanceReport2] =
+    React.useState(false);
+
+  const handleClickOfAttendanceReport2 = () => {
+    setOpenAttendanceReport2(!openAttendanceReport2);
+  };
+  const [openEquipmentReport1, setOpenEquipmentReport1] = React.useState(false);
+
+  const handleClickOfEquipmentReport1 = () => {
+    setOpenEquipmentReport1(!openEquipmentReport1);
+  };
+
+  const [openEquipmentReport2, setOpenEquipmentReport2] = React.useState(false);
+
+  const handleClickOfEquipmentReport2 = () => {
+    setOpenEquipmentReport2(!openEquipmentReport2);
+  };
+
   const drawer = (
     <div>
       <div className={classes.toolbar} id="navbar__emailDisplay">
@@ -286,6 +334,232 @@ function Layout(props) {
                     <ListItemText primary="View" />
                   </ListItem>
                 </Link>
+              </List>
+            </Collapse>
+            {/* Reports */}
+            <ListItem onClick={handleClickOfMainReport}>
+              <ListItemIcon>
+                <AssessmentIcon />
+              </ListItemIcon>
+              <ListItemText primary="Reports" />
+              {openMainReport ? <ExpandLess /> : <ExpandMore />}
+            </ListItem>
+            <Collapse in={openMainReport} timeout="auto" unmountOnExit>
+              <List component="div" disablePadding>
+                <ListItem onClick={handleClickOfDaily} sx={{ pl: 4 }}>
+                  <ListItemIcon>
+                    <TodayIcon />
+                  </ListItemIcon>
+                  <ListItemText primary="Daily" />
+                  {openDaily ? <ExpandLess /> : <ExpandMore />}
+                </ListItem>
+                <Collapse in={openDaily} timeout="auto" unmountOnExit>
+                  <List component="div" disablePadding>
+                    <ListItem
+                      onClick={handleClickOfAttendanceReport1}
+                      sx={{ pl: 6 }}
+                    >
+                      <ListItemIcon>
+                        <ComputerIcon />
+                      </ListItemIcon>
+                      <ListItemText primary="Attendance" />
+                      {openAttendanceReport1 ? <ExpandLess /> : <ExpandMore />}
+                    </ListItem>
+                    <Collapse
+                      in={openAttendanceReport1}
+                      timeout="auto"
+                      unmountOnExit
+                    >
+                      <List component="div" disablePadding>
+                        <Link
+                          className="text-dark"
+                          to="/report/daily/attendance/staff"
+                        >
+                          <ListItem sx={{ pl: 8 }}>
+                            <ListItemIcon>
+                              <PersonIcon />
+                            </ListItemIcon>
+                            <ListItemText primary="Staff" />
+                          </ListItem>
+                        </Link>
+                        <Link
+                          className="text-dark"
+                          to="/report/daily/attendance/teacher"
+                        >
+                          <ListItem sx={{ pl: 8 }}>
+                            <ListItemIcon>
+                              <PersonIcon />
+                            </ListItemIcon>
+                            <ListItemText primary="Teacher" />
+                          </ListItem>
+                        </Link>
+                      </List>
+                    </Collapse>
+                    <Link className="text-dark" to="/report/daily/leaves">
+                      <ListItem sx={{ pl: 6 }}>
+                        <ListItemIcon>
+                          <PreviewIcon />
+                        </ListItemIcon>
+                        <ListItemText primary="Leaves" />
+                      </ListItem>
+                    </Link>
+                    <ListItem
+                      onClick={handleClickOfEquipmentReport1}
+                      sx={{ pl: 6 }}
+                    >
+                      <ListItemIcon>
+                        <DateRangeIcon />
+                      </ListItemIcon>
+                      <ListItemText primary="Equipment" />
+                      {openEquipmentReport1 ? <ExpandLess /> : <ExpandMore />}
+                    </ListItem>
+                    <Collapse
+                      in={openEquipmentReport1}
+                      timeout="auto"
+                      unmountOnExit
+                    >
+                      <List component="div" disablePadding>
+                        <Link
+                          className="text-dark"
+                          to="/report/daily/equipment/software"
+                        >
+                          <ListItem sx={{ pl: 8 }}>
+                            <ListItemIcon>
+                              <AppShortcutIcon />
+                            </ListItemIcon>
+                            <ListItemText primary="Software" />
+                          </ListItem>
+                        </Link>
+                        <Link
+                          className="text-dark"
+                          to="/report/daily/equipment/hardware"
+                        >
+                          <ListItem sx={{ pl: 8 }}>
+                            <ListItemIcon>
+                              <HardwareIcon />
+                            </ListItemIcon>
+                            <ListItemText primary="Hardware" />
+                          </ListItem>
+                        </Link>
+                      </List>
+                    </Collapse>
+                    <Link className="text-dark" to="/report/daily/labBookings">
+                      <ListItem sx={{ pl: 6 }}>
+                        <ListItemIcon>
+                          <ComputerIcon />
+                        </ListItemIcon>
+                        <ListItemText primary="Lab Bookings" />
+                      </ListItem>
+                    </Link>
+                  </List>
+                </Collapse>
+                <ListItem onClick={handleClickOfMonthly} sx={{ pl: 4 }}>
+                  <ListItemIcon>
+                    <TodayIcon />
+                  </ListItemIcon>
+                  <ListItemText primary="Monthly" />
+                  {openMonthly ? <ExpandLess /> : <ExpandMore />}
+                </ListItem>
+                <Collapse in={openMonthly} timeout="auto" unmountOnExit>
+                  <List component="div" disablePadding>
+                    <ListItem
+                      onClick={handleClickOfAttendanceReport2}
+                      sx={{ pl: 6 }}
+                    >
+                      <ListItemIcon>
+                        <ComputerIcon />
+                      </ListItemIcon>
+                      <ListItemText primary="Attendance" />
+                      {openAttendanceReport2 ? <ExpandLess /> : <ExpandMore />}
+                    </ListItem>
+                    <Collapse
+                      in={openAttendanceReport2}
+                      timeout="auto"
+                      unmountOnExit
+                    >
+                      <List component="div" disablePadding>
+                        <Link
+                          className="text-dark"
+                          to="/report/monthly/attendance/staff"
+                        >
+                          <ListItem sx={{ pl: 8 }}>
+                            <ListItemIcon>
+                              <PersonIcon />
+                            </ListItemIcon>
+                            <ListItemText primary="Staff" />
+                          </ListItem>
+                        </Link>
+                        <Link
+                          className="text-dark"
+                          to="/report/monthly/attendance/teacher"
+                        >
+                          <ListItem sx={{ pl: 8 }}>
+                            <ListItemIcon>
+                              <PersonIcon />
+                            </ListItemIcon>
+                            <ListItemText primary="Teacher" />
+                          </ListItem>
+                        </Link>
+                      </List>
+                    </Collapse>
+                    <Link className="text-dark" to="/report/monthly/leaves">
+                      <ListItem sx={{ pl: 6 }}>
+                        <ListItemIcon>
+                          <PreviewIcon />
+                        </ListItemIcon>
+                        <ListItemText primary="Leaves" />
+                      </ListItem>
+                    </Link>
+                    <ListItem
+                      onClick={handleClickOfEquipmentReport2}
+                      sx={{ pl: 6 }}
+                    >
+                      <ListItemIcon>
+                        <DateRangeIcon />
+                      </ListItemIcon>
+                      <ListItemText primary="Equipment" />
+                      {openEquipmentReport1 ? <ExpandLess /> : <ExpandMore />}
+                    </ListItem>
+                    <Collapse
+                      in={openEquipmentReport2}
+                      timeout="auto"
+                      unmountOnExit
+                    >
+                      <List component="div" disablePadding>
+                        <Link
+                          className="text-dark"
+                          to="/report/monthly/equipment/software"
+                        >
+                          <ListItem sx={{ pl: 8 }}>
+                            <ListItemIcon>
+                              <AppShortcutIcon />
+                            </ListItemIcon>
+                            <ListItemText primary="Software" />
+                          </ListItem>
+                        </Link>
+                        <Link
+                          className="text-dark"
+                          to="/report/monthly/equipment/hardware"
+                        >
+                          <ListItem sx={{ pl: 8 }}>
+                            <ListItemIcon>
+                              <HardwareIcon />
+                            </ListItemIcon>
+                            <ListItemText primary="Hardware" />
+                          </ListItem>
+                        </Link>
+                      </List>
+                    </Collapse>
+                    <Link className="text-dark" to="/report/monthly/labBookings">
+                      <ListItem sx={{ pl: 6 }}>
+                        <ListItemIcon>
+                          <ComputerIcon />
+                        </ListItemIcon>
+                        <ListItemText primary="Lab Bookings" />
+                      </ListItem>
+                    </Link>
+                  </List>
+                </Collapse>
               </List>
             </Collapse>
           </>

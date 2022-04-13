@@ -22,6 +22,16 @@ import ViewDailyEquipmentReport from "./views/ViewDailyEquipmentReport";
 import BookLab from "./views/BookLab";
 import ViewBookLab from "./views/ViewBookLab";
 import ReviewBookLab from "./views/ReviewBookLab";
+import DailyStaffAttendanceReport from "./views/reports/DailyStaffAttendanceReport";
+import DailyTeacherAttendanceReport from "./views/reports/DailyTeacherAttendanceReport";
+import DailyLeaveRequestReport from "./views/reports/DailyLeaveRequestReport";
+import DailyLabBookingsReport from "./views/reports/DailyLabBookingsReport";
+import DailyEquipmentCheckReport from "./views/reports/DailyEquipmentCheckReport";
+import MonthlyStaffAttendanceReport from "./views/reports/MonthlyStaffAttendanceReport";
+import MonthlyTeacherAttendanceReport from "./views/reports/MonthlyTeacherAttendanceReport";
+import MonthlyLeaveRequestReport from "./views/reports/MonthlyLeaveRequestReport";
+import MonthlyLabBookingsReport from "./views/reports/MonthlyLabBookingsReport";
+import MonthlyEquipmentCheckReport from "./views/reports/MonthlyEquipmentCheckReport";
 
 function App(props) {
   return (
@@ -201,6 +211,114 @@ function App(props) {
             element={
               <Layout>
                 <ReviewTeacherAttendance />
+              </Layout>
+            }
+          />
+
+          {/* Reports */}
+          <Route
+            path="/report/daily/attendance/staff"
+            element={
+              <Layout>
+                <DailyStaffAttendanceReport />
+              </Layout>
+            }
+          />
+
+          <Route
+            path="/report/daily/attendance/teacher"
+            element={
+              <Layout>
+                <DailyTeacherAttendanceReport />
+              </Layout>
+            }
+          />
+
+          <Route
+            path="/report/daily/leaves"
+            element={
+              <Layout>
+                <DailyLeaveRequestReport />
+              </Layout>
+            }
+          />
+
+          <Route
+            path="/report/daily/labBookings"
+            element={
+              <Layout>
+                <DailyLabBookingsReport />
+              </Layout>
+            }
+          />
+
+          <Route
+            path="/report/daily/equipment/software"
+            element={
+              <Layout>
+                <DailyEquipmentCheckReport type="software" />
+              </Layout>
+            }
+          />
+
+          <Route
+            path="/report/daily/equipment/hardware"
+            element={
+              <Layout>
+                <DailyEquipmentCheckReport type="hardware" />
+              </Layout>
+            }
+          />
+          <Route
+            path="/report/monthly/attendance/staff"
+            element={
+              <Layout>
+                <MonthlyStaffAttendanceReport />
+              </Layout>
+            }
+          />
+
+          <Route
+            path="/report/monthly/attendance/teacher"
+            element={
+              <Layout>
+                <MonthlyTeacherAttendanceReport />
+              </Layout>
+            }
+          />
+
+          <Route
+            path="/report/monthly/leaves"
+            element={
+              <Layout>
+                <MonthlyLeaveRequestReport />
+              </Layout>
+            }
+          />
+
+          <Route
+            path="/report/monthly/labBookings"
+            element={
+              <Layout>
+                <MonthlyLabBookingsReport />
+              </Layout>
+            }
+          />
+
+          <Route
+            path="/report/monthly/equipment/software"
+            element={
+              <Layout>
+                <MonthlyEquipmentCheckReport type="software" />
+              </Layout>
+            }
+          />
+
+          <Route
+            path="/report/monthly/equipment/hardware"
+            element={
+              <Layout>
+                <MonthlyEquipmentCheckReport type="hardware" />
               </Layout>
             }
           />

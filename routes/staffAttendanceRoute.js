@@ -1,6 +1,8 @@
 const express = require("express");
 const router = express.Router();
 const staffAttendanceModel = require("../models/staffAttendanceModel");
+const labsModel = require("../models/labsModel");
+const usersModel = require("../models/usersModel");
 
 router.post("/insert", (request, responce) => {
   staffAttendanceModel.findOne(
@@ -31,8 +33,7 @@ router.post("/insert", (request, responce) => {
 });
 
 router.get("/view", (request, responce) => {
-  staffAttendanceModel.find({},null,
-    { sort: { date: -1 } },(error, data) => {
+  staffAttendanceModel.find({}, null, { sort: { date: -1 } }, (error, data) => {
     if (error) {
       console.log(error);
     } else {
@@ -59,7 +60,8 @@ router.post("/check", (request, responce) => {
 
 router.get("/view/:staffId", (request, responce) => {
   staffAttendanceModel.find(
-    { staffId: request.params.staffId },null,
+    { staffId: request.params.staffId },
+    null,
     { sort: { date: -1 } },
     (error, data) => {
       if (error) {
@@ -69,6 +71,69 @@ router.get("/view/:staffId", (request, responce) => {
       }
     }
   );
+});
+
+router.get("/view/dated/:month/:day/:year", (request, responce) => {
+  staffAttendanceModel.find(
+    {
+      date: `${request.params.month}/${request.params.day}/${request.params.year}`,
+      status: "present",
+    },
+    null,
+    { sort: { date: -1 } },
+    (error, data) => {
+      if (error) {
+        console.log(error);
+      } else {
+        presentStaff = data.map((a, i) => {
+          return a.staffId;
+        });
+        responce.json(presentStaff);
+      }
+    }
+  );
+});
+
+router.post("/view/dated", (request, responce) => {
+  staffAttendanceModel
+    .find(
+      {
+        date: { $gte: request.body.from },
+        date: { $lte: request.body.till },
+        staffId: request.body.staffId,
+        status: "present",
+      },
+      null,
+      { sort: { date: -1 } }
+    )
+    .populate({
+      path: "staffId",
+    })
+    .exec((error, data) => {
+      if (error) {
+        console.log(error);
+      } else {
+        let date1 = new Date(request.body.from);
+        let date2 = new Date(request.body.till);
+        let diffTime = Math.abs(date2 - date1);
+        let diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+        responce.json({
+          total: diffDays,
+          present: data.length,
+          absent: diffDays - data.length,
+          staff: data.map((a, b) => {
+            return {
+              _id: a.staffId._id,
+              username: a.staffId.username,
+              email: a.staffId.email,
+              identity: a.staffId.identity,
+              date: a.date,
+            };
+          }),
+        });
+      }
+    });
 });
 
 router.post("/delete/:id", (request, responce) => {

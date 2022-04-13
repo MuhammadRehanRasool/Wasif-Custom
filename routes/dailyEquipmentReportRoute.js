@@ -7,7 +7,7 @@ router.post("/insert", (request, responce) => {
   dailyEquipmentReportModel.findOne(
     {
       date: request.body.date,
-      slotId: request.body.slotId,
+      staffId: request.body.staffId,
     },
     (error, data) => {
       if (error) {
@@ -40,13 +40,57 @@ router.post("/insert", (request, responce) => {
 });
 
 router.get("/view", (request, responce) => {
-  dailyEquipmentReportModel.find((error, data) => {
+  dailyEquipmentReportModel.find().exec((error, data) => {
     if (error) {
       console.log(error);
     } else {
       responce.json(data);
     }
   });
+});
+
+router.get("/view/software", (request, responce) => {
+  dailyEquipmentReportModel
+    .find({ problemWithSoftware: { $gt: 0 } })
+    .populate({
+      path: "staffId",
+    })
+    .exec((error, data) => {
+      if (error) {
+        console.log(error);
+      } else {
+        responce.json(
+          data.map((a, b) => {
+            return {
+              staffId: a.staffId,
+              problem: a.problemWithSoftware,
+            };
+          })
+        );
+      }
+    });
+});
+
+router.get("/view/hardware", (request, responce) => {
+  dailyEquipmentReportModel
+    .find({ problemWithHardware: { $gt: 0 } })
+    .populate({
+      path: "staffId",
+    })
+    .exec((error, data) => {
+      if (error) {
+        console.log(error);
+      } else {
+        responce.json(
+          data.map((a, b) => {
+            return {
+              staffId: a.staffId,
+              problem: a.problemWithHardware,
+            };
+          })
+        );
+      }
+    });
 });
 
 router.get("/view/me/:id", (request, responce) => {

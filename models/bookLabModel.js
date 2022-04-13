@@ -30,4 +30,4 @@ const bookLabModel = new mongoose.Schema({
   createdAt: { type: Date, default: Date.now },
 });
 
-module.exports = mongoose.model("bookLabel", bookLabModel);
+module.exports = mongoose.model("bookLabs", bookLabModel);

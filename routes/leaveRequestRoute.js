@@ -21,13 +21,18 @@ router.post("/insert", (request, responce) => {
 });
 
 router.get("/view", (request, responce) => {
-  leaveRequestModel.find((error, data) => {
-    if (error) {
-      console.log(error);
-    } else {
-      responce.json(data);
-    }
-  });
+  leaveRequestModel
+    .find()
+    .populate({
+      path: "staffId",
+    })
+    .exec((error, data) => {
+      if (error) {
+        console.log(error);
+      } else {
+        responce.json(data);
+      }
+    });
 });
 
 router.get("/view/me/:id", (request, responce) => {

@@ -72,6 +72,40 @@ router.get("/view", (request, responce) => {
     });
 });
 
+router.get("/view/all", (request, responce) => {
+  bookLabModel
+    .find({}, null, {
+      sort: { createdAt: -1 },
+    })
+    .populate({
+      path: "labId",
+    })
+    .populate({
+      path: "staffId",
+    })
+    .exec((error, data) => {
+      if (error) {
+        console.log(error);
+      } else {
+        responce.json(
+          data.map((one) => {
+            return {
+              name: one.labId.name,
+              date: one.date,
+              slot: getRange([one.startTime, one.endTime]),
+              createdAt: one.createdAt,
+              username: one.staffId.username,
+              email: one.staffId.email,
+              identity: one.staffId.identity,
+              _id: one._id,
+              confirmation: one.confirmation,
+            };
+          })
+        );
+      }
+    });
+});
+
 router.put("/confirm/:id", (request, responce) => {
   bookLabModel.findByIdAndUpdate(
     request.params.id,
