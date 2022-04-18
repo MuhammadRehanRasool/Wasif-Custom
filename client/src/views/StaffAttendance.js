@@ -9,7 +9,6 @@ import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import PersonSearchIcon from "@mui/icons-material/PersonSearch";
 import CoPresentIcon from "@mui/icons-material/CoPresent";
 
-
 import {
   CONSTANT,
   checkLoginFromStaff,
@@ -30,7 +29,7 @@ function Staff(props) {
     }
   }, []);
 
-  const [isMarked, setIsMarked] = useState(false);
+  const [isMarked, setIsMarked] = useState([]);
 
   const checkAttendance = async () => {
     await axios
@@ -93,9 +92,10 @@ function Staff(props) {
             if (res.message) {
               setMessage(res.message, "danger");
             } else {
-              setMessage("Attendance Marked Successfully!", "success");
+              setMessage(`Checked ${send.status} successfully!`, "success");
               setSend(__init);
-              setIsMarked(true);
+              setIsMarked([]);
+              checkAttendance();
             }
           }
         })
@@ -142,7 +142,7 @@ function Staff(props) {
               onChange={changeSend}
               value={send.status}
               aria-label="Select Status"
-              disabled={isMarked ? true : false}
+              disabled={isMarked === 2 ? true : false}
             >
               <option
                 value=""
@@ -152,16 +152,20 @@ function Staff(props) {
                 Select Status
               </option>
               <option
-                value="present"
-                selected={send.status === "present" ? true : false}
+                value="in"
+                selected={send.status === "in" ? true : false}
+                disabled={isMarked.includes("in") ? true : false}
               >
-                Present
+                Check In
               </option>
               <option
-                value="absent"
-                selected={send.status === "absent" ? true : false}
+                value="out"
+                disabled={
+                  isMarked.includes("out") || isMarked.length < 1 ? true : false
+                }
+                selected={send.status === "out" ? true : false}
               >
-                Absent
+                Check Out
               </option>
             </select>
           </div>
@@ -176,9 +180,9 @@ function Staff(props) {
                 padding: "12px 15px",
               }}
               onClick={markAttendance}
-              disabled={isMarked ? true : false}
+              disabled={isMarked.length === 2 ? true : false}
             >
-              {isMarked ? "Already Marked" : "Mark Attendance"}
+              {isMarked.length === 2 ? "Already Marked" : "Mark Attendance"}
             </button>
           </div>
         </div>

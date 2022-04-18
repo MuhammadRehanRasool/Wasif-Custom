@@ -6,7 +6,11 @@ const usersModel = require("../models/usersModel");
 
 router.post("/insert", (request, responce) => {
   staffAttendanceModel.findOne(
-    { date: request.body.date, staffId: request.body.staffId },
+    {
+      date: request.body.date,
+      staffId: request.body.staffId,
+      status: request.body.status,
+    },
     (error, data) => {
       if (error) {
         console.log(error);
@@ -26,7 +30,7 @@ router.post("/insert", (request, responce) => {
             responce.json(error);
           });
       } else {
-        responce.json({ message: "Attendance Already Marked!" });
+        responce.json({ message: `Already checked ${request.body.status}!` });
       }
     }
   );
@@ -43,16 +47,20 @@ router.get("/view", (request, responce) => {
 });
 
 router.post("/check", (request, responce) => {
-  staffAttendanceModel.findOne(
+  staffAttendanceModel.find(
     { date: request.body.date, staffId: request.body.staffId },
     (error, data) => {
       if (error) {
         console.log(error);
       }
       if (!data) {
-        responce.json(false);
+        responce.json([]);
       } else {
-        responce.json(true);
+        responce.json(
+          data.map((a, b) => {
+            return a.status;
+          })
+        );
       }
     }
   );
@@ -146,14 +154,14 @@ router.post("/delete/:id", (request, responce) => {
   });
 });
 
-// router.get("/delete", (request, responce) => {
-//   staffAttendanceModel.deleteMany({}, (error, data) => {
-//     if (error) {
-//       console.log(error);
-//     } else {
-//       responce.json(data);
-//     }
-//   });
-// });
+router.get("/delete", (request, responce) => {
+  staffAttendanceModel.deleteMany({}, (error, data) => {
+    if (error) {
+      console.log(error);
+    } else {
+      responce.json(data);
+    }
+  });
+});
 
 module.exports = router;
