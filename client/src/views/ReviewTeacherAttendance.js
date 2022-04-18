@@ -161,7 +161,7 @@ function Teacher(props) {
                             <td>{date.range}</td>
                             <td
                               className={`text-${
-                                date.status === "present" ? "success" : "danger"
+                                date.status === "in" ? "success" : "danger"
                               }`}
                             >
                               {capitalizeFirstLetter(date.status)}

@@ -84,7 +84,7 @@ function TeacherAttendance(props) {
             if (res.message) {
               setMessage(res.message, "danger");
             } else {
-              setMessage("Attendance Marked Successfully!", "success");
+              setMessage(`Checked ${send.status} successfully!`, "success");
               setSend(__init);
               fetchSlots();
             }
@@ -232,7 +232,7 @@ function TeacherAttendance(props) {
                         selected={send.slotId === one._id ? true : false}
                         key={one._id}
                         disabled={
-                          one.status ||
+                          one.status.length === 2 ||
                           !(
                             String(new Date().getHours()).padStart(2, "0") +
                               ":" +
@@ -252,7 +252,7 @@ function TeacherAttendance(props) {
                         }
                       >
                         {one.subjectName} - {one.name} ({one.range}){" "}
-                        {one.status && "(Already Marked)"}
+                        {one.status.length === 2 && "(Already Marked)"}
                       </option>
                     );
                   })}
@@ -268,25 +268,52 @@ function TeacherAttendance(props) {
               onChange={changeSend}
               value={send.status}
               aria-label="Select Status"
+              disabled={
+                slots.length > 0 &&
+                slots.filter((a, b) => {
+                  return send.slotId === a._id;
+                })[0]?.status.length === 2
+                  ? true
+                  : false
+              }
             >
-              <option
-                value=""
-                disabled
-                selected={send.status === "" ? true : false}
-              >
+              <option value="" selected={send.status === "" ? true : false} disabled>
                 Select Status
               </option>
               <option
-                value="present"
-                selected={send.status === "present" ? true : false}
+                value="in"
+                disabled={
+                  slots.length > 0 &&
+                  slots
+                    .filter((a, b) => {
+                      return send.slotId === a._id;
+                    })[0]
+                    ?.status.includes("in")
+                    ? true
+                    : false
+                }
+                selected={send.status === "in" ? true : false}
               >
-                Present
+                In
               </option>
               <option
-                value="absent"
-                selected={send.status === "absent" ? true : false}
+                value="out"
+                disabled={
+                  slots.length > 0 &&
+                  (slots
+                    .filter((a, b) => {
+                      return send.slotId === a._id;
+                    })[0]
+                    ?.status.includes("out") ||
+                    slots.filter((a, b) => {
+                      return send.slotId === a._id;
+                    })[0]?.status.length < 1)
+                    ? true
+                    : false
+                }
+                selected={send.status === "out" ? true : false}
               >
-                Absent
+                Out
               </option>
             </select>
           </div>

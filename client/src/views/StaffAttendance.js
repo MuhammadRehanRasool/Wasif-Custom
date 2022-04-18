@@ -142,7 +142,7 @@ function Staff(props) {
               onChange={changeSend}
               value={send.status}
               aria-label="Select Status"
-              disabled={isMarked === 2 ? true : false}
+              disabled={isMarked.length === 2 ? true : false}
             >
               <option
                 value=""
@@ -156,7 +156,7 @@ function Staff(props) {
                 selected={send.status === "in" ? true : false}
                 disabled={isMarked.includes("in") ? true : false}
               >
-                Check In
+                In
               </option>
               <option
                 value="out"
@@ -165,7 +165,7 @@ function Staff(props) {
                 }
                 selected={send.status === "out" ? true : false}
               >
-                Check Out
+                Out
               </option>
             </select>
           </div>

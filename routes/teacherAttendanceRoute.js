@@ -8,6 +8,7 @@ router.post("/insert", (request, responce) => {
       date: request.body.date,
       teacherId: request.body.teacherId,
       slotId: request.body.slotId,
+      status: request.body.status,
     },
     (error, data) => {
       if (error) {
@@ -30,7 +31,7 @@ router.post("/insert", (request, responce) => {
             responce.json(error);
           });
       } else {
-        responce.json({ message: "Attendance Already Marked!" });
+        responce.json({ message: `Already checked ${request.body.status}!` });
       }
     }
   );
@@ -198,10 +199,10 @@ router.post("/checkSlotAttendance", (request, responce) => {
       } else {
         if (data) {
           slots.map((one, i) => {
-            let status = false;
+            let status = [];
             data.map((two, j) => {
               if (one._id === two.slotId.toString()) {
-                status = true;
+                status.push(two.status);
               }
             });
             slots[i].status = status;
