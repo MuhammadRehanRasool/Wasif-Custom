@@ -125,7 +125,6 @@ router.post("/view/dated", (request, responce) => {
         let date2 = new Date(request.body.till);
         let diffTime = Math.abs(date2 - date1);
         let diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-
         responce.json({
           total: diffDays,
           present: data.length,
@@ -140,6 +139,52 @@ router.post("/view/dated", (request, responce) => {
             };
           }),
         });
+      }
+    });
+});
+
+router.post("/view/dated/weekly", (request, responce) => {
+  staffAttendanceModel
+    .find(
+      {
+        date: { $gte: request.body.from },
+        date: { $lte: request.body.till },
+        staffId: request.body.staffId,
+      },
+      null,
+      { sort: { date: -1 } }
+    )
+    .populate({
+      path: "staffId",
+    })
+    .exec((error, data) => {
+      if (error) {
+        console.log(error);
+      } else {
+        let dates = [
+          ...new Set(
+            data.map((one, i) => {
+              return one.date;
+            })
+          ),
+        ];
+        let temp = [];
+        dates.map((one, i) => {
+          temp.push({
+            date: one,
+            data: data
+              .filter((a, b) => {
+                return a.date === one;
+              })
+              .map((a, b) => {
+                return {
+                  time: a.createdAt,
+                  status: a.status,
+                };
+              }),
+          });
+        });
+        responce.json(temp);
       }
     });
 });

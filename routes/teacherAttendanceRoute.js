@@ -121,6 +121,64 @@ router.get("/view/dated/:month/:day/:year", (request, responce) => {
   );
 });
 
+router.post("/view/dated/weekly", (request, responce) => {
+  teacherAttendanceModel
+    .find(
+      {
+        date: { $gte: request.body.from },
+        date: { $lte: request.body.till },
+        confirmation: true,
+      },
+      null,
+      { sort: { date: -1 } }
+    )
+    .populate({
+      path: "slotId",
+    })
+    .exec((error, data) => {
+      if (error) {
+        console.log(error);
+      } else {
+        data = data.filter((a, b) => {
+          return a.slotId.labId.toString() === request.body.labId.toString();
+        });
+        let dates = [
+          ...new Set(
+            data.map((one, i) => {
+              return one.date;
+            })
+          ),
+        ];
+        let temp = [];
+        dates.map((one, i) => {
+          temp.push({
+            date: one,
+            day: data.filter((a, b) => {
+              return a.date === one;
+            })[0].slotId.day,
+            data: data
+              .filter((a, b) => {
+                return a.date === one;
+              })
+              .map((a, b) => {
+                return {
+                  time: a.createdAt,
+                  status: a.status,
+                  startTime: a.slotId.startTime,
+                  endTime: a.slotId.endTime,
+                };
+              }),
+          });
+        });
+        responce.json(temp);
+
+        // .map((a, b) => {
+        //   return a.slotId;
+        // })
+      }
+    });
+});
+
 router.get("/view/staff/:id", (request, responce) => {
   teacherAttendanceModel
     .find({ confirmation: false }, null, { sort: { date: -1 } })

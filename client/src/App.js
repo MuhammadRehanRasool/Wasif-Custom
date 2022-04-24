@@ -32,6 +32,7 @@ import MonthlyTeacherAttendanceReport from "./views/reports/MonthlyTeacherAttend
 import MonthlyLeaveRequestReport from "./views/reports/MonthlyLeaveRequestReport";
 import MonthlyLabBookingsReport from "./views/reports/MonthlyLabBookingsReport";
 import MonthlyEquipmentCheckReport from "./views/reports/MonthlyEquipmentCheckReport";
+import WeeklyAttendanceReport from "./views/reports/WeeklyAttendanceReport";
 
 function App(props) {
   return (
@@ -319,6 +320,15 @@ function App(props) {
             element={
               <Layout>
                 <MonthlyEquipmentCheckReport type="hardware" />
+              </Layout>
+            }
+          />
+
+          <Route
+            path="/report/weekly/attendance"
+            element={
+              <Layout>
+                <WeeklyAttendanceReport />
               </Layout>
             }
           />

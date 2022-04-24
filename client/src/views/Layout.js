@@ -200,6 +200,12 @@ function Layout(props) {
     setOpenMonthly(!openMonthly);
   };
 
+  const [openWeekly, setOpenWeekly] = React.useState(false);
+
+  const handleClickOfWeekly = () => {
+    setOpenWeekly(!openWeekly);
+  };
+
   const [openAttendanceReport1, setOpenAttendanceReport1] =
     React.useState(false);
 
@@ -453,6 +459,25 @@ function Layout(props) {
                     </Link>
                   </List>
                 </Collapse>
+                <ListItem onClick={handleClickOfWeekly} sx={{ pl: 4 }}>
+                  <ListItemIcon>
+                    <TodayIcon />
+                  </ListItemIcon>
+                  <ListItemText primary="Weekly" />
+                  {openWeekly ? <ExpandLess /> : <ExpandMore />}
+                </ListItem>
+                <Collapse in={openWeekly} timeout="auto" unmountOnExit>
+                  <List component="div" disablePadding>
+                    <Link className="text-dark" to="/report/weekly/attendance">
+                      <ListItem sx={{ pl: 6 }}>
+                        <ListItemIcon>
+                          <ComputerIcon />
+                        </ListItemIcon>
+                        <ListItemText primary="Attendance" />
+                      </ListItem>
+                    </Link>
+                  </List>
+                </Collapse>
                 <ListItem onClick={handleClickOfMonthly} sx={{ pl: 4 }}>
                   <ListItemIcon>
                     <TodayIcon />
@@ -550,7 +575,10 @@ function Layout(props) {
                         </Link>
                       </List>
                     </Collapse>
-                    <Link className="text-dark" to="/report/monthly/labBookings">
+                    <Link
+                      className="text-dark"
+                      to="/report/monthly/labBookings"
+                    >
                       <ListItem sx={{ pl: 6 }}>
                         <ListItemIcon>
                           <ComputerIcon />

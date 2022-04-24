@@ -54,6 +54,16 @@ router.get("/view", (request, responce) => {
     });
 });
 
+router.get("/view/labStaff/:labId", (request, responce) => {
+  labsModel.findOne({ _id: request.params.labId }).exec((error, data) => {
+    if (error) {
+      console.log(error);
+    } else {
+      responce.json(data);
+    }
+  });
+});
+
 router.get("/view/staffId/:staffId", (request, responce) => {
   labsModel
     .find({})
@@ -81,6 +91,34 @@ router.get("/view/staffId/:staffId", (request, responce) => {
                 _id: one._id,
               };
             })
+        );
+      }
+    });
+});
+
+router.get("/view/staffId", (request, responce) => {
+  labsModel
+    .find({})
+    .populate({
+      path: "controller",
+    })
+    .exec((error, data) => {
+      if (error) {
+        console.log(error);
+      } else {
+        responce.json(
+          data.map((one) => {
+            return {
+              name: one.name,
+              controller: {
+                username: one.controller.username,
+                identity: one.controller.identity,
+                email: one.controller.email,
+                _id: one.controller._id,
+              },
+              _id: one._id,
+            };
+          })
         );
       }
     });
