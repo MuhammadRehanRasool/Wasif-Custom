@@ -55,9 +55,7 @@ function App(props) {
           <Route
             path="/feedback"
             element={
-              <Layout>
-                <FeedbackPage />
-              </Layout>
+              <FeedbackPage />
             }
           />
           <Route
@@ -156,7 +154,7 @@ function App(props) {
               </Layout>
             }
           />
-          
+
           <Route
             path="/viewCamera"
             element={

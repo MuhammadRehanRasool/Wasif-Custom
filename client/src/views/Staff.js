@@ -64,7 +64,7 @@ function Staff(props) {
     <div className="__Staff">
       <div className="row d-flex flex-column justify-content-center align-items-center">
         <h1 className="mb-4 mt-2 text-center">Welcome {data.personal.username}!</h1>
-        <h3 className="mb-4 mt-2 text-center">{isMarked.length === 2 ? "Attendance Already Marked" : "Mark Attendance"}</h3>
+        <h3 className="mb-4 mt-2 text-center">{isMarked.length === 2 ? "Attendance Already Marked" : `Mark Attendance (check ${send.status})`}</h3>
         {
           isMarked.length !== 2 ? <div className="mt-5 qrcode d-flex flex-column justify-content-center align-items-center">
             <QRCodeCanvas value={`${CONSTANT.server}staffAttendance/qrcode/${send.date}/${send.staffId}/${send.status}/${send.url}`} className="qrcode-image" size={256} />

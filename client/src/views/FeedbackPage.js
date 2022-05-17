@@ -1,12 +1,9 @@
 import React, { useState, useEffect } from "react";
 import "./../css/Committee.css";
-import UserData from "../components/UserData";
+import { Link } from "react-router-dom";
 import { createSearchParams, useSearchParams } from "react-router-dom";
-const axios = require("axios");
 
 function FeedbackPage(props) {
-    const { data, setData } = React.useContext(UserData);
-    // User Data
     const [message, setMessage] = useState({
         data: "No Message",
     });
@@ -23,6 +20,19 @@ function FeedbackPage(props) {
         <div className="__Committee">
             <div className="row d-flex flex-column justify-content-center align-items-center text-center mt-5">
                 <h1>{message.data}</h1>
+                <div style={{width:"15rem"}} className="mt-5 custom-button text-center">
+                    <Link to="/">
+                        <button
+                            type="button"
+                            className="btn btn-primary"
+                            style={{
+                                padding: "12px 15px",
+                            }}
+                        >
+                            Go Home
+                        </button>
+                    </Link>
+                </div>
             </div>
         </div>
     );
