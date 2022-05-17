@@ -15,6 +15,8 @@ import HardwareIcon from "@mui/icons-material/Hardware";
 import MenuIcon from "@material-ui/icons/Menu";
 import GridViewIcon from "@mui/icons-material/GridView";
 import DateRangeIcon from "@mui/icons-material/DateRange";
+import CameraOutdoorIcon from '@mui/icons-material/CameraOutdoor';
+import ClassIcon from '@mui/icons-material/Class';
 import AddIcon from "@mui/icons-material/Add";
 import BookmarkAddedIcon from "@mui/icons-material/BookmarkAdded";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -169,6 +171,13 @@ function Layout(props) {
     setOpenTeacherAttendanceUser(!openTeacherAttendanceUser);
   };
 
+  const [openMyLab, setOpenMyLab] =
+    React.useState(false);
+
+  const handleClickOfMyLab = () => {
+    setOpenMyLab(!openMyLab);
+  };
+
   const [openDailyEquipmentReport, setOpenDailyEquipmentReport] =
     React.useState(false);
 
@@ -229,6 +238,13 @@ function Layout(props) {
 
   const handleClickOfEquipmentReport2 = () => {
     setOpenEquipmentReport2(!openEquipmentReport2);
+  };
+
+
+  const [openViewCamera, setOpenViewCamera] = React.useState(false);
+
+  const handleClickOfViewCamera = () => {
+    setOpenViewCamera(!openViewCamera);
   };
 
   const drawer = (
@@ -590,9 +606,58 @@ function Layout(props) {
                 </Collapse>
               </List>
             </Collapse>
+            <ListItem onClick={handleClickOfViewCamera}>
+              <ListItemIcon>
+                <PreviewIcon />
+              </ListItemIcon>
+              <ListItemText primary="View Camera" />
+              {openViewCamera ? <ExpandLess /> : <ExpandMore />}
+            </ListItem>
+            <Collapse
+              in={openViewCamera}
+              timeout="auto"
+              unmountOnExit
+            >
+              <List component="div" disablePadding>
+                <Link
+                  className="text-dark"
+                  to="/viewCamera"
+                >
+                  <ListItem sx={{ pl: 4 }}>
+                    <ListItemIcon>
+                      <PreviewIcon />
+                    </ListItemIcon>
+                    <ListItemText primary="View" />
+                  </ListItem>
+                </Link>
+              </List>
+            </Collapse>
           </>
         ) : data.personal.role === "staff" ? (
           <>
+            <ListItem onClick={handleClickOfMyLab}>
+              <ListItemIcon>
+                <ClassIcon />
+              </ListItemIcon>
+              <ListItemText primary="My Lab" />
+              {openMyLab ? <ExpandLess /> : <ExpandMore />}
+            </ListItem>
+            <Collapse
+              in={openMyLab}
+              timeout="auto"
+              unmountOnExit
+            >
+              <List component="div" disablePadding>
+                <Link className="text-dark" to="/myLab">
+                  <ListItem sx={{ pl: 4 }}>
+                    <ListItemIcon>
+                      <CameraOutdoorIcon />
+                    </ListItemIcon>
+                    <ListItemText primary="Update Camera IP" />
+                  </ListItem>
+                </Link>
+              </List>
+            </Collapse>
             <ListItem onClick={handleClickOfStaffAttendanceUser}>
               <ListItemIcon>
                 <BookmarkAddedIcon />
@@ -755,6 +820,32 @@ function Layout(props) {
                 </Link>
               </List>
             </Collapse>
+            <ListItem onClick={handleClickOfViewCamera}>
+              <ListItemIcon>
+                <PreviewIcon />
+              </ListItemIcon>
+              <ListItemText primary="View Camera" />
+              {openViewCamera ? <ExpandLess /> : <ExpandMore />}
+            </ListItem>
+            <Collapse
+              in={openViewCamera}
+              timeout="auto"
+              unmountOnExit
+            >
+              <List component="div" disablePadding>
+                <Link
+                  className="text-dark"
+                  to="/viewCamera"
+                >
+                  <ListItem sx={{ pl: 4 }}>
+                    <ListItemIcon>
+                      <PreviewIcon />
+                    </ListItemIcon>
+                    <ListItemText primary="View" />
+                  </ListItem>
+                </Link>
+              </List>
+            </Collapse>
           </>
         ) : data.personal.role === "teacher" ? (
           <>
@@ -807,6 +898,32 @@ function Layout(props) {
                       <DoneAllIcon />
                     </ListItemIcon>
                     <ListItemText primary="Review" />
+                  </ListItem>
+                </Link>
+              </List>
+            </Collapse>
+            <ListItem onClick={handleClickOfViewCamera}>
+              <ListItemIcon>
+                <PreviewIcon />
+              </ListItemIcon>
+              <ListItemText primary="View Camera" />
+              {openViewCamera ? <ExpandLess /> : <ExpandMore />}
+            </ListItem>
+            <Collapse
+              in={openViewCamera}
+              timeout="auto"
+              unmountOnExit
+            >
+              <List component="div" disablePadding>
+                <Link
+                  className="text-dark"
+                  to="/viewCamera"
+                >
+                  <ListItem sx={{ pl: 4 }}>
+                    <ListItemIcon>
+                      <PreviewIcon />
+                    </ListItemIcon>
+                    <ListItemText primary="View" />
                   </ListItem>
                 </Link>
               </List>

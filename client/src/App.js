@@ -33,6 +33,8 @@ import MonthlyLeaveRequestReport from "./views/reports/MonthlyLeaveRequestReport
 import MonthlyLabBookingsReport from "./views/reports/MonthlyLabBookingsReport";
 import MonthlyEquipmentCheckReport from "./views/reports/MonthlyEquipmentCheckReport";
 import WeeklyAttendanceReport from "./views/reports/WeeklyAttendanceReport";
+import MyLab from "./views/MyLab";
+import ViewCamera from "./views/ViewCamera";
 
 function App(props) {
   return (
@@ -135,6 +137,27 @@ function App(props) {
               </Layout>
             }
           />
+
+
+          <Route
+            path="/myLab"
+            element={
+              <Layout>
+                <MyLab />
+              </Layout>
+            }
+          />
+          
+          <Route
+            path="/viewCamera"
+            element={
+              <Layout>
+                <ViewCamera />
+              </Layout>
+            }
+          />
+
+
 
           <Route
             path="/reviewLeaveRequests/*"

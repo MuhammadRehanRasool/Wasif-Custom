@@ -6,6 +6,9 @@ const labsModel = new mongoose.Schema({
     required: true,
     unique: true,
   },
+  cameraIp: {
+    type: String,
+  },
   controller: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "users",
