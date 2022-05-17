@@ -33,6 +33,7 @@ import MonthlyLeaveRequestReport from "./views/reports/MonthlyLeaveRequestReport
 import MonthlyLabBookingsReport from "./views/reports/MonthlyLabBookingsReport";
 import MonthlyEquipmentCheckReport from "./views/reports/MonthlyEquipmentCheckReport";
 import WeeklyAttendanceReport from "./views/reports/WeeklyAttendanceReport";
+import FeedbackPage from "./views/FeedbackPage";
 import MyLab from "./views/MyLab";
 import ViewCamera from "./views/ViewCamera";
 
@@ -48,6 +49,14 @@ function App(props) {
             element={
               <Layout>
                 <AddUser />
+              </Layout>
+            }
+          />
+          <Route
+            path="/feedback"
+            element={
+              <Layout>
+                <FeedbackPage />
               </Layout>
             }
           />

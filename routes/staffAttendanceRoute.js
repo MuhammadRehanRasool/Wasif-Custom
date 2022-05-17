@@ -36,6 +36,41 @@ router.post("/insert", (request, responce) => {
   );
 });
 
+router.get("/qrcode/:month/:day/:year/:staffId/:status/:url", (request, responce) => {
+  staffAttendanceModel.findOne(
+    {
+      date: `${request.params.month}/${request.params.day}/${request.params.year}`,
+      staffId: request.params.staffId,
+      status: request.params.status,
+    },
+    (error, data) => {
+      if (error) {
+        console.log(error);
+      }
+      if (!data) {
+        let staffAttendanceModelObject = new staffAttendanceModel({
+          staffId: request.params.staffId,
+          date: `${request.params.month}/${request.params.day}/${request.params.year}`,
+          status: request.params.status,
+        });
+        staffAttendanceModelObject
+          .save()
+          .then((callbackData) => {
+            console.log(callbackData);
+            responce.redirect(`http://${request.params.url}/feedback?message=You are checked ${request.params.status} successfully!`);
+          })
+          .catch((error) => {
+            console.log(error);
+            responce.redirect(`http://${request.params.url}/feedback?message=An error occured. Please try again!`);
+          });
+      } else {
+        console.log({ message: `Already checked ${request.params.status}!` });
+        responce.redirect(`http://${request.params.url}/feedback?message=Already checked ${request.params.status}!`);
+      }
+    }
+  );
+});
+
 router.get("/view", (request, responce) => {
   staffAttendanceModel.find({}, null, { sort: { date: -1 } }, (error, data) => {
     if (error) {

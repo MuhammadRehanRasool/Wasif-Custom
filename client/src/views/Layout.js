@@ -956,7 +956,9 @@ function Layout(props) {
                 <MenuIcon />
               </IconButton>
               <Typography variant="h6" noWrap className="text-capitalize">
-                {data.personal.role}
+                <Link to="/" role="button" className="text-capitalize text-light">
+                  {data.personal.role}
+                </Link>
               </Typography>
 
               {data.isLoggedIn ? (

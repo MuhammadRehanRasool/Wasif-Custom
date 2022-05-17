@@ -41,10 +41,10 @@ router.get("/view", (request, responce) => {
             return {
               name: one.name,
               controller: {
-                username: one.controller.username,
-                identity: one.controller.identity,
-                email: one.controller.email,
-                _id: one.controller._id,
+                username: one.controller ? one.controller.username : "",
+                identity: one.controller ? one.controller.identity : "",
+                email: one.controller ? one.controller.email : "",
+                _id: one.controller ? one.controller._id : "",
               },
               _id: one._id,
               cameraIp: one.cameraIp,
@@ -78,16 +78,17 @@ router.get("/view/staffId/:staffId", (request, responce) => {
         responce.json(
           data
             .filter((one) => {
+              if(!one.controller) return;
               return one.controller._id.toString() === request.params.staffId;
             })
             .map((one) => {
               return {
                 name: one.name,
                 controller: {
-                  username: one.controller.username,
-                  identity: one.controller.identity,
-                  email: one.controller.email,
-                  _id: one.controller._id,
+                  username: one.controller ? one.controller.username : "",
+                  identity: one.controller ? one.controller.identity : "",
+                  email: one.controller ? one.controller.email : "",
+                  _id: one.controller ? one.controller._id : "",
                 },
                 _id: one._id,
                 cameraIp: one.cameraIp,
@@ -113,10 +114,10 @@ router.get("/view/staffId", (request, responce) => {
             return {
               name: one.name,
               controller: {
-                username: one.controller.username,
-                identity: one.controller.identity,
-                email: one.controller.email,
-                _id: one.controller._id,
+                username: one.controller ? one.controller.username : "",
+                identity: one.controller ? one.controller.identity : "",
+                email: one.controller ? one.controller.email : "",
+                _id: one.controller ? one.controller._id : "",
               },
               _id: one._id,
             };
