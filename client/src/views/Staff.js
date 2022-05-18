@@ -1,15 +1,14 @@
 import React, { useState, useEffect } from "react";
 import "./../css/Staff.css";
 import UserData from "../components/UserData";
-import Button from "@mui/material/Button";
 import { Link } from "react-router-dom";
-import TextField from "@mui/material/TextField";
 import { CONSTANT, Loader } from "./../CONSTANT";
-import KeyboardAltIcon from "@mui/icons-material/KeyboardAlt";
+import { useNavigate } from "react-router-dom";
 import { QRCodeCanvas } from "qrcode.react";
 const axios = require("axios");
 
 function Staff(props) {
+  let navigate = useNavigate();
   const { data, setData } = React.useContext(UserData);
   // User Data
 
@@ -27,7 +26,7 @@ function Staff(props) {
     date: fetchTodayDate(),
     staffId: data.personal._id,
     status: "",
-    url:window.location.origin.replace(/(^\w+:|^)\/\//, '')
+    url: window.location.origin.replace(/(^\w+:|^)\/\//, '')
   });
   const checkAttendance = async () => {
     await axios
@@ -67,7 +66,10 @@ function Staff(props) {
         <h3 className="mb-4 mt-2 text-center">{isMarked.length === 2 ? "Attendance Already Marked" : `Mark Attendance (check ${send.status})`}</h3>
         {
           isMarked.length !== 2 ? <div className="mt-5 qrcode d-flex flex-column justify-content-center align-items-center">
-            <QRCodeCanvas value={`${CONSTANT.server}staffAttendance/qrcode/${send.date}/${send.staffId}/${send.status}/${send.url}`} className="qrcode-image" size={256} />
+            {/* <QRCodeCanvas value={`${CONSTANT.server}staffAttendance/qrcode/${send.date}/${send.staffId}/${send.status}/${send.url}`} className="qrcode-image" size={256} /> */}
+            <QRCodeCanvas value={`${CONSTANT.client}feedback?type=staff&id=${send.staffId}`} className="qrcode-image" size={256} onClick={() => {
+              window.location.href = (`${CONSTANT.client}feedback?type=staff&id=${send.staffId}`);
+            }} />
             <p className="mt-4">Scan QRCode from your device to check {send.status}!</p>
             <p className="mt-5 text-muted">OR</p>
           </div> : ""
