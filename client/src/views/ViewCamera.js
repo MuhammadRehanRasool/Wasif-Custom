@@ -110,7 +110,7 @@ export default function ViewCamera() {
                             <iframe className="w-100" src={dataL.cameraIp} frameborder="0" allowFullScreen></iframe>
                             {/* <iframe width="640" height="480" src="https://rtsp.me/embed/fYsiZdYB/" frameborder="0" allowfullscreen></iframe> */}
 
-                        </div></> : "Please wait..."
+                        </div></> : <p className="text-center">No Labs</p>
                 }
             </div>
         </div>

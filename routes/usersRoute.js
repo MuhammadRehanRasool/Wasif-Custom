@@ -76,7 +76,7 @@ router.get("/view", (request, responce) => {
   // );
 
   // console.log(
-  //   cryptPassword("rehan123", (e, r) => {
+  //   cryptPassword("admin", (e, r) => {
   //     console.log(e, r);
   //   })
   // );

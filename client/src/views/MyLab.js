@@ -27,6 +27,7 @@ export default function MyLab() {
 
     const __init = {
         cameraIp: "",
+        numberOfPcs: ""
     };
     const [dataL, setDataL] = useState(__init);
 
@@ -46,7 +47,8 @@ export default function MyLab() {
                     setLabs([...responce.data]);
                     if (responce.data.length > 0) {
                         setDataL({
-                            cameraIp: responce.data[0].cameraIp
+                            cameraIp: responce.data[0].cameraIp,
+                            numberOfPcs: responce.data[0].numberOfPcs
                         })
                     }
                 }
@@ -121,6 +123,20 @@ export default function MyLab() {
                                 placeholder="Camera IP"
                                 name="cameraIp"
                                 value={dataL.cameraIp}
+                                onChange={changeData}
+                            />
+                        </div>
+
+                        <div className="custom-input input-group mb-3">
+                            <span className="input-group-text">
+                                <CameraOutdoorIcon />
+                            </span>
+                            <input
+                                type="text"
+                                className="form-control"
+                                placeholder="Number of PCs"
+                                name="numberOfPcs"
+                                value={dataL.numberOfPcs}
                                 onChange={changeData}
                             />
                         </div>

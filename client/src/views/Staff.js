@@ -19,11 +19,6 @@ function Staff(props) {
   }
   const handleScanWebCam = (result) => {
     if (result) {
-      // setScanResultWebCam(result);
-      // dispatch(findProductByQrId(result))
-      // setScanResultWebCam('');
-      // setShowCam(false);
-      // setDisplayProduct(true);
       console.log(result)
     }
   }
@@ -53,14 +48,6 @@ function Staff(props) {
             style={{ width: '100%' }}
             onError={handleErrorWebCam}
             onScan={handleScanWebCam}
-            onResult={(result, error) => {
-              if (!!result) {
-                alert(result.text)
-              }
-              if (!!error) {
-                console.info(error);
-              }
-            }}
             className="scanner"
           /> : ""}
         </div>

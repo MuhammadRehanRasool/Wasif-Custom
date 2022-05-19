@@ -92,6 +92,7 @@ router.get("/view/staffId/:staffId", (request, responce) => {
                 },
                 _id: one._id,
                 cameraIp: one.cameraIp,
+                numberOfPcs: one.numberOfPcs,
               };
             })
         );
@@ -176,6 +177,9 @@ router.post("/update/:id", (request, responce) => {
       }
       if (request.body.cameraIp !== userData.cameraIp) {
         toUpdate.cameraIp = request.body.cameraIp;
+      }
+      if (request.body.numberOfPcs !== userData.numberOfPcs) {
+        toUpdate.numberOfPcs = request.body.numberOfPcs;
       }
       if (request.body.controller !== userData.controller) {
         toUpdate.controller = request.body.controller;

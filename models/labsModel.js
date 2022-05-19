@@ -8,6 +8,10 @@ const labsModel = new mongoose.Schema({
   },
   cameraIp: {
     type: String,
+    default: ""
+  },
+  numberOfPcs: {
+    type: String, default: ""
   },
   controller: {
     type: mongoose.Schema.Types.ObjectId,
