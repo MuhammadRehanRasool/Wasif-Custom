@@ -12,6 +12,7 @@ const teacherAttendanceRoute = require("./routes/teacherAttendanceRoute");
 const timetableRoute = require("./routes/timetableRoute");
 const dailyEquipmentReportRoute = require("./routes/dailyEquipmentReportRoute");
 const bookLabRoute = require("./routes/bookLabRoute");
+const categoriesRoute = require("./routes/categoriesRoute");
 
 const cors = require("cors");
 const port = process.env.PORT || 4000;
@@ -37,6 +38,7 @@ app.use("/teacherAttendance", teacherAttendanceRoute);
 app.use("/timetable", timetableRoute);
 app.use("/dailyEquipmentReport", dailyEquipmentReportRoute);
 app.use("/bookLab", bookLabRoute);
+app.use("/categories", categoriesRoute);
 
 app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "client", "build", "index.html"));

@@ -1,40 +1,46 @@
 const express = require("express");
 const router = express.Router();
-const staffAttendanceModel = require("../models/staffAttendanceModel");
-const labsModel = require("../models/labsModel");
-const usersModel = require("../models/usersModel");
+const categoriesModel = require("../models/categoriesModel");
 
 router.post("/insert", (request, responce) => {
-  staffAttendanceModel.findOne(
-    {
-      date: request.body.date,
-      staffId: request.body.staffId,
-      status: request.body.status,
-    },
-    (error, data) => {
+    categoriesModel.findOne(
+        {
+            type: request.body.type,
+            name: request.body.name,
+        },
+        (error, data) => {
+            if (error) {
+                console.log(error);
+            }
+            if (!data) {
+                let categoriesModelObject = new categoriesModel({
+                    type: request.body.type,
+                    name: request.body.name,
+                });
+                categoriesModelObject
+                    .save()
+                    .then((callbackData) => {
+                        responce.json(callbackData);
+                    })
+                    .catch((error) => {
+                        responce.json(error);
+                    });
+            } else {
+                responce.json({ message: `Already exist ${request.body.name} in type ${request.body.type}!` });
+            }
+        }
+    );
+});
+
+router.get("/view", (request, responce) => {
+    categoriesModel.find((error, data) => {
       if (error) {
         console.log(error);
-      }
-      if (!data) {
-        let staffAttendanceModelObject = new staffAttendanceModel({
-          staffId: request.body.staffId,
-          date: request.body.date,
-          status: request.body.status,
-        });
-        staffAttendanceModelObject
-          .save()
-          .then((callbackData) => {
-            responce.json(callbackData);
-          })
-          .catch((error) => {
-            responce.json(error);
-          });
       } else {
-        responce.json({ message: `Already checked ${request.body.status}!` });
+        responce.json(data);
       }
-    }
-  );
-});
+    });
+  });
 
 
 module.exports = router;

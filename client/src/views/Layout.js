@@ -139,6 +139,12 @@ function Layout(props) {
     setOpenCommitteeUser(!openCommitteeUser);
   };
 
+  const [openCategory, setOpenCategory] = React.useState(false);
+
+  const handleClickOfCategory = () => {
+    setOpenCategory(!openCategory);
+  };
+
   const [openTimetableUser, setOpenTimetableUser] = React.useState(false);
 
   const handleClickOfTimetableUser = () => {
@@ -286,6 +292,34 @@ function Layout(props) {
           </>
         ) : data.personal.role === "committee" ? (
           <>
+          
+          <ListItem onClick={handleClickOfCategory}>
+              <ListItemIcon>
+                <ComputerIcon />
+              </ListItemIcon>
+              <ListItemText primary="Categories" />
+              {openCategory ? <ExpandLess /> : <ExpandMore />}
+            </ListItem>
+            <Collapse in={openCategory} timeout="auto" unmountOnExit>
+              <List component="div" disablePadding>
+                <Link className="text-dark" to="/addCategory">
+                  <ListItem sx={{ pl: 4 }}>
+                    <ListItemIcon>
+                      <AddIcon />
+                    </ListItemIcon>
+                    <ListItemText primary="Add Category" />
+                  </ListItem>
+                </Link>
+                <Link className="text-dark" to="/viewCategories">
+                  <ListItem sx={{ pl: 4 }}>
+                    <ListItemIcon>
+                      <GridViewIcon />
+                    </ListItemIcon>
+                    <ListItemText primary="View Categories" />
+                  </ListItem>
+                </Link>
+              </List>
+            </Collapse>
             <ListItem onClick={handleClickOfCommitteeUser}>
               <ListItemIcon>
                 <ComputerIcon />

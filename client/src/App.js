@@ -6,7 +6,9 @@ import Layout from "./views/Layout";
 import AddUser from "./views/AddUser";
 import ViewUsers from "./views/ViewUsers";
 import AddLab from "./views/AddLab";
+import AddCategory from "./views/AddCategory";
 import ViewLabs from "./views/ViewLabs";
+import ViewCategories from "./views/ViewCategories";
 import StaffAttendance from "./views/StaffAttendance";
 import ViewStaffAttendance from "./views/ViewStaffAttendance";
 import AddTimetable from "./views/AddTimetable";
@@ -63,6 +65,22 @@ function App(props) {
             element={
               <Layout>
                 <ViewUsers />
+              </Layout>
+            }
+          />
+          <Route
+            path="/addCategory"
+            element={
+              <Layout>
+                <AddCategory />
+              </Layout>
+            }
+          />
+          <Route
+            path="/viewCategories"
+            element={
+              <Layout>
+                <ViewCategories />
               </Layout>
             }
           />
