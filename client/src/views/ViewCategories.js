@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./../css/Committee.css";
 import { useNavigate } from "react-router-dom";
 import Button from "@mui/material/Button";
+import DeleteIcon from "@mui/icons-material/Delete";
 import TextField from "@mui/material/TextField";
 import KeyboardAltIcon from "@mui/icons-material/KeyboardAlt";
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
@@ -56,6 +57,24 @@ function ViewCategories(props) {
             });
     };
 
+    const deleteMe = async (id) => {
+        await axios
+            .post(CONSTANT.server + `categories/delete/${id}`)
+            .then((responce) => {
+                if (responce.status === 200) {
+                    let res = responce.data;
+                    if (res.message) {
+                        setMessage(res.message, "danger");
+                    } else {
+                        fetchDates();
+                    }
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    };
+
     useEffect(() => {
         fetchDates();
     }, []);
@@ -87,6 +106,7 @@ function ViewCategories(props) {
                                 <tr>
                                     <th scope="col">Type</th>
                                     <th scope="col">Name</th>
+                                    <th scope="col">Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -103,6 +123,19 @@ function ViewCategories(props) {
                                                 <tr>
                                                     <td>{date.type[0].toUpperCase()}{date.type.slice(1)}</td>
                                                     <td>{date.name[0].toUpperCase()}{date.name.slice(1)}</td>
+                                                    <td>
+                                                        <span className="d-flex justify-content-center align-items-center">
+                                                            <span
+                                                                role="button"
+                                                                className="text-danger"
+                                                                onClick={(e) => {
+                                                                    deleteMe(date._id);
+                                                                }}
+                                                            >
+                                                                <DeleteIcon />
+                                                            </span>
+                                                        </span>
+                                                    </td>
                                                 </tr>
                                             );
                                         })

@@ -34,13 +34,24 @@ router.post("/insert", (request, responce) => {
 
 router.get("/view", (request, responce) => {
     categoriesModel.find((error, data) => {
-      if (error) {
-        console.log(error);
-      } else {
-        responce.json(data);
-      }
+        if (error) {
+            console.log(error);
+        } else {
+            responce.json(data);
+        }
     });
-  });
+});
+
+
+router.post("/delete/:id", (request, responce) => {
+    categoriesModel.findByIdAndDelete(request.params.id, (error, data) => {
+        if (error) {
+            console.log(error);
+        } else {
+            responce.json(data);
+        }
+    });
+});
 
 
 module.exports = router;
