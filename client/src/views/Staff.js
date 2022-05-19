@@ -18,6 +18,7 @@ function Staff(props) {
     console.log(error);
   }
   const handleScanWebCam = (result) => {
+    console.log(result)
     if (result) {
       console.log(result)
     }
