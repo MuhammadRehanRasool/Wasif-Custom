@@ -95,49 +95,47 @@ function ViewLeaveRequests(props) {
                   <th scope="col">To</th>
                   <th scope="col">Content</th>
                   <th scope="col">Added On</th>
+                  <th scope="col">Attachment</th>
                 </tr>
               </thead>
               <tbody>
                 {dates.length > 0
                   ? dates
-                      .filter((date, i) => {
-                        return (
-                          date.from.includes(search) ||
-                          date.to.includes(search) ||
-                          date.content.includes(search) ||
-                          date.createdAt.includes(search) ||
-                          date.confirmation1.includes(search) ||
-                          date.confirmation2.includes(search)
-                        );
-                      })
-                      .map((date, i) => {
-                        return (
-                          <tr>
-                            <td
-                              className={`text-${
-                                date.confirmation1 ? "success" : "danger"
+                    .filter((date, i) => {
+                      return (
+                        date.from.includes(search) ||
+                        date.to.includes(search) ||
+                        date.content.includes(search) ||
+                        date.createdAt.includes(search)
+                      );
+                    })
+                    .map((date, i) => {
+                      return (
+                        <tr>
+                          <td
+                            className={`text-${date.confirmation1 ? "success" : "danger"
                               }`}
-                            >
-                              {date.confirmation1 ? "Clear" : "Pending"}
-                            </td>
-                            <td
-                              className={`text-${
-                                date.confirmation2 ? "success" : "danger"
+                          >
+                            {date.confirmation1 ? "Clear" : "Pending"}
+                          </td>
+                          <td
+                            className={`text-${date.confirmation2 ? "success" : "danger"
                               }`}
-                            >
-                              {date.confirmation2 ? "Clear" : "Pending"}
-                            </td>
-                            <td>
-                              {date.from} ({days[new Date(date.from).getDay()]})
-                            </td>
-                            <td>
-                              {date.to} ({days[new Date(date.to).getDay()]})
-                            </td>
-                            <td>{date.content}</td>
-                            <td>{new Date(date.createdAt).toLocaleString()}</td>
-                          </tr>
-                        );
-                      })
+                          >
+                            {date.confirmation2 ? "Clear" : "Pending"}
+                          </td>
+                          <td>
+                            {date.from} ({days[new Date(date.from).getDay()]})
+                          </td>
+                          <td>
+                            {date.to} ({days[new Date(date.to).getDay()]})
+                          </td>
+                          <td>{date.content}</td>
+                          <td>{new Date(date.createdAt).toLocaleString()}</td>
+                          <td>{date.attachment !== "" ? <a href={`${CONSTANT.client}proofs/${date.attachment}`} target="_blank" download={true} role="button" className="text-primary">Download</a> : ""}</td>
+                        </tr>
+                      );
+                    })
                   : "No Requests"}
               </tbody>
             </table>

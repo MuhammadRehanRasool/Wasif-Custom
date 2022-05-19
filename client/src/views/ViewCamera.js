@@ -106,14 +106,9 @@ export default function ViewCamera() {
                                 : ""}
                         </select>
                     </div>
-                        <div className="mt-3 videoTag">
-                        <h5 className="mb-2 text-center">Video</h5>
-                            <video width={320} height={240} className="w-100" controls>
-                                <source src={dataL.cameraIp} type="video/mp4" />
-                                Your browser does not support the video tag.
-                            </video>
-                            <h5 className="mb-2 mt-5 text-center">iFrame</h5>
-                            <iframe src={dataL.cameraIp} title="IP Camera" className="w-100"></iframe>
+                        <div className="mt-3 videoTag w-100 h-100">
+                            <iframe className="w-100" src={dataL.cameraIp} frameborder="0" allowFullScreen></iframe>
+                            {/* <iframe width="640" height="480" src="https://rtsp.me/embed/fYsiZdYB/" frameborder="0" allowfullscreen></iframe> */}
 
                         </div></> : "Please wait..."
                 }

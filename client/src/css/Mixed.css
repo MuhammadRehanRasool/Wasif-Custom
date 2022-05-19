@@ -19,3 +19,7 @@
 .bg-zero{
     background-color: rgba(255, 0, 0, 0.5)!important;
 }
+
+.videoTag iframe{
+    height: 30rem;
+}

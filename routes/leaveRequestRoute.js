@@ -2,21 +2,110 @@ const express = require("express");
 const router = express.Router();
 const labsModel = require("../models/labsModel");
 const leaveRequestModel = require("../models/leaveRequestModel");
+const multer = require("multer");
+const path = require("path");
+
+
+
+const fetchTodayDate = () => {
+  var today = new Date();
+  var dd = String(today.getDate()).padStart(2, "0");
+  var mm = String(today.getMonth() + 1).padStart(2, "0"); //January is 0!
+  var yyyy = today.getFullYear();
+  today = mm + "/" + dd + "/" + yyyy;
+  return today;
+};
+
+
+const formatDate = (date) => {
+  var today = new Date(date);
+  var dd = String(today.getDate()).padStart(2, "0");
+  var mm = String(today.getMonth() + 1).padStart(2, "0"); //January is 0!
+  var yyyy = today.getFullYear();
+  today = mm + "/" + dd + "/" + yyyy;
+  return today;
+};
+
+function fetchPreviousMonthDate() {
+  let date = new Date(fetchTodayDate())
+  date.setMonth(date.getMonth() - 1)
+  return formatDate(date)
+}
+
+const storage = multer.diskStorage({
+  destination: "./client/public/proofs/",
+  filename: function (req, file, cb) {
+    cb(null, "proof-" + req.body.staffId + req.body.from + req.body.to + path.extname(file.originalname));
+  }
+});
+
+const upload = multer({
+  storage: storage,
+  limits: { fileSize: 1000000 },
+}).single("myfile");
 
 router.post("/insert", (request, responce) => {
-  let leaveRequestModelObject = new leaveRequestModel({
-    staffId: request.body.staffId,
-    content: request.body.content,
-    from: request.body.from,
-    to: request.body.to,
+
+  upload(request, responce, () => {
+    const today = new Date();
+    let payload = {
+      ...request.body,
+      date: fetchTodayDate()
+    }
+    if (request.file) {
+      payload.attachment = request.file.filename
+    }
+    else {
+      payload.attachment = ""
+    }
+    if (payload.type === "casual") {
+      leaveRequestModel
+        .count({
+          staffId: payload.staffId,
+          type: "casual",
+          date: {
+            $gt: fetchPreviousMonthDate(),
+            $lte: fetchTodayDate()
+          },
+        })
+        .exec((error, count) => {
+          if (error) {
+            console.log(error);
+          } else {
+            if (count >= 2) {
+              responce.json({ "message": "You have already gained 2 leaves casually!" });
+            }
+          }
+        });
+    }
+    let leaveRequestModelObject = new leaveRequestModel(payload);
+    leaveRequestModelObject
+      .save()
+      .then((callbackData) => {
+        responce.json(callbackData);
+      })
+      .catch((error) => {
+        responce.json(error);
+      });
   });
-  leaveRequestModelObject
-    .save()
-    .then((callbackData) => {
-      responce.json(callbackData);
+});
+
+router.get("/view/checkCasual/:staffId", (request, responce) => {
+  leaveRequestModel
+    .count({
+      staffId: request.params.staffId,
+      type: "casual",
+      date: {
+        $gt: fetchPreviousMonthDate(),
+        $lte: fetchTodayDate()
+      },
     })
-    .catch((error) => {
-      responce.json(error);
+    .exec((error, count) => {
+      if (error) {
+        console.log(error);
+      } else {
+        responce.json(count);
+      }
     });
 });
 
@@ -53,6 +142,7 @@ router.get("/view/me/:id", (request, responce) => {
               createdAt: one.createdAt,
               confirmation1: one.confirmation1,
               confirmation2: one.confirmation2,
+              attachment: one.attachment,
             };
           })
         );
@@ -83,6 +173,7 @@ router.get("/view/committee", (request, responce) => {
               content: one.content,
               createdAt: one.createdAt,
               staffId: one.staffId._id,
+              attachment: one.attachment,
               _id: one._id,
             };
           })
@@ -114,6 +205,7 @@ router.get("/view/hod", (request, responce) => {
               content: one.content,
               createdAt: one.createdAt,
               staffId: one.staffId._id,
+              attachment: one.attachment,
               _id: one._id,
             };
           })

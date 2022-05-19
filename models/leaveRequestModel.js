@@ -10,6 +10,10 @@ const leaveRequestModel = new mongoose.Schema({
     type: String,
     required: true,
   },
+  type: {
+    type: String,
+    required: true,
+  },
   from: {
     type: String,
     required: true,
@@ -18,6 +22,9 @@ const leaveRequestModel = new mongoose.Schema({
     type: String,
     required: true,
   },
+  attachment: {
+    type: String, default: "",
+  },
   confirmation1: {
     type: Boolean,
     default: false,
@@ -25,6 +32,9 @@ const leaveRequestModel = new mongoose.Schema({
   confirmation2: {
     type: Boolean,
     default: false,
+  },
+  date: {
+    type: String,
   },
   createdAt: { type: Date, default: Date.now },
 });

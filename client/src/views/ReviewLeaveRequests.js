@@ -148,55 +148,57 @@ function ReviewLeaveRequests(props) {
                   <th scope="col">To</th>
                   <th scope="col">Content</th>
                   <th scope="col">Added On</th>
+                  <th scope="col">Attachment</th>
                 </tr>
               </thead>
               <tbody>
                 {dates.length > 0
                   ? dates
-                      .filter((date, i) => {
-                        return (
-                          date.name.includes(search) ||
-                          date.email.includes(search) ||
-                          date.from.includes(search) ||
-                          date.to.includes(search)
-                        );
-                      })
-                      .map((date, i) => {
-                        return (
-                          <tr>
-                            <td className="text-primary">
-                              <u
-                                role="button"
-                                onClick={(e) => {
-                                  confirm(date._id);
-                                }}
-                              >
-                                Confirm
-                              </u>
-                            </td>
-                            <td>
-                              {date.name} ({date.email} - {date.id})
-                            </td>
-                            <td>
-                              {labs.length > 0
-                                ? labs.filter((a, b) => {
-                                    return (
-                                      a.controller === date.staffId.toString()
-                                    );
-                                  })[0].name
-                                : ""}
-                            </td>
-                            <td>
-                              {date.from} ({days[new Date(date.from).getDay()]})
-                            </td>
-                            <td>
-                              {date.to} ({days[new Date(date.to).getDay()]})
-                            </td>
-                            <td>{date.content}</td>
-                            <td>{new Date(date.createdAt).toLocaleString()}</td>
-                          </tr>
-                        );
-                      })
+                    .filter((date, i) => {
+                      return (
+                        date.name.includes(search) ||
+                        date.email.includes(search) ||
+                        date.from.includes(search) ||
+                        date.to.includes(search)
+                      );
+                    })
+                    .map((date, i) => {
+                      return (
+                        <tr>
+                          <td className="text-primary">
+                            <u
+                              role="button"
+                              onClick={(e) => {
+                                confirm(date._id);
+                              }}
+                            >
+                              Confirm
+                            </u>
+                          </td>
+                          <td>
+                            {date.name} ({date.email} - {date.id})
+                          </td>
+                          <td>
+                            {labs.length > 0
+                              ? labs.filter((a, b) => {
+                                return (
+                                  a.controller === date.staffId.toString()
+                                );
+                              })[0].name
+                              : ""}
+                          </td>
+                          <td>
+                            {date.from} ({days[new Date(date.from).getDay()]})
+                          </td>
+                          <td>
+                            {date.to} ({days[new Date(date.to).getDay()]})
+                          </td>
+                          <td>{date.content}</td>
+                          <td>{new Date(date.createdAt).toLocaleString()}</td>
+                          <td>{date.attachment !== "" ? <a href={`${CONSTANT.client}proofs/${date.attachment}`} target="_blank" download={true} role="button" className="text-primary">Download</a> : ""}</td>
+                        </tr>
+                      );
+                    })
                   : "No Requests"}
               </tbody>
             </table>

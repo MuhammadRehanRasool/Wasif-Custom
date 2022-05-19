@@ -21,6 +21,7 @@ import LocalPhoneIcon from "@mui/icons-material/LocalPhone";
 import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
 import NumbersIcon from "@mui/icons-material/Numbers";
 import Modal from "@mui/material/Modal";
+import { QRCodeCanvas } from "qrcode.react";
 
 const style = {
   position: "absolute",
@@ -111,7 +112,7 @@ export default function AddUser() {
       return one._id === id;
     })[0];
     setData({
-      id:temp._id,
+      id: temp._id,
       username: temp.username,
       email: temp.email,
       password: "",
@@ -200,55 +201,62 @@ export default function AddUser() {
                 <th scope="col">Phone</th>
                 <th scope="col">Role</th>
                 <th scope="col">Identity Number</th>
+                <th scope="col">QR Code</th>
                 <th scope="col">Actions</th>
               </tr>
             </thead>
             <tbody>
               {users.length > 0
                 ? users
-                    .filter((user, i) => {
-                      return (
-                        user.username.includes(search) ||
-                        user.email.includes(search) ||
-                        user.phone.includes(search) ||
-                        user.role.includes(search) ||
-                        user.identity.includes(search)
-                      );
-                    })
-                    .map((user, i) => {
-                      return (
-                        <tr>
-                          <th scope="row">{i + 1}</th>
-                          <td>{user.username}</td>
-                          <td>{user.email}</td>
-                          <td>{user.phone}</td>
-                          <td>{user.role}</td>
-                          <td>{user.identity}</td>
-                          <td>
-                            <span className="d-flex justify-content-center align-items-center">
-                              <span
-                                role="button"
-                                className="text-danger"
-                                onClick={(e) => {
-                                  deleteMe(user._id);
-                                }}
-                              >
-                                <DeleteIcon />
-                              </span>
-                              <span
-                                role="button"
-                                className="mx-2 text-success"
-                                onClick={(e) => {
-                                  editMe(user._id);
-                                }}
-                              >
-                                <EditIcon />
-                              </span>
+                  .filter((user, i) => {
+                    return (
+                      user.username.includes(search) ||
+                      user.email.includes(search) ||
+                      user.phone.includes(search) ||
+                      user.role.includes(search) ||
+                      user.identity.includes(search)
+                    );
+                  })
+                  .map((user, i) => {
+                    return (
+                      <tr>
+                        <th scope="row">{i + 1}</th>
+                        <td>{user.username}</td>
+                        <td>{user.email}</td>
+                        <td>{user.phone}</td>
+                        <td>{user.role}</td>
+                        <td>{user.identity}</td>
+                        <td><QRCodeCanvas value={`${CONSTANT.client}feedback?type=${user.role}&id=${user._id}`} className="qrcode-image d-none" id={user._id} size={256} /><span role="button" className="text-primary" onClick={() => {
+                          let link = document.createElement('a');
+                          link.download = `${user.username}-qrcode.png`;
+                          link.href = document.getElementById(user._id).toDataURL()
+                          link.click();
+                        }}>Download</span></td>
+                        <td>
+                          <span className="d-flex justify-content-center align-items-center">
+                            <span
+                              role="button"
+                              className="text-danger"
+                              onClick={(e) => {
+                                deleteMe(user._id);
+                              }}
+                            >
+                              <DeleteIcon />
                             </span>
-                          </td>
-                        </tr>
-                      );
-                    })
+                            <span
+                              role="button"
+                              className="mx-2 text-success"
+                              onClick={(e) => {
+                                editMe(user._id);
+                              }}
+                            >
+                              <EditIcon />
+                            </span>
+                          </span>
+                        </td>
+                      </tr>
+                    );
+                  })
                 : "No Users"}
             </tbody>
           </table>
