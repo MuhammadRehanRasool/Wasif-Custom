@@ -39,10 +39,34 @@ function ViewBookLab(props) {
     }
   }, []);
 
-  const [dates, setDates] = useState([]);
-  const fetchDates = async () => {
+  useEffect(() => {
+    if (data.personal._id !== "") {
+      fetchLab();
+    }
+  }, [data]);
+
+  const [labs, setLabs] = useState([]);
+
+  const fetchLab = async () => {
     await axios
-      .get(CONSTANT.server + `bookLab/view/me/${data.personal._id}`)
+      .get(CONSTANT.server + `labs/view/staffId/${data.personal._id}`)
+      .then((responce) => {
+        if (responce.status === 200) {
+          setLabs([...responce.data]);
+          if (responce.data.length > 0) {
+            fetchDates(responce.data[0]._id)
+          }
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  const [dates, setDates] = useState([]);
+  const fetchDates = async (id) => {
+    await axios
+      .get(CONSTANT.server + `bookLab/view/lab/${id.toString()}`)
       .then((responce) => {
         if (responce.status === 200) {
           let res = responce.data;
@@ -57,12 +81,6 @@ function ViewBookLab(props) {
         console.log(error);
       });
   };
-
-  useEffect(() => {
-    if (data.personal._id !== "") {
-      fetchDates();
-    }
-  }, [data]);
 
   return (
     <div className="__Committee">
@@ -89,40 +107,39 @@ function ViewBookLab(props) {
             <table className="table">
               <thead>
                 <tr>
-                  <th scope="col">Status</th>
-                  <th scope="col">Lab Name</th>
-                  <th scope="col">Date</th>
-                  <th scope="col">Slot</th>
+                  <th scope="col">By</th>
+                  <th scope="col">Event</th>
+                  <th scope="col">Number of PC</th>
+                  <th scope="col">Description</th>
                   <th scope="col">Created At</th>
                 </tr>
               </thead>
               <tbody>
                 {dates.length > 0
                   ? dates
-                      .filter((date, i) => {
-                        return (
-                          date.name.includes(search) ||
-                          date.date.includes(search) ||
-                          date.slot.includes(search)
-                        );
-                      })
-                      .map((date, i) => {
-                        return (
-                          <tr>
-                            <td
-                              className={`text-${
-                                date.confirmation ? "success" : "danger"
-                              }`}
-                            >
-                              {date.confirmation ? "" : "Not "}Confirmed
-                            </td>
-                            <td>{date.name}</td>
-                            <td>{date.date}</td>
-                            <td>{date.slot}</td>
-                            <td>{new Date(date.createdAt).toLocaleString()}</td>
-                          </tr>
-                        );
-                      })
+                    .filter((date, i) => {
+                      return (
+                        date.name.includes(search) ||
+                        date.ename.includes(search) ||
+                        date.email.includes(search) ||
+                        date.date.includes(search) ||
+                        date.time.includes(search) ||
+                        date.pc.includes(search)
+                      );
+                    })
+                    .map((date, i) => {
+                      return (
+                        <tr>
+                          <td>
+                            {date.name} ({date.email})
+                          </td>
+                          <td>{date.ename} ({new Date(date.date).toLocaleDateString()}) - ({date.time})</td>
+                          <td>{date.pc}</td>
+                          <td>{date.desc}</td>
+                          <td>{new Date(date.createdAt).toLocaleString()}</td>
+                        </tr>
+                      );
+                    })
                   : "No Report"}
               </tbody>
             </table>

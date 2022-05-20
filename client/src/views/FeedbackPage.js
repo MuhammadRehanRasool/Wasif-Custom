@@ -1,11 +1,15 @@
 import React, { useState, useEffect } from "react";
 import "./../css/Committee.css";
+import UserData from "../components/UserData";
+import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { CONSTANT, Loader } from "./../CONSTANT";
 import { createSearchParams, useSearchParams } from "react-router-dom";
 const axios = require("axios");
 
 function FeedbackPage(props) {
+    let navigate = useNavigate();
+    const { data, setData } = React.useContext(UserData);
 
     const fetchTodayDate = () => {
         var today = new Date();
@@ -55,19 +59,26 @@ function FeedbackPage(props) {
     };
 
     useEffect(() => {
-        if (message.date !== "" && message.id !== "" && message.status !== "" && message.url !== "") {
-            window.location.href = (`${CONSTANT.server}staffAttendance/qrcode/${message.date}/${message.id}/${message.status}/${message.url}`);
+        if (data.personal._id !== "") {
+            if (message.date !== "" && message.id !== "" && message.status !== "" && message.url !== "") {
+                window.location.href = (`${CONSTANT.server}staffAttendance/qrcode/${message.date}/${message.id}/${message.status}/${message.url}`);
+            }
+            if (searchParams.get("type") && searchParams.get("id") && message.status === "" && message.type === "" && message.id === "") {
+                if (searchParams.get("id") === data.personal._id.toString()) {
+                    checkAttendance(searchParams.get("id"), searchParams.get("type"));
+                }
+                else {
+                    navigate("/")
+                }
+            }
+            if (searchParams.get("message") && message.data === "No Message") {
+                setMessage({
+                    ...message,
+                    data: searchParams.get("message")
+                })
+            }
         }
-        if (searchParams.get("type") && searchParams.get("id") && message.status === "" && message.type === "" && message.id === "") {
-            checkAttendance(searchParams.get("id"),searchParams.get("type"));
-        }
-        if (searchParams.get("message") && message.data === "No Message") {
-            setMessage({
-                ...message,
-                data: searchParams.get("message")
-            })
-        }
-    }, [searchParams, message])
+    }, [searchParams, message, data])
     return (
         <div className="__Committee">
             <div className="row d-flex flex-column justify-content-center align-items-center text-center mt-5">

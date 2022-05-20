@@ -827,7 +827,7 @@ function Layout(props) {
                 </Link>
               </List>
             </Collapse>
-            {/* <ListItem onClick={handleClickOfBookLab}>
+            <ListItem onClick={handleClickOfBookLab}>
               <ListItemIcon>
                 <DateRangeIcon />
               </ListItemIcon>
@@ -836,14 +836,6 @@ function Layout(props) {
             </ListItem>
             <Collapse in={openBookLab} timeout="auto" unmountOnExit>
               <List component="div" disablePadding>
-                <Link className="text-dark" to="/bookLab">
-                  <ListItem sx={{ pl: 4 }}>
-                    <ListItemIcon>
-                      <AddIcon />
-                    </ListItemIcon>
-                    <ListItemText primary="Add" />
-                  </ListItem>
-                </Link>
                 <Link className="text-dark" to="/viewBookLab">
                   <ListItem sx={{ pl: 4 }}>
                     <ListItemIcon>
@@ -853,7 +845,7 @@ function Layout(props) {
                   </ListItem>
                 </Link>
               </List>
-            </Collapse> */}
+            </Collapse>
             <ListItem onClick={handleClickOfViewCamera}>
               <ListItemIcon>
                 <PreviewIcon />
