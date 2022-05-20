@@ -687,7 +687,7 @@ function Layout(props) {
                     <ListItemIcon>
                       <CameraOutdoorIcon />
                     </ListItemIcon>
-                    <ListItemText primary="Lab Resozurces" />
+                    <ListItemText primary="Lab Resources" />
                   </ListItem>
                 </Link>
               </List>
