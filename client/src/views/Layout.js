@@ -827,7 +827,7 @@ function Layout(props) {
                 </Link>
               </List>
             </Collapse>
-            <ListItem onClick={handleClickOfBookLab}>
+            {/* <ListItem onClick={handleClickOfBookLab}>
               <ListItemIcon>
                 <DateRangeIcon />
               </ListItemIcon>
@@ -853,7 +853,7 @@ function Layout(props) {
                   </ListItem>
                 </Link>
               </List>
-            </Collapse>
+            </Collapse> */}
             <ListItem onClick={handleClickOfViewCamera}>
               <ListItemIcon>
                 <PreviewIcon />
