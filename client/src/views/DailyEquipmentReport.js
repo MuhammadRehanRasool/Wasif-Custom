@@ -242,7 +242,19 @@ export default function DailyEquipmentReport() {
                 }
               </select>
             </div> : ""
-        }
+        }  {send.problemDomain.hardware !== "working" && send.problemDomain.hardware !== "" ? <div className="custom-input input-group mb-3">
+          <span className="input-group-text">
+            <HardwareIcon />
+          </span>
+          <input
+            type="number"
+            className="form-control"
+            placeholder="Number of PC - Hardware"
+            name="problemWithHardware"
+            onChange={changeData}
+            value={data.problemWithHardware}
+          />
+        </div> : ""}
         {/* hardware */}
         <div className="custom-input input-group mb-3">
           <span className="input-group-text">
@@ -323,6 +335,23 @@ export default function DailyEquipmentReport() {
               }
             </select>
           </div> : ""
+        }
+
+        {
+          send.problemDomain.software !== "working" && send.problemDomain.software !== "" ?
+            <div className="custom-input input-group mb-3">
+              <span className="input-group-text">
+                <AppShortcutIcon />
+              </span>
+              <input
+                type="number"
+                className="form-control"
+                placeholder="Number of PC - Software"
+                name="problemWithSoftware"
+                onChange={changeData}
+                value={data.problemWithSoftware}
+              />
+            </div> : ""
         }
         {/* software */}
         <div className="custom-input input-group mb-3">
@@ -405,6 +434,23 @@ export default function DailyEquipmentReport() {
             </select>
           </div> : ""
         }
+        {
+          send.problemDomain.networking !== "working" && send.problemDomain.networking !== "" ?
+            <div className="custom-input input-group mb-3">
+              <span className="input-group-text">
+                <CellTowerIcon />
+              </span>
+              <input
+                type="number"
+                className="form-control"
+                placeholder="Number of PC - Networking"
+                name="problemWithNetworking"
+                onChange={changeData}
+                value={data.problemWithNetworking}
+              />
+            </div> : ""
+        }
+
         {/* networking */}
         <div className="custom-input input-group mb-3">
           <span className="input-group-text">
@@ -488,57 +534,6 @@ export default function DailyEquipmentReport() {
             </select>
           </div> : ""
         }
-        {/* other */}
-        <br />
-        {send.problemDomain.hardware !== "working" && send.problemDomain.hardware !== "" ? <div className="custom-input input-group mb-3">
-          <span className="input-group-text">
-            <HardwareIcon />
-          </span>
-          <input
-            type="number"
-            className="form-control"
-            placeholder="Problem With Hardware"
-            name="problemWithHardware"
-            onChange={changeData}
-            value={data.problemWithHardware}
-          />
-        </div> : ""}
-
-        {
-          send.problemDomain.software !== "working" && send.problemDomain.software !== "" ?
-            <div className="custom-input input-group mb-3">
-              <span className="input-group-text">
-                <AppShortcutIcon />
-              </span>
-              <input
-                type="number"
-                className="form-control"
-                placeholder="Problem With Software"
-                name="problemWithSoftware"
-                onChange={changeData}
-                value={data.problemWithSoftware}
-              />
-            </div> : ""
-        }
-
-
-        {
-          send.problemDomain.networking !== "working" && send.problemDomain.networking !== "" ?
-            <div className="custom-input input-group mb-3">
-              <span className="input-group-text">
-                <CellTowerIcon />
-              </span>
-              <input
-                type="number"
-                className="form-control"
-                placeholder="Problem With Networking"
-                name="problemWithNetworking"
-                onChange={changeData}
-                value={data.problemWithNetworking}
-              />
-            </div> : ""
-        }
-
         {send.problemDomain.otherEquipment !== "working" && send.problemDomain.otherEquipment !== "" ? <div className="custom-input input-group mb-3">
           <span className="input-group-text">
             <DevicesOtherIcon />
@@ -546,13 +541,17 @@ export default function DailyEquipmentReport() {
           <input
             type="number"
             className="form-control"
-            placeholder="Problem With Other Equipment"
+            placeholder="Number of PC - Other Equipment"
             name="problemWithOtherEquipment"
             onChange={changeData}
             value={data.problemWithOtherEquipment}
           />
         </div>
           : ""}
+
+        {/* other */}
+
+
 
 
         <div className="custom-input input-group mb-3">
