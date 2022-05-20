@@ -21,7 +21,7 @@ function FeedbackPage(props) {
     };
 
     const [message, setMessage] = useState({
-        data: "No Message",
+        data: "Wrong QR",
         type: "",
         date: fetchTodayDate(),
         id: "",
@@ -71,7 +71,7 @@ function FeedbackPage(props) {
                     navigate("/")
                 }
             }
-            if (searchParams.get("message") && message.data === "No Message") {
+            if (searchParams.get("message") && message.data === "Wrong QR") {
                 setMessage({
                     ...message,
                     data: searchParams.get("message")
