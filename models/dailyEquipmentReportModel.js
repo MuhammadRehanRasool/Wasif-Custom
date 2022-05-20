@@ -11,20 +11,20 @@ const dailyEquipmentReportModel = new mongoose.Schema({
     required: true,
   },
   problemWithHardware: {
-    type: String,
-    required: true,
+    type: Number,
+    default: 0
   },
   problemWithSoftware: {
-    type: String,
-    required: true,
+    type: Number,
+    default: 0
   },
   problemWithNetworking: {
-    type: String,
-    required: true,
+    type: Number,
+    default: 0
   },
   problemWithOtherEquipment: {
-    type: String,
-    required: true,
+    type: Number,
+    default: 0
   },
   description: {
     type: String,

@@ -117,72 +117,76 @@ function ViewDailyEquipmentReport(props) {
               <tbody>
                 {dates.length > 0
                   ? dates
-                      .filter((date, i) => {
-                        return (
-                          date.description.includes(search) ||
-                          date.date.includes(search)
-                        );
-                      })
-                      .map((date, i) => {
-                        return (
-                          <tr>
-                            <td
-                              className={`text-${
-                                date.problemDomain.hardware === "working"
-                                  ? "success"
-                                  : "danger"
+                    .filter((date, i) => {
+                      return (
+                        date.description.includes(search) ||
+                        date.date.includes(search)
+                      );
+                    })
+                    .map((date, i) => {
+                      return (
+                        <tr>
+                          <td
+                            className={`text-${date.problemDomain.hardware === "working"
+                                ? "success"
+                                : "danger"
                               }`}
-                            >
-                              {date.problemDomain.hardware
-                                .slice(0, 1)
-                                .toUpperCase() +
-                                date.problemDomain.hardware.slice(1)}
-                            </td>
-                            <td
-                              className={`text-${
-                                date.problemDomain.software === "working"
-                                  ? "success"
-                                  : "danger"
+                          >
+                            {date.problemDomain.hardware
+                              .slice(0, 1)
+                              .toUpperCase() +
+                              date.problemDomain.hardware.slice(1)}
+                            <br />
+                            {date.problemDomain.hardwareCategory !== "" ? `(${date.problemDomain.hardwareCategory})` : ""}
+                          </td>
+                          <td
+                            className={`text-${date.problemDomain.software === "working"
+                                ? "success"
+                                : "danger"
                               }`}
-                            >
-                              {date.problemDomain.software
-                                .slice(0, 1)
-                                .toUpperCase() +
-                                date.problemDomain.software.slice(1)}
-                            </td>
-                            <td
-                              className={`text-${
-                                date.problemDomain.networking === "working"
-                                  ? "success"
-                                  : "danger"
+                          >
+                            {date.problemDomain.software
+                              .slice(0, 1)
+                              .toUpperCase() +
+                              date.problemDomain.software.slice(1)}
+                            <br />
+                            {date.problemDomain.softwareCategory !== "" ? `(${date.problemDomain.softwareCategory})` : ""}
+                          </td>
+                          <td
+                            className={`text-${date.problemDomain.networking === "working"
+                                ? "success"
+                                : "danger"
                               }`}
-                            >
-                              {date.problemDomain.networking
-                                .slice(0, 1)
-                                .toUpperCase() +
-                                date.problemDomain.networking.slice(1)}
-                            </td>
-                            <td
-                              className={`text-${
-                                date.problemDomain.otherEquipment === "working"
-                                  ? "success"
-                                  : "danger"
+                          >
+                            {date.problemDomain.networking
+                              .slice(0, 1)
+                              .toUpperCase() +
+                              date.problemDomain.networking.slice(1)}
+                            <br />
+                            {date.problemDomain.networkingCategory !== "" ? `(${date.problemDomain.networkingCategory})` : ""}
+                          </td>
+                          <td
+                            className={`text-${date.problemDomain.otherEquipment === "working"
+                                ? "success"
+                                : "danger"
                               }`}
-                            >
-                              {date.problemDomain.otherEquipment
-                                .slice(0, 1)
-                                .toUpperCase() +
-                                date.problemDomain.otherEquipment.slice(1)}
-                            </td>
-                            <td>{date.problemWithHardware}</td>
-                            <td>{date.problemWithSoftware}</td>
-                            <td>{date.problemWithNetworking}</td>
-                            <td>{date.problemWithOtherEquipment}</td>
-                            <td>{date.description}</td>
-                            <td>{new Date(date.createdAt).toLocaleString()}</td>
-                          </tr>
-                        );
-                      })
+                          >
+                            {date.problemDomain.otherEquipment
+                              .slice(0, 1)
+                              .toUpperCase() +
+                              date.problemDomain.otherEquipment.slice(1)}
+                            <br />
+                            {date.problemDomain.otherEquipmentCategory !== "" ? `(${date.problemDomain.otherEquipmentCategory})` : ""}
+                          </td>
+                          <td>{date.problemWithHardware}</td>
+                          <td>{date.problemWithSoftware}</td>
+                          <td>{date.problemWithNetworking}</td>
+                          <td>{date.problemWithOtherEquipment}</td>
+                          <td>{date.description}</td>
+                          <td>{new Date(date.createdAt).toLocaleString()}</td>
+                        </tr>
+                      );
+                    })
                   : "No Report"}
               </tbody>
             </table>

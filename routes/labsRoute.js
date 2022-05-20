@@ -48,6 +48,7 @@ router.get("/view", (request, responce) => {
               },
               _id: one._id,
               cameraIp: one.cameraIp,
+              numberOfPcs: one.numberOfPcs,
             };
           })
         );

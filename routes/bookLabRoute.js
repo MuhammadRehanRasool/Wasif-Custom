@@ -4,69 +4,30 @@ const labsModel = require("../models/labsModel");
 const bookLabModel = require("../models/bookLabModel");
 
 router.post("/insert", (request, responce) => {
-  bookLabModel.findOne(
-    {
-      labId: request.body.labId,
-      date: request.body.date,
-      startTime: request.body.startTime,
-      endTime: request.body.endTime,
-      confirmation: true,
-    },
-    (error, data) => {
-      if (error) {
-        console.log(error);
-      }
-      if (!data) {
-        let bookLabModelObject = new bookLabModel({
-          staffId: request.body.staffId,
-          labId: request.body.labId,
-          date: request.body.date,
-          startTime: request.body.startTime,
-          endTime: request.body.endTime,
-        });
-        bookLabModelObject
-          .save()
-          .then((callbackData) => {
-            responce.json(callbackData);
-          })
-          .catch((error) => {
-            responce.json(error);
-          });
-      } else {
-        responce.json({ message: "Slot Booking Exists!" });
-      }
-    }
-  );
+  let bookLabModelObject = new bookLabModel({
+    ...request.body
+  });
+  bookLabModelObject
+    .save()
+    .then((callbackData) => {
+      responce.json(callbackData);
+    })
+    .catch((error) => {
+      responce.json(error);
+    });
 });
 
 router.get("/view", (request, responce) => {
   bookLabModel
-    .find({ confirmation: false }, null, {
+    .find({ confirmation: { $eq: [] } }, null, {
       sort: { createdAt: -1 },
-    })
-    .populate({
-      path: "labId",
-    })
-    .populate({
-      path: "staffId",
     })
     .exec((error, data) => {
       if (error) {
         console.log(error);
       } else {
         responce.json(
-          data.map((one) => {
-            return {
-              name: one.labId.name,
-              date: one.date,
-              slot: getRange([one.startTime, one.endTime]),
-              createdAt: one.createdAt,
-              username: one.staffId.username,
-              email: one.staffId.email,
-              identity: one.staffId.identity,
-              _id: one._id,
-            };
-          })
+          data
         );
       }
     });
@@ -110,7 +71,7 @@ router.put("/confirm/:id", (request, responce) => {
   bookLabModel.findByIdAndUpdate(
     request.params.id,
     {
-      confirmation: true,
+      confirmation: request.body.confirmation,
     },
     { new: true },
     (error, data) => {

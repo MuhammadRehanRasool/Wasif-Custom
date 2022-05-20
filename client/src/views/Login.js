@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import AlternateEmailIcon from "@material-ui/icons/AlternateEmail";
 import VpnKeyIcon from "@material-ui/icons/VpnKey";
 import "./../css/Login.css";
+import { Link } from "react-router-dom";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { CONSTANT, checkLoginFromLogin } from "./../CONSTANT";
@@ -100,6 +101,20 @@ function Login(props) {
           />
           <h1>Welcome!</h1>
           <p>Enter your credentials</p>
+          <br />
+          <div className="w-50 mt-1 d-flex justify-content-center align-items-center">
+            <Link to="/bookLab">
+              <button
+                type="button"
+                className="btn btn-dark"
+                style={{
+                  padding: "12px 15px",
+                }}
+                onClick={""}
+              >
+                Book Lab
+              </button></Link>
+          </div>
         </div>
         <div className="col-lg-6 col-sm-12 d-flex justify-content-center align-items-center">
           <div className="form d-flex flex-column justify-content-center align-items-center">

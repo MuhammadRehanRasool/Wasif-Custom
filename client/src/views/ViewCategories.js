@@ -8,6 +8,11 @@ import KeyboardAltIcon from "@mui/icons-material/KeyboardAlt";
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import PersonSearchIcon from "@mui/icons-material/PersonSearch";
 import CoPresentIcon from "@mui/icons-material/CoPresent";
+import Radio from "@mui/material/Radio";
+import RadioGroup from "@mui/material/RadioGroup";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import FormControl from "@mui/material/FormControl";
+import FormLabel from "@mui/material/FormLabel";
 
 import {
     CONSTANT,
@@ -29,6 +34,7 @@ const days = [
 ];
 
 function ViewCategories(props) {
+    const [filter, setFilter] = useState("");
     const [search, setSearch] = useState("");
     // User Data
     let navigate = useNavigate();
@@ -100,6 +106,34 @@ function ViewCategories(props) {
                         />
                     </div>
 
+                    <div className="mb-3">
+                        <FormControl>
+                            <FormLabel id="demo-row-radio-buttons-group-label">
+                                Filter
+                            </FormLabel>
+                            <RadioGroup
+                                row
+                                aria-labelledby="demo-row-radio-buttons-group-label"
+                                name="row-radio-buttons-group"
+                                onChange={(e) => {
+                                    setFilter(e.target.value);
+                                }}
+                            >
+                                <FormControlLabel value="" control={<Radio />} label="All" />
+                                {["Hardware", "Software", "Networking", "Other"].map((one, i) => {
+                                    return (
+                                        <FormControlLabel
+                                            value={one.toLowerCase()}
+                                            control={<Radio />}
+                                            label={one}
+                                            key={one}
+                                        />
+                                    );
+                                })}
+                            </RadioGroup>
+                        </FormControl>
+                    </div>
+
                     <div className="table-responsive">
                         <table className="table">
                             <thead>
@@ -117,6 +151,13 @@ function ViewCategories(props) {
                                                 date.type.includes(search) ||
                                                 date.name.includes(search)
                                             );
+                                        })
+                                        .filter((date, i) => {
+                                            if (filter === "") {
+                                                return true;
+                                            } else {
+                                                return date.type === filter;
+                                            }
                                         })
                                         .map((date, i) => {
                                             return (

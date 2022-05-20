@@ -49,11 +49,15 @@ export default function DailyEquipmentReport() {
       software: "",
       networking: "",
       otherEquipment: "",
+      hardwareCategory: "",
+      softwareCategory: "",
+      networkingCategory: "",
+      otherEquipmentCategory: "",
     },
-    problemWithHardware: "",
-    problemWithSoftware: "",
-    problemWithNetworking: "",
-    problemWithOtherEquipment: "",
+    problemWithHardware: 0,
+    problemWithSoftware: 0,
+    problemWithNetworking: 0,
+    problemWithOtherEquipment: 0,
     description: "",
     date: fetchTodayDate(),
   };
@@ -86,10 +90,6 @@ export default function DailyEquipmentReport() {
       send.problemDomain.software !== "" &&
       send.problemDomain.networking !== "" &&
       send.problemDomain.otherEquipment !== "" &&
-      send.problemWithHardware !== "" &&
-      send.problemWithSoftware !== "" &&
-      send.problemWithNetworking !== "" &&
-      send.problemWithOtherEquipment !== "" &&
       send.description !== ""
     ) {
       await axios
@@ -117,6 +117,30 @@ export default function DailyEquipmentReport() {
     e.target.style.pointerEvents = "unset";
     e.target.innerHTML = "Add";
   };
+
+  const [cat, setCat] = useState([])
+  const getCat = async () => {
+    await axios
+      .get(CONSTANT.server + `categories/view`)
+      .then((responce) => {
+        if (responce.status === 200) {
+          let res = responce.data;
+          if (res.message) {
+            setMessage(res.message, "danger");
+          } else {
+            setCat(res);
+          }
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+
+  useEffect(() => {
+    getCat();
+  }, []);
+
   return (
     <div className="__AddUser row d-flex justify-content-center align-items-center">
       <div className="form col-lg-6 col-sm-12">
@@ -183,6 +207,43 @@ export default function DailyEquipmentReport() {
             </option>
           </select>
         </div>
+        {
+          send.problemDomain.hardware !== "working" && send.problemDomain.hardware !== "" ?
+            <div className="custom-input input-group mb-3">
+              <span className="input-group-text">
+                <HardwareIcon />
+              </span>
+              <select
+                class="form-select form-control"
+                name="problemDomain"
+                data-name="hardwareCategory"
+                onChange={changeData}
+                value={send.problemDomain.hardwareCategory}
+                aria-label="Hardware Category"
+              >
+                <option
+                  value=""
+                  disabled
+                  selected={send.problemDomain.hardwareCategory === "" ? true : false}
+                >
+                  Hardware Category
+                </option>
+                {
+                  cat.length > 0 ? cat.filter((a, b) => { return a.type === "hardware" }).map((a, b) => {
+                    return <option
+                      value={a.name}
+                      selected={
+                        send.problemDomain.hardwareCategory === a.name ? true : false
+                      }
+                    >
+                      {a.name}
+                    </option>
+                  }) : ""
+                }
+              </select>
+            </div> : ""
+        }
+        {/* hardware */}
         <div className="custom-input input-group mb-3">
           <span className="input-group-text">
             <AppShortcutIcon />
@@ -228,6 +289,42 @@ export default function DailyEquipmentReport() {
             </option>
           </select>
         </div>
+        {
+          send.problemDomain.software !== "working" && send.problemDomain.software !== "" ? <div className="custom-input input-group mb-3">
+            <span className="input-group-text">
+              <AppShortcutIcon />
+            </span>
+            <select
+              class="form-select form-control"
+              name="problemDomain"
+              data-name="softwareCategory"
+              onChange={changeData}
+              value={send.problemDomain.softwareCategory}
+              aria-label="Software Category"
+            >
+              <option
+                value=""
+                disabled
+                selected={send.problemDomain.softwareCategory === "" ? true : false}
+              >
+                Software Category
+              </option>
+              {
+                cat.length > 0 ? cat.filter((a, b) => { return a.type === "software" }).map((a, b) => {
+                  return <option
+                    value={a.name}
+                    selected={
+                      send.problemDomain.softwareCategory === a.name ? true : false
+                    }
+                  >
+                    {a.name}
+                  </option>
+                }) : ""
+              }
+            </select>
+          </div> : ""
+        }
+        {/* software */}
         <div className="custom-input input-group mb-3">
           <span className="input-group-text">
             <CellTowerIcon />
@@ -273,6 +370,42 @@ export default function DailyEquipmentReport() {
             </option>
           </select>
         </div>
+        {
+          send.problemDomain.networking !== "working" && send.problemDomain.networking !== "" ? <div className="custom-input input-group mb-3">
+            <span className="input-group-text">
+              <CellTowerIcon />
+            </span>
+            <select
+              class="form-select form-control"
+              name="problemDomain"
+              data-name="networkingCategory"
+              onChange={changeData}
+              value={send.problemDomain.networkingCategory}
+              aria-label="Networking Category"
+            >
+              <option
+                value=""
+                disabled
+                selected={send.problemDomain.networkingCategory === "" ? true : false}
+              >
+                Networking Category
+              </option>
+              {
+                cat.length > 0 ? cat.filter((a, b) => { return a.type === "networking" }).map((a, b) => {
+                  return <option
+                    value={a.name}
+                    selected={
+                      send.problemDomain.networkingCategory === a.name ? true : false
+                    }
+                  >
+                    {a.name}
+                  </option>
+                }) : ""
+              }
+            </select>
+          </div> : ""
+        }
+        {/* networking */}
         <div className="custom-input input-group mb-3">
           <span className="input-group-text">
             <DevicesOtherIcon />
@@ -320,8 +453,44 @@ export default function DailyEquipmentReport() {
             </option>
           </select>
         </div>
+        {
+          send.problemDomain.otherEquipment !== "working" && send.problemDomain.otherEquipment !== "" ? <div className="custom-input input-group mb-3">
+            <span className="input-group-text">
+              <DevicesOtherIcon />
+            </span>
+            <select
+              class="form-select form-control"
+              name="problemDomain"
+              data-name="otherEquipmentCategory"
+              onChange={changeData}
+              value={send.problemDomain.otherEquipmentCategory}
+              aria-label="Other Equipment Category"
+            >
+              <option
+                value=""
+                disabled
+                selected={send.problemDomain.otherEquipmentCategory === "" ? true : false}
+              >
+                Other Equipment Category
+              </option>
+              {
+                cat.length > 0 ? cat.filter((a, b) => { return a.type === "other" }).map((a, b) => {
+                  return <option
+                    value={a.name}
+                    selected={
+                      send.problemDomain.otherEquipmentCategory === a.name ? true : false
+                    }
+                  >
+                    {a.name}
+                  </option>
+                }) : ""
+              }
+            </select>
+          </div> : ""
+        }
+        {/* other */}
         <br />
-        <div className="custom-input input-group mb-3">
+        {send.problemDomain.hardware !== "working" && send.problemDomain.hardware !== "" ? <div className="custom-input input-group mb-3">
           <span className="input-group-text">
             <HardwareIcon />
           </span>
@@ -333,37 +502,44 @@ export default function DailyEquipmentReport() {
             onChange={changeData}
             value={data.problemWithHardware}
           />
-        </div>
+        </div> : ""}
 
-        <div className="custom-input input-group mb-3">
-          <span className="input-group-text">
-            <AppShortcutIcon />
-          </span>
-          <input
-            type="number"
-            className="form-control"
-            placeholder="Problem With Software"
-            name="problemWithSoftware"
-            onChange={changeData}
-            value={data.problemWithSoftware}
-          />
-        </div>
+        {
+          send.problemDomain.software !== "working" && send.problemDomain.software !== "" ?
+            <div className="custom-input input-group mb-3">
+              <span className="input-group-text">
+                <AppShortcutIcon />
+              </span>
+              <input
+                type="number"
+                className="form-control"
+                placeholder="Problem With Software"
+                name="problemWithSoftware"
+                onChange={changeData}
+                value={data.problemWithSoftware}
+              />
+            </div> : ""
+        }
 
-        <div className="custom-input input-group mb-3">
-          <span className="input-group-text">
-            <CellTowerIcon />
-          </span>
-          <input
-            type="number"
-            className="form-control"
-            placeholder="Problem With Networking"
-            name="problemWithNetworking"
-            onChange={changeData}
-            value={data.problemWithNetworking}
-          />
-        </div>
 
-        <div className="custom-input input-group mb-3">
+        {
+          send.problemDomain.networking !== "working" && send.problemDomain.networking !== "" ?
+            <div className="custom-input input-group mb-3">
+              <span className="input-group-text">
+                <CellTowerIcon />
+              </span>
+              <input
+                type="number"
+                className="form-control"
+                placeholder="Problem With Networking"
+                name="problemWithNetworking"
+                onChange={changeData}
+                value={data.problemWithNetworking}
+              />
+            </div> : ""
+        }
+
+        {send.problemDomain.otherEquipment !== "working" && send.problemDomain.otherEquipment !== "" ? <div className="custom-input input-group mb-3">
           <span className="input-group-text">
             <DevicesOtherIcon />
           </span>
@@ -376,6 +552,8 @@ export default function DailyEquipmentReport() {
             value={data.problemWithOtherEquipment}
           />
         </div>
+          : ""}
+
 
         <div className="custom-input input-group mb-3">
           <span className="input-group-text">

@@ -214,9 +214,7 @@ function App(props) {
           <Route
             path="/bookLab"
             element={
-              <Layout>
-                <BookLab />
-              </Layout>
+              <BookLab />
             }
           />
 

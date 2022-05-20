@@ -1,31 +1,37 @@
 const mongoose = require("mongoose");
 
 const bookLabModel = new mongoose.Schema({
-  staffId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "users",
+  email: {
+    type: String,
     required: true,
   },
-  labId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "labs",
+  name: {
+    type: String,
+    required: true,
+  },
+  ename: {
+    type: String,
     required: true,
   },
   date: {
     type: String,
     required: true,
   },
-  startTime: {
+  time: {
     type: String,
     required: true,
   },
-  endTime: {
+  pc: {
+    type: String,
+    required: true,
+  },
+  desc: {
     type: String,
     required: true,
   },
   confirmation: {
-    type: Boolean,
-    default: false,
+    type: Array,
+    default: [],
   },
   createdAt: { type: Date, default: Date.now },
 });
