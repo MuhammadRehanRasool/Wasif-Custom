@@ -226,7 +226,7 @@ export default function AddUser() {
                         <td>{user.phone}</td>
                         <td>{user.role}</td>
                         <td>{user.identity}</td>
-                        <td><QRCodeCanvas value={`${CONSTANT.client}feedback?type=${user.role}&id=${user._id}`} includeMargin={true} className="qrcode-image d-none" id={user._id} size={256} /><span role="button" className="text-primary" onClick={() => {
+                        <td><QRCodeCanvas value={`feedback?type=${user.role}&id=${user._id}`} includeMargin={true} className="qrcode-image d-none" id={user._id} size={256} /><span role="button" className="text-primary" onClick={() => {
                           let link = document.createElement('a');
                           link.download = `${user.username}-qrcode.png`;
                           link.href = document.getElementById(user._id).toDataURL()

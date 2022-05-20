@@ -19,7 +19,7 @@ function Staff(props) {
   useEffect(() => {
     if (QR !== "") {
       setScanOpen(!scanOpen);
-      window.location.href = QR
+      window.location.href = CONSTANT.client + QR
     }
   }, [QR]);
 
