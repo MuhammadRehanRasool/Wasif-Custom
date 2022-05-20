@@ -687,7 +687,7 @@ function Layout(props) {
                     <ListItemIcon>
                       <CameraOutdoorIcon />
                     </ListItemIcon>
-                    <ListItemText primary="Update Camera IP" />
+                    <ListItemText primary="Lab Resozurces" />
                   </ListItem>
                 </Link>
               </List>
