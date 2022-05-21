@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import "./../css/Committee.css";
-import UserData from "../components/UserData";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { CONSTANT, Loader } from "./../CONSTANT";
@@ -9,7 +8,6 @@ const axios = require("axios");
 
 function FeedbackPage(props) {
     let navigate = useNavigate();
-    const { data, setData } = React.useContext(UserData);
 
     const fetchTodayDate = () => {
         var today = new Date();
@@ -51,6 +49,7 @@ function FeedbackPage(props) {
                             id: searchParams.get("id")
                         })
                     }
+                    navigate("/");
                 }
             })
             .catch((error) => {
@@ -58,20 +57,51 @@ function FeedbackPage(props) {
             });
     };
 
+    const [data, setData] = useState({
+          personal: {
+            username: "",
+            email: "",
+            phone: "",
+            role: "",
+            identity: "",
+            createdAt: "",
+            _id: "",
+          },
+          isLoggedIn: false
+      });
+
+      useEffect(() => {
+        if(localStorage.getItem("loggedin")){
+            setData({
+                personal:{
+                    ...JSON.parse(localStorage.getItem("loggedin")).data
+                },
+                isloggedIn: true
+            })
+        }
+      },[])
+
     useEffect(() => {
+        console.log(data);
         if (data.personal._id !== "") {
             if (message.date !== "" && message.id !== "" && message.status !== "" && message.url !== "") {
+                console.log("READY TO FLY", );
+
                 window.location.href = (`${CONSTANT.server}staffAttendance/qrcode/${message.date}/${message.id}/${message.status}/${message.url}`);
             }
-            if (searchParams.get("type") && searchParams.get("id") && message.status === "" && message.type === "" && message.id === "") {
+            else if (searchParams.get("type") && searchParams.get("id") && message.status === "" && message.type === "" && message.id === "") {
+                console.log("TYPE and ID get");
                 if (searchParams.get("id") === data.personal._id.toString()) {
+                    console.log("TYPE and ID get - SAME USER");
                     checkAttendance(searchParams.get("id"), searchParams.get("type"));
                 }
                 else {
+                    console.log("TYPE and ID get - NOT SAME USER", searchParams.get("id"), data.personal._id.toString());
                     navigate("/")
                 }
             }
-            if (searchParams.get("message") && message.data === "Wrong QR") {
+            else if (searchParams.get("message") && message.data === "Wrong QR") {
+                console.log("MESSAGE SET");
                 setMessage({
                     ...message,
                     data: searchParams.get("message")

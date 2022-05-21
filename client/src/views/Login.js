@@ -47,7 +47,7 @@ function Login(props) {
               if (res.message) {
                 setError(res.message);
               } else {
-                sessionStorage.setItem(
+                localStorage.setItem(
                   "loggedin",
                   JSON.stringify({
                     data: res,

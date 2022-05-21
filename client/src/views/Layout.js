@@ -104,7 +104,7 @@ function Layout(props) {
   };
   const [data, setData] = useState(__init_session);
   useEffect(() => {
-    let sessionData = JSON.parse(sessionStorage.getItem("loggedin"));
+    let sessionData = JSON.parse(localStorage.getItem("loggedin"));
     if (sessionData) {
       setData({
         personal: sessionData.data,
@@ -114,7 +114,7 @@ function Layout(props) {
   }, []);
   const value = { data, setData };
   const logout = () => {
-    sessionStorage.removeItem("loggedin");
+    localStorage.removeItem("loggedin");
     setData(__init_session);
     navigate("/login");
   };

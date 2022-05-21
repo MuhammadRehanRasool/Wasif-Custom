@@ -8,50 +8,50 @@ export const CONSTANT = {
 };
 
 export const checkLoginFromLogin = () => {
-  return sessionStorage.getItem("loggedin") &&
-    JSON.parse(sessionStorage.getItem("loggedin")).data
+  return localStorage.getItem("loggedin") &&
+    JSON.parse(localStorage.getItem("loggedin")).data
     ? true
     : false;
 };
 
 export const checkLoginFromNonLogin = () => {
-  return sessionStorage.getItem("loggedin") &&
-    JSON.parse(sessionStorage.getItem("loggedin")).data
+  return localStorage.getItem("loggedin") &&
+    JSON.parse(localStorage.getItem("loggedin")).data
     ? false
     : true;
 };
 
 export const checkLoginFromAdmin = () => {
-  return sessionStorage.getItem("loggedin") &&
-    JSON.parse(sessionStorage.getItem("loggedin")).data.role === "admin"
+  return localStorage.getItem("loggedin") &&
+    JSON.parse(localStorage.getItem("loggedin")).data.role === "admin"
     ? false
     : true;
 };
 
 export const checkLoginFromCommittee = () => {
-  return sessionStorage.getItem("loggedin") &&
-    JSON.parse(sessionStorage.getItem("loggedin")).data.role === "committee"
+  return localStorage.getItem("loggedin") &&
+    JSON.parse(localStorage.getItem("loggedin")).data.role === "committee"
     ? false
     : true;
 };
 
 export const checkLoginFromHOD = () => {
-  return sessionStorage.getItem("loggedin") &&
-    JSON.parse(sessionStorage.getItem("loggedin")).data.role === "hod"
+  return localStorage.getItem("loggedin") &&
+    JSON.parse(localStorage.getItem("loggedin")).data.role === "hod"
     ? false
     : true;
 };
 
 export const checkLoginFromStaff = () => {
-  return sessionStorage.getItem("loggedin") &&
-    JSON.parse(sessionStorage.getItem("loggedin")).data.role === "staff"
+  return localStorage.getItem("loggedin") &&
+    JSON.parse(localStorage.getItem("loggedin")).data.role === "staff"
     ? false
     : true;
 };
 
 export const checkLoginFromTeacher = () => {
-  return sessionStorage.getItem("loggedin") &&
-    JSON.parse(sessionStorage.getItem("loggedin")).data.role === "teacher"
+  return localStorage.getItem("loggedin") &&
+    JSON.parse(localStorage.getItem("loggedin")).data.role === "teacher"
     ? false
     : true;
 };
