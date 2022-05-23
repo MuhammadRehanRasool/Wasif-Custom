@@ -25,6 +25,7 @@ import EmailIcon from "@mui/icons-material/Email";
 import LocalPhoneIcon from "@mui/icons-material/LocalPhone";
 import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
 import NumbersIcon from "@mui/icons-material/Numbers";
+import Legend from "./../../components/Legend";
 
 const HtmlTooltip = styled(({ className, ...props }) => (
   <Tooltip {...props} classes={{ popper: className }} />
@@ -275,6 +276,8 @@ export default function WeeklyAttendanceReport() {
     <div className="__AddUser row d-flex justify-content-center align-items-center">
       <div className="form row">
         <h1 className="mb-5 text-center">Weekly Attendance Report</h1>
+
+        <Legend />
 
         <div className="custom-input input-group mb-3">
           <span className="input-group-text">

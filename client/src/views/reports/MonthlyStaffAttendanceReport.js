@@ -10,6 +10,7 @@ import PersonSearchIcon from "@mui/icons-material/PersonSearch";
 import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
 import CoPresentIcon from "@mui/icons-material/CoPresent";
 import { Chart } from "react-google-charts";
+import Legend from "./../../components/Legend";
 
 import {
   CONSTANT,
@@ -161,6 +162,7 @@ function DailyStaffAttendanceReport(props) {
         </div>
         <div className="row d-flex flex-row justify-content-center align-items-center">
           <h1 className="mb-4 text-center">Staff Attendance</h1>
+          <Legend />
           <div className="custom-input input-group mb-3">
             <span className="input-group-text">
               <AdminPanelSettingsIcon />

@@ -8,7 +8,7 @@ import KeyboardAltIcon from "@mui/icons-material/KeyboardAlt";
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import PersonSearchIcon from "@mui/icons-material/PersonSearch";
 import CoPresentIcon from "@mui/icons-material/CoPresent";
-
+import Legend from "./../../components/Legend";
 import {
   CONSTANT,
   checkLoginFromCommittee,
@@ -151,11 +151,12 @@ function DailyTeacherAttendanceReport(props) {
     <div className="__Committee">
       <div className="row d-flex flex-column justify-content-center align-items-center">
         <div className="mb-5 row d-flex flex-row justify-content-center align-items-center">
-          <span className="text-center text-muted display-6">Daily Report</span>
+          <span className="text-center text-muted display-6">Monthly Report</span>
           <span className="text-center display-6">{fetchTodayDate()}</span>
         </div>
         <div className="row d-flex flex-row justify-content-center align-items-center">
           <h1 className="mb-4 text-center">Teacher Attendance</h1>
+          <Legend />
           <div className="custom-input input-group mb-3">
             <span className="input-group-text">
               <PersonSearchIcon />

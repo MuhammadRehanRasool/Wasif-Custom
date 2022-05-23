@@ -120,7 +120,7 @@ router.get("/view/dated/:month/:day/:year", (request, responce) => {
   staffAttendanceModel.find(
     {
       date: `${request.params.month}/${request.params.day}/${request.params.year}`,
-      status: "present",
+      status: "in",
     },
     null,
     { sort: { date: -1 } },

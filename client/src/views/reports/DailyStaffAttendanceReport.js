@@ -4,6 +4,7 @@ import UserData from "../../components/UserData";
 import { useNavigate } from "react-router-dom";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
+import Legend from "./../../components/Legend";
 import KeyboardAltIcon from "@mui/icons-material/KeyboardAlt";
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import PersonSearchIcon from "@mui/icons-material/PersonSearch";
@@ -116,6 +117,7 @@ function DailyStaffAttendanceReport(props) {
         </div>
         <div className="row d-flex flex-row justify-content-center align-items-center">
           <h1 className="mb-4 text-center">Staff Attendance</h1>
+          <Legend />
           <div className="custom-input input-group mb-3">
             <span className="input-group-text">
               <PersonSearchIcon />

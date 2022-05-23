@@ -97,28 +97,54 @@ router.get("/view/:id", (request, responce) => {
       }
     });
 });
+const fetchTodayDate = () => {
+  var today = new Date();
+  var dd = String(today.getDate()).padStart(2, "0");
+  var mm = String(today.getMonth() + 1).padStart(2, "0"); //January is 0!
+  var yyyy = today.getFullYear();
+  return mm + "/" + dd + "/" + yyyy;
+};
 
-router.get("/view/dated/:month/:day/:year", (request, responce) => {
-  teacherAttendanceModel.find(
-    {
-      date: `${request.params.month}/${request.params.day}/${request.params.year}`,
-      status: "in",
-      confirmation: true,
-    },
-    null,
-    { sort: { date: -1 } },
-    (error, data) => {
+router.get("/view/dated/today", (request, responce) => {
+  teacherAttendanceModel
+    .find({ date: fetchTodayDate() }, null, { sort: { createdAt: -1 } })
+    .populate({
+      path: "slotId",
+      populate: {
+        path: "labId",
+        model: "labs",
+      },
+    })
+    .exec((error, data) => {
       if (error) {
         console.log(error);
       } else {
         responce.json(
-          data.map((a, b) => {
-            return a.slotId;
+          data.map((one, i) => {
+            let tt = [one.slotId.startTime, one.slotId.endTime];
+            tt.map((two, j) => {
+              if (parseInt(tt[j].slice(0, 2)) <= 12) {
+                tt[j] += "AM";
+              } else {
+                tt[j] =
+                  pad(parseInt(parseInt(tt[j].slice(0, 2)) - 12)) +
+                  tt[j].slice(2) +
+                  "PM";
+              }
+            });
+            return {
+              date: one.date,
+              name: one.slotId.labId.name,
+              subjectName: one.slotId.subjectName,
+              status: one.status,
+              confirmation: one.confirmation,
+              createdAt: one.createdAt,
+              range: tt[0] + "-" + tt[1],
+            };
           })
         );
       }
-    }
-  );
+    });
 });
 
 router.post("/view/dated/monthly", (request, responce) => {
