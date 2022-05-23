@@ -43,7 +43,7 @@ function DailyLeaveRequestReport(props) {
   const [labs, setLabs] = useState([]);
   const fetchDates = async () => {
     await axios
-      .get(CONSTANT.server + `leaveRequest/view`)
+      .get(CONSTANT.server + `leaveRequest/view/dynamic/today`)
       .then((responce) => {
         if (responce.status === 200) {
           let res = responce.data;
@@ -115,46 +115,15 @@ function DailyLeaveRequestReport(props) {
             />
           </div>
 
-          <div className="mb-3">
-            <FormControl>
-              <FormLabel id="demo-row-radio-buttons-group-label">
-                Filter
-              </FormLabel>
-              <RadioGroup
-                row
-                aria-labelledby="demo-row-radio-buttons-group-label"
-                name="row-radio-buttons-group"
-                onChange={(e) => {
-                  setFilter(e.target.value);
-                }}
-              >
-                <FormControlLabel value="" control={<Radio />} label="None"/>
-                <FormControlLabel
-                  value="hod"
-                  control={<Radio />}
-                  label="HOD Approved"
-                />
-                <FormControlLabel
-                  value="committee"
-                  control={<Radio />}
-                  label="Committee Approved"
-                />
-                <FormControlLabel
-                  value="both"
-                  control={<Radio />}
-                  label="Both Approved"
-                />
-              </RadioGroup>
-            </FormControl>
-          </div>
-
           <div className="table-responsive">
             <table className="table">
               <thead>
                 <tr>
-                  <th scope="col">Lab</th>
-                  <th scope="col">Staff Name</th>
-                  <th scope="col">Duration</th>
+                  <th scope="col">Staff</th>
+                  <th scope="col">Casual</th>
+                  <th scope="col">Medical</th>
+                  <th scope="col">Earned</th>
+                  <th scope="col">Total</th>
                 </tr>
               </thead>
               <tbody>
@@ -163,41 +132,17 @@ function DailyLeaveRequestReport(props) {
                       .filter((date, i) => {
                         return date.staffId.username.includes(search);
                       })
-                      .filter((date, i) => {
-                        if (filter === "") {
-                          return true;
-                        } else if (filter === "hod") {
-                          return date.confirmation2;
-                        } else if (filter === "committee") {
-                          return date.confirmation1;
-                        } else if (filter === "both") {
-                          return date.confirmation1 && date.confirmation2;
-                        }
-                      })
                       .map((date, i) => {
                         return (
                           <tr>
                             <td>
-                              {labs.length > 0
-                                ? labs
-                                    .filter((a, b) => {
-                                      return (
-                                        a.controller ===
-                                        date.staffId._id.toString()
-                                      );
-                                    })
-                                    .map((a, b) => {
-                                      return a.name;
-                                    })
-                                : ""}
-                            </td>
-                            <td>
                               {date.staffId.username} ({date.staffId.email} -{" "}
                               {date.staffId.identity})
                             </td>
-                            <td>
-                              {date.to}-{date.from}
-                            </td>
+                            <td>{date.casual}</td>
+                            <td>{date.medical}</td>
+                            <td>{date.earned}</td>
+                            <td>{date.total}</td>
                           </tr>
                         );
                       })

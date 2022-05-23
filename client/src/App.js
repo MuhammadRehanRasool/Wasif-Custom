@@ -54,12 +54,7 @@ function App(props) {
               </Layout>
             }
           />
-          <Route
-            path="/feedback"
-            element={
-              <FeedbackPage />
-            }
-          />
+          <Route path="/feedback" element={<FeedbackPage />} />
           <Route
             path="/viewUsers"
             element={
@@ -163,7 +158,6 @@ function App(props) {
             }
           />
 
-
           <Route
             path="/myLab"
             element={
@@ -181,8 +175,6 @@ function App(props) {
               </Layout>
             }
           />
-
-
 
           <Route
             path="/reviewLeaveRequests/*"
@@ -211,12 +203,7 @@ function App(props) {
             }
           />
 
-          <Route
-            path="/bookLab"
-            element={
-              <BookLab />
-            }
-          />
+          <Route path="/bookLab" element={<BookLab />} />
 
           <Route
             path="/viewBookLab"
@@ -317,6 +304,22 @@ function App(props) {
             }
           />
           <Route
+            path="/report/daily/equipment/networking"
+            element={
+              <Layout>
+                <DailyEquipmentCheckReport type="networking" />
+              </Layout>
+            }
+          />
+          <Route
+            path="/report/daily/equipment/others"
+            element={
+              <Layout>
+                <DailyEquipmentCheckReport type="others" />
+              </Layout>
+            }
+          />
+          <Route
             path="/report/monthly/attendance/staff"
             element={
               <Layout>
@@ -366,6 +369,23 @@ function App(props) {
             element={
               <Layout>
                 <MonthlyEquipmentCheckReport type="hardware" />
+              </Layout>
+            }
+          />
+
+          <Route
+            path="/report/monthly/equipment/networking"
+            element={
+              <Layout>
+                <MonthlyEquipmentCheckReport type="networking" />
+              </Layout>
+            }
+          />
+          <Route
+            path="/report/monthly/equipment/others"
+            element={
+              <Layout>
+                <MonthlyEquipmentCheckReport type="others" />
               </Layout>
             }
           />

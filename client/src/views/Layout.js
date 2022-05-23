@@ -15,8 +15,9 @@ import HardwareIcon from "@mui/icons-material/Hardware";
 import MenuIcon from "@material-ui/icons/Menu";
 import GridViewIcon from "@mui/icons-material/GridView";
 import DateRangeIcon from "@mui/icons-material/DateRange";
-import CameraOutdoorIcon from '@mui/icons-material/CameraOutdoor';
-import ClassIcon from '@mui/icons-material/Class';
+import CellTowerIcon from "@mui/icons-material/CellTower";
+import CameraOutdoorIcon from "@mui/icons-material/CameraOutdoor";
+import ClassIcon from "@mui/icons-material/Class";
 import AddIcon from "@mui/icons-material/Add";
 import BookmarkAddedIcon from "@mui/icons-material/BookmarkAdded";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -177,8 +178,7 @@ function Layout(props) {
     setOpenTeacherAttendanceUser(!openTeacherAttendanceUser);
   };
 
-  const [openMyLab, setOpenMyLab] =
-    React.useState(false);
+  const [openMyLab, setOpenMyLab] = React.useState(false);
 
   const handleClickOfMyLab = () => {
     setOpenMyLab(!openMyLab);
@@ -246,7 +246,6 @@ function Layout(props) {
     setOpenEquipmentReport2(!openEquipmentReport2);
   };
 
-
   const [openViewCamera, setOpenViewCamera] = React.useState(false);
 
   const handleClickOfViewCamera = () => {
@@ -292,8 +291,7 @@ function Layout(props) {
           </>
         ) : data.personal.role === "committee" ? (
           <>
-          
-          <ListItem onClick={handleClickOfCategory}>
+            <ListItem onClick={handleClickOfCategory}>
               <ListItemIcon>
                 <ComputerIcon />
               </ListItemIcon>
@@ -497,6 +495,28 @@ function Layout(props) {
                             <ListItemText primary="Hardware" />
                           </ListItem>
                         </Link>
+                        <Link
+                          className="text-dark"
+                          to="/report/daily/equipment/networking"
+                        >
+                          <ListItem sx={{ pl: 8 }}>
+                            <ListItemIcon>
+                              <AppShortcutIcon />
+                            </ListItemIcon>
+                            <ListItemText primary="Networking" />
+                          </ListItem>
+                        </Link>
+                        <Link
+                          className="text-dark"
+                          to="/report/daily/equipment/others"
+                        >
+                          <ListItem sx={{ pl: 8 }}>
+                            <ListItemIcon>
+                              <CellTowerIcon />
+                            </ListItemIcon>
+                            <ListItemText primary="Others" />
+                          </ListItem>
+                        </Link>
                       </List>
                     </Collapse>
                     <Link className="text-dark" to="/report/daily/labBookings">
@@ -624,6 +644,28 @@ function Layout(props) {
                           </ListItem>
                         </Link>
                       </List>
+                      <Link
+                        className="text-dark"
+                        to="/report/monthly/equipment/networking"
+                      >
+                        <ListItem sx={{ pl: 8 }}>
+                          <ListItemIcon>
+                            <AppShortcutIcon />
+                          </ListItemIcon>
+                          <ListItemText primary="Networking" />
+                        </ListItem>
+                      </Link>
+                      <Link
+                        className="text-dark"
+                        to="/report/monthly/equipment/others"
+                      >
+                        <ListItem sx={{ pl: 8 }}>
+                          <ListItemIcon>
+                            <CellTowerIcon />
+                          </ListItemIcon>
+                          <ListItemText primary="Others" />
+                        </ListItem>
+                      </Link>
                     </Collapse>
                     <Link
                       className="text-dark"
@@ -647,16 +689,9 @@ function Layout(props) {
               <ListItemText primary="View Camera" />
               {openViewCamera ? <ExpandLess /> : <ExpandMore />}
             </ListItem>
-            <Collapse
-              in={openViewCamera}
-              timeout="auto"
-              unmountOnExit
-            >
+            <Collapse in={openViewCamera} timeout="auto" unmountOnExit>
               <List component="div" disablePadding>
-                <Link
-                  className="text-dark"
-                  to="/viewCamera"
-                >
+                <Link className="text-dark" to="/viewCamera">
                   <ListItem sx={{ pl: 4 }}>
                     <ListItemIcon>
                       <PreviewIcon />
@@ -676,11 +711,7 @@ function Layout(props) {
               <ListItemText primary="My Lab" />
               {openMyLab ? <ExpandLess /> : <ExpandMore />}
             </ListItem>
-            <Collapse
-              in={openMyLab}
-              timeout="auto"
-              unmountOnExit
-            >
+            <Collapse in={openMyLab} timeout="auto" unmountOnExit>
               <List component="div" disablePadding>
                 <Link className="text-dark" to="/myLab">
                   <ListItem sx={{ pl: 4 }}>
@@ -853,16 +884,9 @@ function Layout(props) {
               <ListItemText primary="View Camera" />
               {openViewCamera ? <ExpandLess /> : <ExpandMore />}
             </ListItem>
-            <Collapse
-              in={openViewCamera}
-              timeout="auto"
-              unmountOnExit
-            >
+            <Collapse in={openViewCamera} timeout="auto" unmountOnExit>
               <List component="div" disablePadding>
-                <Link
-                  className="text-dark"
-                  to="/viewCamera"
-                >
+                <Link className="text-dark" to="/viewCamera">
                   <ListItem sx={{ pl: 4 }}>
                     <ListItemIcon>
                       <PreviewIcon />
@@ -935,16 +959,9 @@ function Layout(props) {
               <ListItemText primary="View Camera" />
               {openViewCamera ? <ExpandLess /> : <ExpandMore />}
             </ListItem>
-            <Collapse
-              in={openViewCamera}
-              timeout="auto"
-              unmountOnExit
-            >
+            <Collapse in={openViewCamera} timeout="auto" unmountOnExit>
               <List component="div" disablePadding>
-                <Link
-                  className="text-dark"
-                  to="/viewCamera"
-                >
+                <Link className="text-dark" to="/viewCamera">
                   <ListItem sx={{ pl: 4 }}>
                     <ListItemIcon>
                       <PreviewIcon />
@@ -982,7 +999,11 @@ function Layout(props) {
                 <MenuIcon />
               </IconButton>
               <Typography variant="h6" noWrap className="text-capitalize">
-                <Link to="/" role="button" className="text-capitalize text-light">
+                <Link
+                  to="/"
+                  role="button"
+                  className="text-capitalize text-light"
+                >
                   {data.personal.role}
                 </Link>
               </Typography>

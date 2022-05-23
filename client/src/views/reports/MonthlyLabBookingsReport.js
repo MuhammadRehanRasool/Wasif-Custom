@@ -20,7 +20,7 @@ import {
   setMessage,
   resetMessage,
   isMessage,
-} from "../../CONSTANT";
+} from "./../../CONSTANT";
 const axios = require("axios");
 
 function DailyLabBookingsReport(props) {
@@ -43,7 +43,7 @@ function DailyLabBookingsReport(props) {
   const [labs, setLabs] = useState([]);
   const fetchDates = async () => {
     await axios
-      .get(CONSTANT.server + `bookLab/view/all`)
+      .get(CONSTANT.server + `bookLab/view/all/monthly`)
       .then((responce) => {
         if (responce.status === 200) {
           let res = responce.data;
@@ -81,8 +81,6 @@ function DailyLabBookingsReport(props) {
     return today;
   };
 
-  const [filter, setFilter] = useState("");
-
   useEffect(() => {
     if (data.personal._id !== "") {
       fetchLabOfStaff();
@@ -94,7 +92,9 @@ function DailyLabBookingsReport(props) {
     <div className="__Committee">
       <div className="row d-flex flex-column justify-content-center align-items-center">
         <div className="mb-5 row d-flex flex-row justify-content-center align-items-center">
-          <span className="text-center text-muted display-6">Daily Report</span>
+          <span className="text-center text-muted display-6">
+            Monthly Report
+          </span>
           <span className="text-center display-6">{fetchTodayDate()}</span>
         </div>
         <div className="row d-flex flex-row justify-content-center align-items-center">
@@ -115,42 +115,17 @@ function DailyLabBookingsReport(props) {
             />
           </div>
 
-          <div className="mb-3">
-            <FormControl>
-              <FormLabel id="demo-row-radio-buttons-group-label">
-                Filter
-              </FormLabel>
-              <RadioGroup
-                row
-                aria-labelledby="demo-row-radio-buttons-group-label"
-                name="row-radio-buttons-group"
-                onChange={(e) => {
-                  setFilter(e.target.value);
-                }}
-              >
-                <FormControlLabel value="" control={<Radio />} label="None" />
-                <FormControlLabel
-                  value="yes"
-                  control={<Radio />}
-                  label="Approved"
-                />
-                <FormControlLabel
-                  value="no"
-                  control={<Radio />}
-                  label="Not Approved"
-                />
-              </RadioGroup>
-            </FormControl>
-          </div>
-
           <div className="table-responsive">
             <table className="table">
               <thead>
                 <tr>
-                  <th scope="col">Staff Name</th>
-                  <th scope="col">Lab Name</th>
-                  <th scope="col">Date</th>
-                  <th scope="col">Slot</th>
+                  <th scope="col">By</th>
+                  <th scope="col">Event</th>
+                  <th scope="col">Number of PC</th>
+                  <th scope="col">Description</th>
+                  <th scope="col">Labs</th>
+                  <th scope="col">Completed?</th>
+                  <th scope="col">Created At</th>
                 </tr>
               </thead>
               <tbody>
@@ -158,28 +133,42 @@ function DailyLabBookingsReport(props) {
                   ? dates
                       .filter((date, i) => {
                         return (
-                          date.username.includes(search) ||
-                          date.name.includes(search)
+                          date.ename.includes(search) ||
+                          date.name.includes(search) ||
+                          date.email.includes(search)
                         );
-                      })
-                      .filter((date, i) => {
-                        if (filter === "") {
-                          return true;
-                        } else if (filter === "yes") {
-                          return date.confirmation;
-                        } else if (filter === "no") {
-                          return !date.confirmation;
-                        }
                       })
                       .map((date, i) => {
                         return (
                           <tr>
                             <td>
-                              {date.username} ({date.email} - {date.identity})
+                              {date.name} ({date.email})
                             </td>
-                            <td>{date.name}</td>
-                            <td>{date.date}</td>
-                            <td>{date.slot}</td>
+                            <td>
+                              {date.ename} (
+                              {new Date(date.date).toLocaleDateString()}) - (
+                              {date.time})
+                            </td>
+                            <td>{date.pc}</td>
+                            <td>{date.desc}</td>
+                            <td>
+                              {date.confirmation
+                                .map((a, b) => {
+                                  return labs.filter((k, l) => {
+                                    return k._id === a;
+                                  })[0]?.name;
+                                })
+                                .map((a, b) => {
+                                  return (
+                                    <>
+                                      <span>{a}</span>
+                                      <br />
+                                    </>
+                                  );
+                                })}
+                            </td>
+                            <td>{date.completed ? "Yes" : "No"}</td>
+                            <td>{new Date(date.createdAt).toLocaleString()}</td>
                           </tr>
                         );
                       })

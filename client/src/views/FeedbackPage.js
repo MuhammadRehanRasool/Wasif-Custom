@@ -82,7 +82,6 @@ function FeedbackPage(props) {
       },[])
 
     useEffect(() => {
-        console.log(data);
         if (data.personal._id !== "") {
             if (message.date !== "" && message.id !== "" && message.status !== "" && message.url !== "") {
                 console.log("READY TO FLY", );

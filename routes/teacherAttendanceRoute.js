@@ -102,7 +102,30 @@ router.get("/view/dated/:month/:day/:year", (request, responce) => {
   teacherAttendanceModel.find(
     {
       date: `${request.params.month}/${request.params.day}/${request.params.year}`,
-      status: "present",
+      status: "in",
+      confirmation: true,
+    },
+    null,
+    { sort: { date: -1 } },
+    (error, data) => {
+      if (error) {
+        console.log(error);
+      } else {
+        responce.json(
+          data.map((a, b) => {
+            return a.slotId;
+          })
+        );
+      }
+    }
+  );
+});
+
+router.post("/view/dated/monthly", (request, responce) => {
+  teacherAttendanceModel.find(
+    {
+      date: { $gte: request.body.from, $lte: request.body.till },
+      status: "in",
       confirmation: true,
     },
     null,

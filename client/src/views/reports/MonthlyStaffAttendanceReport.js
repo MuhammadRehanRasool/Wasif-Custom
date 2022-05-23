@@ -210,6 +210,7 @@ function DailyStaffAttendanceReport(props) {
                             return a._id === staffId.toString();
                           })
                           .map((a, b) => {
+                            if (b > 0) return;
                             return (
                               a.username +
                               " (" +
@@ -230,6 +231,7 @@ function DailyStaffAttendanceReport(props) {
                             return a.controller === staffId.toString();
                           })
                           .map((a, b) => {
+                            if (b > 0) return;
                             return a.name;
                           })
                       : ""}

@@ -17,10 +17,12 @@ router.post("/insert", (request, responce) => {
         let dailyEquipmentReportModelObject = new dailyEquipmentReportModel({
           staffId: request.body.staffId,
           problemDomain: request.body.problemDomain,
-          problemWithHardware: request.body.problemWithHardware,
-          problemWithSoftware: request.body.problemWithSoftware,
-          problemWithNetworking: request.body.problemWithNetworking,
-          problemWithOtherEquipment: request.body.problemWithOtherEquipment,
+          problemWithHardware: parseInt(request.body.problemWithHardware),
+          problemWithSoftware: parseInt(request.body.problemWithSoftware),
+          problemWithNetworking: parseInt(request.body.problemWithNetworking),
+          problemWithOtherEquipment: parseInt(
+            request.body.problemWithOtherEquipment
+          ),
           description: request.body.description,
           date: request.body.date,
         });
@@ -47,6 +49,126 @@ router.get("/view", (request, responce) => {
       responce.json(data);
     }
   });
+});
+
+const fetchTodayDate = () => {
+  var today = new Date();
+  var dd = String(today.getDate()).padStart(2, "0");
+  var mm = String(today.getMonth() + 1).padStart(2, "0"); //January is 0!
+  var yyyy = today.getFullYear();
+  today = mm + "/" + dd + "/" + yyyy;
+  return today;
+};
+
+const fetchPreviousMonthDate = () => {
+  let now = new Date();
+  let today = "";
+  if (now.getMonth() === 0) {
+    today = new Date(now.getFullYear() - 1, 3, now.getDate());
+  } else {
+    today = new Date(now.getFullYear(), now.getMonth() + 1, now.getDate());
+  }
+  var dd = String(today.getDate()).padStart(2, "0");
+  var mm = String(today.getMonth() - 1).padStart(2, "0"); //January is 0!
+  var yyyy = today.getFullYear();
+  today = mm + "/" + dd + "/" + yyyy;
+  return today;
+};
+
+router.get("/view/dynamic/:problemWith/:range", (request, responce) => {
+  let problemWith =
+    "problemWith" +
+    request.params.problemWith[0].toUpperCase() +
+    request.params.problemWith.slice(1);
+  let range = request.params.range;
+  if (range === "today") {
+    dailyEquipmentReportModel
+      .find({ [problemWith]: { $gt: 0 }, date: fetchTodayDate() })
+      .populate({
+        path: "staffId",
+      })
+      .exec((error, data) => {
+        if (error) {
+          console.log(error);
+        } else {
+          responce.json(
+            data.map((a, b) => {
+              return {
+                staffId: a.staffId,
+                problem:
+                  request.params.problemWith === "software"
+                    ? a.problemWithSoftware
+                    : request.params.problemWith === "hardware"
+                    ? a.problemWithHardware
+                    : request.params.problemWith === "networking"
+                    ? a.problemWithNetworking
+                    : request.params.problemWith === "others"
+                    ? a.problemWithOtherEquipment
+                    : "",
+                problemDomain:
+                  request.params.problemWith === "software"
+                    ? a.problemDomain.softwareCategory
+                    : request.params.problemWith === "hardware"
+                    ? a.problemDomain.hardwareCategory
+                    : request.params.problemWith === "networking"
+                    ? a.problemDomain.networkingCategory
+                    : request.params.problemWith === "others"
+                    ? a.problemDomain.otherEquipmentCategory
+                    : "",
+              };
+            })
+          );
+        }
+      });
+  } else if (range === "monthly") {
+    dailyEquipmentReportModel
+      .find({
+        [problemWith]: { $gt: 0 },
+        date: { $gte: fetchPreviousMonthDate() },
+        date: { $lte: fetchTodayDate() },
+      })
+      .populate({
+        path: "staffId",
+      })
+      .exec((error, data) => {
+        if (error) {
+          console.log(error);
+        } else {
+          responce.json(
+            data.map((a, b) => {
+              return {
+                staffId: a.staffId,
+                problem:
+                  request.params.problemWith === "software"
+                    ? a.problemWithSoftware
+                    : request.params.problemWith === "hardware"
+                    ? a.problemWithHardware
+                    : request.params.problemWith === "networking"
+                    ? a.problemWithNetworking
+                    : request.params.problemWith === "others"
+                    ? a.problemWithOtherEquipment
+                    : "",
+                problemDomain:
+                  request.params.problemWith === "software"
+                    ? a.problemDomain.softwareCategory
+                    : request.params.problemWith === "hardware"
+                    ? a.problemDomain.hardwareCategory
+                    : request.params.problemWith === "networking"
+                    ? a.problemDomain.networkingCategory
+                    : request.params.problemWith === "others"
+                    ? a.problemDomain.otherEquipmentCategory
+                    : "",
+                date: a.date,
+              };
+            })
+          );
+        }
+      });
+  } else {
+    responce.json({
+      message: "Invalid",
+    });
+  }
 });
 
 router.get("/view/software", (request, responce) => {

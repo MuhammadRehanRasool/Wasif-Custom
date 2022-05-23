@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import KeyboardAltIcon from "@mui/icons-material/KeyboardAlt";
+import ComputerIcon from "@mui/icons-material/Computer";
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import PersonSearchIcon from "@mui/icons-material/PersonSearch";
 import Radio from "@mui/material/Radio";
@@ -31,6 +32,12 @@ function DailyEquipmentCheckReport(props) {
     return string.charAt(0).toUpperCase() + string.slice(1);
   }
 
+  const [filters, setFilters] = useState({
+    staff: "",
+    type: "",
+    category: "",
+  });
+
   // User Data
   let navigate = useNavigate();
   useEffect(() => {
@@ -43,7 +50,10 @@ function DailyEquipmentCheckReport(props) {
   const [labs, setLabs] = useState([]);
   const fetchDates = async () => {
     await axios
-      .get(CONSTANT.server + `dailyEquipmentReport/view/${props.type}`)
+      .get(
+        CONSTANT.server +
+          `dailyEquipmentReport/view/dynamic/${props.type}/today`
+      )
       .then((responce) => {
         if (responce.status === 200) {
           let res = responce.data;
@@ -123,13 +133,104 @@ function DailyEquipmentCheckReport(props) {
             />
           </div>
 
+          <div className="row">
+            <div className="col-6">
+              <div className="custom-input input-group mb-3">
+                <span className="input-group-text">
+                  <ComputerIcon />
+                </span>
+                <select
+                  class="form-select form-control"
+                  name="labId"
+                  onChange={(e) => {
+                    setFilters({
+                      ...filters,
+                      staff: e.target.value,
+                    });
+                  }}
+                  value={filters.staff}
+                  aria-label="Select Lab"
+                >
+                  <option
+                    value=""
+                    selected={filters.staff === "" ? true : false}
+                  >
+                    Select Lab (All)
+                  </option>
+                  {labs.length > 0
+                    ? labs.map((one, i) => {
+                        return (
+                          <option
+                            key={one._id}
+                            value={one.controller.toString()}
+                            selected={
+                              filters.staff === one.controller.toString()
+                                ? true
+                                : false
+                            }
+                          >
+                            {one.name}
+                          </option>
+                        );
+                      })
+                    : ""}
+                </select>
+              </div>
+            </div>
+            <div className="col-6">
+              <div className="custom-input input-group mb-3">
+                <span className="input-group-text">
+                  <ComputerIcon />
+                </span>
+                <select
+                  class="form-select form-control"
+                  name="labId"
+                  onChange={(e) => {
+                    setFilters({
+                      ...filters,
+                      category: e.target.value,
+                    });
+                  }}
+                  value={filters.category}
+                  aria-label="Select Category"
+                >
+                  <option
+                    value=""
+                    selected={filters.category === "" ? true : false}
+                  >
+                    Select Category (All)
+                  </option>
+                  {dates.length > 0
+                    ? [
+                        ...new Set(
+                          dates.map((a, b) => {
+                            return a.problemDomain;
+                          })
+                        ),
+                      ].map((one, i) => {
+                        return (
+                          <option
+                            key={one}
+                            value={one}
+                            selected={filters.category === one ? true : false}
+                          >
+                            {one}
+                          </option>
+                        );
+                      })
+                    : ""}
+                </select>
+              </div>
+            </div>
+          </div>
+
           <div className="table-responsive">
             <table className="table">
               <thead>
                 <tr>
                   <th scope="col">Lab</th>
                   <th scope="col">Staff Name</th>
-                  <th scope="col">Number of Problems</th>
+                  <th scope="col">Problems</th>
                 </tr>
               </thead>
               <tbody>
@@ -137,6 +238,14 @@ function DailyEquipmentCheckReport(props) {
                   ? dates
                       .filter((date, i) => {
                         return date.staffId.username.includes(search);
+                      })
+                      .filter((date, i) => {
+                        return date.problemDomain.includes(filters.category);
+                      })
+                      .filter((date, i) => {
+                        return date.staffId._id
+                          .toString()
+                          .includes(filters.staff);
                       })
                       .map((date, i) => {
                         return (
@@ -159,11 +268,15 @@ function DailyEquipmentCheckReport(props) {
                               {date.staffId.username} ({date.staffId.email} -{" "}
                               {date.staffId.identity})
                             </td>
-                            <td>{date.problem}</td>
+                            <td>
+                              {date.problem}
+                              {" PCs - "}
+                              {date.problemDomain}
+                            </td>
                           </tr>
                         );
                       })
-                  : "No Leave Requests"}
+                  : "No Report"}
                 {dates.length > 0 ? (
                   <tr>
                     <td></td>

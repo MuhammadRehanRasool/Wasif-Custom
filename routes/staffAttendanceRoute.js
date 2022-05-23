@@ -144,7 +144,7 @@ router.post("/view/dated", (request, responce) => {
         date: { $gte: request.body.from },
         date: { $lte: request.body.till },
         staffId: request.body.staffId,
-        status: "present",
+        status: "in",
       },
       null,
       { sort: { date: -1 } }

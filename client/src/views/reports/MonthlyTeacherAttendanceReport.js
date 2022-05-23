@@ -43,11 +43,29 @@ function DailyTeacherAttendanceReport(props) {
     }
   }, []);
 
+  const fetchPreviousMonthDate = () => {
+    let now = new Date();
+    let today = "";
+    if (now.getMonth() === 0) {
+      today = new Date(now.getFullYear() - 1, 3, now.getDate());
+    } else {
+      today = new Date(now.getFullYear(), now.getMonth() + 1, now.getDate());
+    }
+    var dd = String(today.getDate()).padStart(2, "0");
+    var mm = String(today.getMonth() - 1).padStart(2, "0"); //January is 0!
+    var yyyy = today.getFullYear();
+    today = mm + "/" + dd + "/" + yyyy;
+    return today;
+  };
+
   const [dates, setDates] = useState([]);
   const [labs, setLabs] = useState([]);
   const fetchDates = async () => {
     await axios
-      .get(CONSTANT.server + `teacherAttendance/view/dated/${fetchTodayDate()}`)
+      .post(CONSTANT.server + `teacherAttendance/view/dated/monthly`, {
+        from: fetchPreviousMonthDate(),
+        till: fetchTodayDate(),
+      })
       .then((responce) => {
         if (responce.status === 200) {
           let res = responce.data;

@@ -5,8 +5,6 @@ const leaveRequestModel = require("../models/leaveRequestModel");
 const multer = require("multer");
 const path = require("path");
 
-
-
 const fetchTodayDate = () => {
   var today = new Date();
   var dd = String(today.getDate()).padStart(2, "0");
@@ -16,7 +14,20 @@ const fetchTodayDate = () => {
   return today;
 };
 
-
+const fetchPreviousMonthDate = () => {
+  let now = new Date();
+  let today = "";
+  if (now.getMonth() === 0) {
+    today = new Date(now.getFullYear() - 1, 3, now.getDate());
+  } else {
+    today = new Date(now.getFullYear(), now.getMonth() + 1, now.getDate());
+  }
+  var dd = String(today.getDate()).padStart(2, "0");
+  var mm = String(today.getMonth() - 1).padStart(2, "0"); //January is 0!
+  var yyyy = today.getFullYear();
+  today = mm + "/" + dd + "/" + yyyy;
+  return today;
+};
 const formatDate = (date) => {
   var today = new Date(date);
   var dd = String(today.getDate()).padStart(2, "0");
@@ -26,17 +37,18 @@ const formatDate = (date) => {
   return today;
 };
 
-function fetchPreviousMonthDate() {
-  let date = new Date(fetchTodayDate())
-  date.setMonth(date.getMonth() - 1)
-  return formatDate(date)
-}
-
 const storage = multer.diskStorage({
   destination: "./client/public/proofs/",
   filename: function (req, file, cb) {
-    cb(null, "proof-" + req.body.staffId + req.body.from + req.body.to + path.extname(file.originalname));
-  }
+    cb(
+      null,
+      "proof-" +
+        req.body.staffId +
+        req.body.from +
+        req.body.to +
+        path.extname(file.originalname)
+    );
+  },
 });
 
 const upload = multer({
@@ -45,18 +57,16 @@ const upload = multer({
 }).single("myfile");
 
 router.post("/insert", (request, responce) => {
-
   upload(request, responce, () => {
     const today = new Date();
     let payload = {
       ...request.body,
-      date: fetchTodayDate()
-    }
+      date: fetchTodayDate(),
+    };
     if (request.file) {
-      payload.attachment = request.file.filename
-    }
-    else {
-      payload.attachment = ""
+      payload.attachment = request.file.filename;
+    } else {
+      payload.attachment = "";
     }
     if (payload.type === "casual") {
       leaveRequestModel
@@ -65,7 +75,7 @@ router.post("/insert", (request, responce) => {
           type: "casual",
           date: {
             $gt: fetchPreviousMonthDate(),
-            $lte: fetchTodayDate()
+            $lte: fetchTodayDate(),
           },
         })
         .exec((error, count) => {
@@ -73,7 +83,9 @@ router.post("/insert", (request, responce) => {
             console.log(error);
           } else {
             if (count >= 2) {
-              responce.json({ "message": "You have already gained 2 leaves casually!" });
+              responce.json({
+                message: "You have already gained 2 leaves casually!",
+              });
             }
           }
         });
@@ -97,7 +109,7 @@ router.get("/view/checkCasual/:staffId", (request, responce) => {
       type: "casual",
       date: {
         $gt: fetchPreviousMonthDate(),
-        $lte: fetchTodayDate()
+        $lte: fetchTodayDate(),
       },
     })
     .exec((error, count) => {
@@ -107,6 +119,103 @@ router.get("/view/checkCasual/:staffId", (request, responce) => {
         responce.json(count);
       }
     });
+});
+
+router.get("/view/dynamic/:range", (request, responce) => {
+  let range = request.params.range;
+  if (range === "today") {
+    leaveRequestModel
+      .find({
+        date: fetchTodayDate(),
+        confirmation1: true,
+        confirmation2: true,
+      })
+      .populate({
+        path: "staffId",
+      })
+      .exec((error, data) => {
+        if (error) {
+          console.log(error);
+        } else {
+          let output = [];
+          [
+            ...new Set(
+              data.map((a, b) => {
+                return a.staffId._id;
+              })
+            ),
+          ].map((a, b) => {
+            output.push({
+              staffId: data.filter((i, j) => {
+                return i.staffId._id === a;
+              })[0]?.staffId,
+              casual: data.filter((i, j) => {
+                return i.staffId._id === a && i.type === "casual";
+              })?.length,
+              medical: data.filter((i, j) => {
+                return i.staffId._id === a && i.type === "medical";
+              })?.length,
+              earned: data.filter((i, j) => {
+                return i.staffId._id === a && i.type === "earned";
+              })?.length,
+              total: data.filter((i, j) => {
+                return i.staffId._id === a;
+              })?.length,
+            });
+          });
+          console.log(output);
+          responce.json(output);
+        }
+      });
+  } else if (range === "monthly") {
+    leaveRequestModel
+      .find({
+        date: { $gte: fetchPreviousMonthDate() },
+        date: { $lte: fetchTodayDate() },
+        confirmation1: true,
+        confirmation2: true,
+      })
+      .populate({
+        path: "staffId",
+      })
+      .exec((error, data) => {
+        if (error) {
+          console.log(error);
+        } else {
+          let output = [];
+          [
+            ...new Set(
+              data.map((a, b) => {
+                return a.staffId._id;
+              })
+            ),
+          ].map((a, b) => {
+            output.push({
+              staffId: data.filter((i, j) => {
+                return i.staffId._id === a;
+              })[0]?.staffId,
+              casual: data.filter((i, j) => {
+                return i.staffId._id === a && i.type === "casual";
+              })?.length,
+              medical: data.filter((i, j) => {
+                return i.staffId._id === a && i.type === "medical";
+              })?.length,
+              earned: data.filter((i, j) => {
+                return i.staffId._id === a && i.type === "earned";
+              })?.length,
+              total: data.filter((i, j) => {
+                return i.staffId._id === a;
+              })?.length,
+            });
+          });
+          responce.json(output);
+        }
+      });
+  } else {
+    responce.json({
+      message: "Invalid",
+    });
+  }
 });
 
 router.get("/view", (request, responce) => {
@@ -143,6 +252,7 @@ router.get("/view/me/:id", (request, responce) => {
               confirmation1: one.confirmation1,
               confirmation2: one.confirmation2,
               attachment: one.attachment,
+              type: one.type,
             };
           })
         );

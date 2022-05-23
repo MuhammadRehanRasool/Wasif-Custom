@@ -19,9 +19,58 @@ function Staff(props) {
   useEffect(() => {
     if (QR !== "") {
       setScanOpen(!scanOpen);
-      window.location.href = CONSTANT.client + QR
+      window.location.href = CONSTANT.client + QR;
     }
   }, [QR]);
+
+  const [book, setBookings] = useState([]);
+
+  const fetchBooking = async () => {
+    await axios
+      .get(CONSTANT.server + `labs/view/staffId/${data.personal._id}`)
+      .then((responce) => {
+        if (responce.status === 200) {
+          axios
+            .get(
+              CONSTANT.server + `bookLab/view/isToday/${responce.data[0]._id}`
+            )
+            .then((responce2) => {
+              if (responce2.status === 200) {
+                if (responce2.data) {
+                  setBookings([...responce2.data]);
+                }
+              }
+            })
+            .catch((error) => {
+              console.log(error);
+            });
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  useEffect(() => {
+    if (data.personal._id !== "") {
+      fetchBooking();
+    }
+  }, [data]);
+
+  const updateBooking = async (id) => {
+    await axios
+      .put(CONSTANT.server + `bookLab/update/complete/${id}`)
+      .then((responce2) => {
+        if (responce2.status === 200) {
+          if (responce2.data) {
+            fetchBooking();
+          }
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
   return (
     <div className="__Staff">
@@ -29,6 +78,30 @@ function Staff(props) {
         <h1 className="mb-4 mt-2 text-center">
           Welcome {data.personal.username}!
         </h1>
+        <div className="mt-2 mb-2">
+          {book.length > 0
+            ? book.map((a, b) => {
+                return (
+                  <div className="card mt-2 mb-2 px-2 py-2 pt-3">
+                    <p>You have a lab booking today at {a.time}</p>
+                    <p>Event Name : {a.ename}</p>
+                    <p>
+                      Event By : {a.name} ({a.email})
+                    </p>
+                    <span
+                      role={"button"}
+                      className="text-primary"
+                      onClick={(e) => {
+                        updateBooking(a._id);
+                      }}
+                    >
+                      Completed
+                    </span>
+                  </div>
+                );
+              })
+            : ""}
+        </div>
         <h3 className="mb-4 mt-2 text-center">Scan QR Code</h3>
         <div className="w-50 mt-3 custom-button text-center">
           <button
