@@ -137,7 +137,7 @@ function Staff(props) {
               <CoPresentIcon />
             </span>
             <select
-              class="form-select form-control"
+              className="form-select form-control"
               name="status"
               onChange={changeSend}
               value={send.status}

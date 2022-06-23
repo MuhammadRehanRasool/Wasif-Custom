@@ -284,7 +284,7 @@ export default function WeeklyAttendanceReport() {
             <ComputerIcon />
           </span>
           <select
-            class="form-select form-control"
+            className="form-select form-control"
             name="labId"
             onChange={(e) => {
               fetchTimetable(e.target.value);

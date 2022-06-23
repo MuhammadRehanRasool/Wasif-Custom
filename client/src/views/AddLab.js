@@ -106,7 +106,7 @@ export default function AddLab() {
             <AdminPanelSettingsIcon />
           </span>
           <select
-            class="form-select form-control"
+            className="form-select form-control"
             name="controller"
             onChange={changeData}
             value={data.controller}

@@ -321,6 +321,77 @@ router.post("/checkSlotAttendance", (request, responce) => {
   );
 });
 
+router.post("/check", (request, responce) => {
+  teacherAttendanceModel.find(
+    {
+      date: request.body.date,
+      teacherId: request.body.teacherId,
+      slotId: request.body.slotId,
+    },
+    (error, data) => {
+      if (error) {
+        console.log(error);
+      } else {
+        if (!data) {
+          responce.json([]);
+        } else {
+          responce.json(
+            data.map((a, b) => {
+              return a.status;
+            })
+          );
+        }
+      }
+    }
+  );
+});
+
+router.get(
+  "/qrcode/:month/:day/:year/:teacherId/:slotId/:status/:url",
+  (request, responce) => {
+    teacherAttendanceModel.findOne(
+      {
+        date: `${request.params.month}/${request.params.day}/${request.params.year}`,
+        teacherId: request.params.teacherId,
+        slotId: request.params.slotId,
+        status: request.params.status,
+      },
+      (error, data) => {
+        if (error) {
+          console.log(error);
+        }
+        if (!data) {
+          let teacherAttendanceModelObject = new teacherAttendanceModel({
+            teacherId: request.params.teacherId,
+            date: `${request.params.month}/${request.params.day}/${request.params.year}`,
+            status: request.params.status,
+            slotId: request.params.slotId,
+          });
+          teacherAttendanceModelObject
+            .save()
+            .then((callbackData) => {
+              console.log(callbackData);
+              responce.redirect(
+                `http://${request.params.url}/feedback?message=You are checked ${request.params.status} successfully!`
+              );
+            })
+            .catch((error) => {
+              console.log(error);
+              responce.redirect(
+                `http://${request.params.url}/feedback?message=An error occured. Please try again!`
+              );
+            });
+        } else {
+          console.log({ message: `Already checked ${request.params.status}!` });
+          responce.redirect(
+            `http://${request.params.url}/feedback?message=Already checked ${request.params.status}!`
+          );
+        }
+      }
+    );
+  }
+);
+
 router.post("/delete/:id", (request, responce) => {
   teacherAttendanceModel.findByIdAndDelete(request.params.id, (error, data) => {
     if (error) {

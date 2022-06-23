@@ -168,7 +168,7 @@ function DailyStaffAttendanceReport(props) {
               <AdminPanelSettingsIcon />
             </span>
             <select
-              class="form-select form-control"
+              className="form-select form-control"
               name="staffId"
               onChange={(e) => {
                 setStaffId(e.target.value);

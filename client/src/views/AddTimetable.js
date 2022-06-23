@@ -297,7 +297,7 @@ export default function AddTimetable(props) {
               <ComputerIcon />
             </span>
             <select
-              class="form-select form-control"
+              className="form-select form-control"
               name="labId"
               onChange={(e) => {
                 changeSend(e);
@@ -352,7 +352,7 @@ export default function AddTimetable(props) {
                     <TodayIcon />
                   </span>
                   <select
-                    class="form-select form-control"
+                    className="form-select form-control"
                     name="day"
                     onChange={(e) => {
                       actions("update", i, e);
@@ -452,7 +452,7 @@ export default function AddTimetable(props) {
                     <AccountBoxIcon />
                   </span>
                   <select
-                    class="form-select form-control"
+                    className="form-select form-control"
                     name="teacherId"
                     onChange={(e) => {
                       actions("update", i, e);

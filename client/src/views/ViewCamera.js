@@ -81,7 +81,7 @@ export default function ViewCamera() {
                             <ComputerIcon />
                         </span>
                         <select
-                            class="form-select form-control"
+                            className="form-select form-control"
                             name="name"
                             onChange={(e) => {
                                 setDataL({

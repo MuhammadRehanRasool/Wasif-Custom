@@ -77,7 +77,7 @@ export default function AddCategory() {
                         <AdminPanelSettingsIcon />
                     </span>
                     <select
-                        class="form-select form-control"
+                        className="form-select form-control"
                         name="type"
                         onChange={changeData}
                         value={data.type}

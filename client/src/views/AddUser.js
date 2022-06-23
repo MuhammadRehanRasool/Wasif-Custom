@@ -145,7 +145,7 @@ export default function AddUser() {
             <AdminPanelSettingsIcon />
           </span>
           <select
-            class="form-select form-control"
+            className="form-select form-control"
             name="role"
             onChange={changeData}
             value={data.role}

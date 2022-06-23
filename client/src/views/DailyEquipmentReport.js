@@ -167,7 +167,7 @@ export default function DailyEquipmentReport() {
             <HardwareIcon />
           </span>
           <select
-            class="form-select form-control"
+            className="form-select form-control"
             name="problemDomain"
             data-name="hardware"
             onChange={changeData}
@@ -214,7 +214,7 @@ export default function DailyEquipmentReport() {
                 <HardwareIcon />
               </span>
               <select
-                class="form-select form-control"
+                className="form-select form-control"
                 name="problemDomain"
                 data-name="hardwareCategory"
                 onChange={changeData}
@@ -261,7 +261,7 @@ export default function DailyEquipmentReport() {
             <AppShortcutIcon />
           </span>
           <select
-            class="form-select form-control"
+            className="form-select form-control"
             name="problemDomain"
             data-name="software"
             onChange={changeData}
@@ -307,7 +307,7 @@ export default function DailyEquipmentReport() {
               <AppShortcutIcon />
             </span>
             <select
-              class="form-select form-control"
+              className="form-select form-control"
               name="problemDomain"
               data-name="softwareCategory"
               onChange={changeData}
@@ -359,7 +359,7 @@ export default function DailyEquipmentReport() {
             <CellTowerIcon />
           </span>
           <select
-            class="form-select form-control"
+            className="form-select form-control"
             name="problemDomain"
             data-name="networking"
             onChange={changeData}
@@ -405,7 +405,7 @@ export default function DailyEquipmentReport() {
               <CellTowerIcon />
             </span>
             <select
-              class="form-select form-control"
+              className="form-select form-control"
               name="problemDomain"
               data-name="networkingCategory"
               onChange={changeData}
@@ -457,7 +457,7 @@ export default function DailyEquipmentReport() {
             <DevicesOtherIcon />
           </span>
           <select
-            class="form-select form-control"
+            className="form-select form-control"
             name="problemDomain"
             data-name="otherEquipment"
             onChange={changeData}
@@ -505,7 +505,7 @@ export default function DailyEquipmentReport() {
               <DevicesOtherIcon />
             </span>
             <select
-              class="form-select form-control"
+              className="form-select form-control"
               name="problemDomain"
               data-name="otherEquipmentCategory"
               onChange={changeData}

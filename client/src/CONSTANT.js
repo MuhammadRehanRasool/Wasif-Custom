@@ -1,11 +1,11 @@
-// export const CONSTANT = {
-//   server: "https://test0073.herokuapp.com/",
-//   client: "https://test0073.herokuapp.com/",
-// };
 export const CONSTANT = {
-  server: "http://localhost:4000/",
-  client:"http://localhost:3000/",
+  server: "https://test0073.herokuapp.com/",
+  client: "https://test0073.herokuapp.com/",
 };
+// export const CONSTANT = {
+//   server: "http://localhost:4000/",
+//   client:"http://localhost:3000/",
+// };
 
 export const checkLoginFromLogin = () => {
   return localStorage.getItem("loggedin") &&
@@ -59,7 +59,7 @@ export const checkLoginFromTeacher = () => {
 export const Loader = (extra = "") => {
   return (
     <div class={`spinner-grow ${extra}`} role="status">
-      <span class="visually-hidden">Loading...</span>
+      <span className="visually-hidden">Loading...</span>
     </div>
   );
 };

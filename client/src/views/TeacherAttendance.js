@@ -166,7 +166,7 @@ function TeacherAttendance(props) {
               <CoPresentIcon />
             </span>
             <select
-              class="form-select form-control"
+              className="form-select form-control"
               name="featureLab"
               onChange={(e) => {
                 setFeatureLab(e.target.value);
@@ -207,7 +207,7 @@ function TeacherAttendance(props) {
               <CoPresentIcon />
             </span>
             <select
-              class="form-select form-control"
+              className="form-select form-control"
               name="slotId"
               onChange={changeSend}
               value={send.slotId}
@@ -263,7 +263,7 @@ function TeacherAttendance(props) {
               <CoPresentIcon />
             </span>
             <select
-              class="form-select form-control"
+              className="form-select form-control"
               name="status"
               onChange={changeSend}
               value={send.status}

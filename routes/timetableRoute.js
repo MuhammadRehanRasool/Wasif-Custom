@@ -315,6 +315,57 @@ router.get("/view/teacher/:id/:day", (request, responce) => {
     });
 });
 
+const getCurrentTime = () => {
+  let today = new Date();
+  let h = today.getHours();
+  let m = today.getMinutes();
+  return pad(h) + ":" + pad(m);
+};
+
+router.get("/view/teacher/qr/:id/:day", (request, responce) => {
+  timetableModel
+    .find({ teacherId: request.params.id, day: request.params.day })
+    .populate({
+      path: "labId",
+    })
+    .exec((error, data) => {
+      if (error) {
+        console.log(error);
+      } else {
+        let temp = [];
+        data.map((one, i) => {
+          if (
+            Date.parse(`01/01/2011 ${one.startTime}:00`) <=
+              Date.parse(`01/01/2011 ${getCurrentTime()}:00`) &&
+            Date.parse(`01/01/2011 ${getCurrentTime()}:00`) <=
+              Date.parse(`01/01/2011 ${one.endTime}:00`)
+          ) {
+            let tt = [one.startTime, one.endTime];
+            tt.map((two, j) => {
+              if (parseInt(tt[j].slice(0, 2)) <= 12) {
+                tt[j] += "AM";
+              } else {
+                tt[j] =
+                  pad(parseInt(parseInt(tt[j].slice(0, 2)) - 12)) +
+                  tt[j].slice(2) +
+                  "PM";
+              }
+            });
+            temp.push({
+              _id: one._id,
+              subjectName: one.subjectName,
+              name: one.labId.name,
+              range: tt[0] + "-" + tt[1],
+              startTime: one.startTime,
+              endTime: one.endTime,
+            });
+          }
+        });
+        responce.json(temp);
+      }
+    });
+});
+
 router.post("/delete/:id", (request, responce) => {
   timetableModel.findByIdAndDelete(request.params.id, (error, data) => {
     if (error) {

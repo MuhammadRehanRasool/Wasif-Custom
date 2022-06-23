@@ -140,7 +140,7 @@ function DailyEquipmentCheckReport(props) {
                   <ComputerIcon />
                 </span>
                 <select
-                  class="form-select form-control"
+                  className="form-select form-control"
                   name="labId"
                   onChange={(e) => {
                     setFilters({
@@ -183,7 +183,7 @@ function DailyEquipmentCheckReport(props) {
                   <ComputerIcon />
                 </span>
                 <select
-                  class="form-select form-control"
+                  className="form-select form-control"
                   name="labId"
                   onChange={(e) => {
                     setFilters({
