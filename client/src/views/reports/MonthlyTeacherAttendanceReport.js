@@ -11,7 +11,7 @@ import CoPresentIcon from "@mui/icons-material/CoPresent";
 import Legend from "./../../components/Legend";
 import {
   CONSTANT,
-  checkLoginFromCommittee,
+  checkLoginFromCommittee,checkLoginFromHOD,
   setMessage,
   resetMessage,
   isMessage,
@@ -38,7 +38,7 @@ function DailyTeacherAttendanceReport(props) {
   // User Data
   let navigate = useNavigate();
   useEffect(() => {
-    if (checkLoginFromCommittee()) {
+    if (checkLoginFromCommittee() && checkLoginFromHOD()) {
       navigate("/dashboard");
     }
   }, []);

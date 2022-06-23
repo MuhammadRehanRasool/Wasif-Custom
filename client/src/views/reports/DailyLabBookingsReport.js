@@ -16,7 +16,7 @@ import CoPresentIcon from "@mui/icons-material/CoPresent";
 
 import {
   CONSTANT,
-  checkLoginFromCommittee,
+  checkLoginFromCommittee,checkLoginFromHOD,
   setMessage,
   resetMessage,
   isMessage,
@@ -34,7 +34,7 @@ function DailyLabBookingsReport(props) {
   // User Data
   let navigate = useNavigate();
   useEffect(() => {
-    if (checkLoginFromCommittee()) {
+    if (checkLoginFromCommittee() && checkLoginFromHOD()) {
       navigate("/dashboard");
     }
   }, []);

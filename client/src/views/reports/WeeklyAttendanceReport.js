@@ -7,7 +7,7 @@ import axios from "axios";
 
 import {
   CONSTANT,
-  checkLoginFromCommittee,
+  checkLoginFromCommittee,checkLoginFromHOD,
   setMessage,
   resetMessage,
   isMessage,
@@ -53,7 +53,7 @@ export default function WeeklyAttendanceReport() {
   let navigate = useNavigate();
 
   useEffect(() => {
-    if (checkLoginFromCommittee()) {
+    if (checkLoginFromCommittee() && checkLoginFromHOD()) {
       navigate("/dashboard");
     }
   }, []);
